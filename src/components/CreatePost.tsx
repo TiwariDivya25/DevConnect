@@ -28,7 +28,19 @@ const fetchCommunities = async (): Promise<Community[]> => {
 const CreatePost = () => {
     const queryClient = useQueryClient();
     
-    const uploadPost = async (post: PostInput, imageFile: File | null) => {
+    const uploadPost = async (
+        post: PostInput, 
+        imageFile: File | null
+    ) => {
+        const {
+            data: { user },
+            error: authError
+        } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+            throw new Error("User not authenticated");
+        }
+
         if (!imageFile) {
             throw new Error("Image file is required");
         }
@@ -53,7 +65,8 @@ const CreatePost = () => {
             content: post.content,
             image_url: publicUrl.publicUrl,
             avatar_url: post.avatar_url,
-            community_id: post.community_id
+            community_id: post.community_id,
+            user_id: user.id
         }).select();
 
         if (error) {
