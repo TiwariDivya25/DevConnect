@@ -36,3 +36,11 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.footer {
+  margin-top: auto;
+  padding: 1rem;
+  text-align: center;
+  background-color: #f5f5f5;
+  color: #555;
+}
