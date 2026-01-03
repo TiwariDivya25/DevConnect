@@ -63,6 +63,10 @@ DevConnect is a full-stack web application that enables developers to:
 - 💬 **Nested Comments** - Multi-level comment threads with collapse/expand
 - 👥 **Communities** - Create and manage developer communities
 - ❤️ **Likes System** - Vote on posts and comments
+- 💬 **Real-Time Messaging** - Direct messages and group chats with live updates
+- 📁 **File Sharing** - Share images and files in conversations
+- 🔔 **Live Notifications** - Real-time typing indicators and message notifications
+- 👤 **User Presence** - See who's online and their status
 - 🎨 **Modern UI** - Dark theme with cyan accents, professional design
 - 📱 **Responsive Design** - Works on desktop and mobile
 
@@ -81,16 +85,28 @@ src/
 │   ├── CommunityList.tsx          # List of communities
 │   ├── CommunityDisplay.tsx       # Posts in a community
 │   ├── CreatePost.tsx             # Post creation form
-│   └── CreateCommunity.tsx        # Community creation form
+│   ├── CreateCommunity.tsx        # Community creation form
+│   ├── MessagingInterface.tsx     # Main messaging layout
+│   ├── ConversationList.tsx       # Conversation sidebar
+│   ├── MessageList.tsx            # Message display area
+│   ├── MessageInput.tsx           # Message composition
+│   ├── ConversationHeader.tsx     # Chat header with actions
+│   ├── CreateConversationModal.tsx # New chat creation
+│   └── MessageNotificationBadge.tsx # Unread message indicator
 ├── pages/
 │   ├── Home.tsx                   # Home page
 │   ├── PostPage.tsx               # Post detail page
 │   ├── CommunitiesPage.tsx        # Communities listing page
 │   ├── CommunityPage.tsx          # Single community page
 │   ├── CreatePostPage.tsx         # Post creation page
-│   └── CreateCommunityPage.tsx    # Community creation page
+│   ├── CreateCommunityPage.tsx    # Community creation page
+│   └── MessagesPage.tsx           # Messaging interface page
 ├── context/
 │   └── AuthContext.tsx            # Authentication context
+├── hooks/
+│   └── useMessaging.ts            # Messaging-related hooks
+├── types/
+│   └── messaging.ts               # TypeScript interfaces for messaging
 ├── supabase-client.ts             # Supabase configuration
 ├── App.tsx                        # Main app component
 └── index.css                      # Global styles
@@ -195,9 +211,15 @@ CREATE TABLE Votes (
 );
 ```
 
+**Messaging Tables**
+
+For the complete messaging schema including conversations, messages, reactions, and real-time features, see `database-schema-messaging.sql`.
+
 **Storage Setup**
 - Create a bucket named `post-images` in Supabase Storage
-- Set bucket to public
+- Create a bucket named `message-files` in Supabase Storage (private)
+- Set `post-images` bucket to public
+- Set `message-files` bucket to private
 
 ### Running the Project
 
@@ -216,6 +238,16 @@ npm run lint
 ```
 
 The app will be available at http://localhost:5173
+
+## 💬 Setting Up Messaging
+
+For detailed instructions on setting up the real-time messaging system, see [MESSAGING_SETUP.md](MESSAGING_SETUP.md).
+
+Quick setup:
+1. Run the SQL schema from `database-schema-messaging.sql`
+2. Create the `message-files` storage bucket (private)
+3. Enable real-time for messaging tables
+4. Navigate to `/messages` to start chatting!
 
 ## 🤝 Contributing
 
