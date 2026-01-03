@@ -5,6 +5,7 @@ import { supabase } from '../supabase-client';
 import { useAuth } from '../context/AuthContext';
 import type { Community } from './CommunityList';
 import { Upload, AlertCircle, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface PostInput {
     title: string;
@@ -15,7 +16,7 @@ interface PostInput {
 
 const fetchCommunities = async (): Promise<Community[]> => {
     const { data, error } = await supabase
-        .from('Communities')
+        .from('communities')
         .select('*')
         .order('created_at', { ascending: false });
     
@@ -26,14 +27,29 @@ const fetchCommunities = async (): Promise<Community[]> => {
 }
 
 const CreatePost = () => {
+    const navigate = useNavigate();
+    
     const queryClient = useQueryClient();
     
-    const uploadPost = async (post: PostInput, imageFile: File | null) => {
+    const uploadPost = async (
+        post: PostInput, 
+        imageFile: File | null
+    ) => {
+        const {
+            data: { user },
+            error: authError
+        } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+            throw new Error("User not authenticated");
+        }
+
         if (!imageFile) {
             throw new Error("Image file is required");
         }
-
-        const filePath = `${post.title}-${Date.now()}-${imageFile.name}`;
+        
+        const safeTitle = post.title.replace(/[^a-zA-Z0-9-_]/g, '_'); // replace unsafe chars
+        const filePath = `${safeTitle}-${Date.now()}-${imageFile.name}`;
 
         const {error: imageError} = await supabase.storage
             .from('post-images')
@@ -47,12 +63,13 @@ const CreatePost = () => {
             .from('post-images')
             .getPublicUrl(filePath);
 
-        const {data, error} = await supabase.from("Posts").insert({
+        const {data, error} = await supabase.from("posts").insert({
             title: post.title,
             content: post.content,
             image_url: publicUrl.publicUrl,
             avatar_url: post.avatar_url,
-            community_id: post.community_id
+            community_id: post.community_id,
+            user_id: user.id
         }).select();
 
         if (error) {
@@ -85,7 +102,7 @@ const CreatePost = () => {
             setCommunityId(null);
             queryClient.invalidateQueries({queryKey: ['posts']});
             setTimeout(() => {
-                window.location.href = '/';
+                navigate('/');
             }, 2000);
         }
     })

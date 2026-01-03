@@ -143,7 +143,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 **Posts Table**
 
 ```sql
-CREATE TABLE Posts (
+CREATE TABLE posts (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   title TEXT NOT NULL,
   content TEXT NOT NULL,
@@ -159,7 +159,7 @@ CREATE TABLE Posts (
 **Comments Table**
 
 ```sql
-CREATE TABLE Comments (
+CREATE TABLE comments (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   post_id BIGINT NOT NULL REFERENCES Posts(id),
   content TEXT NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE Comments (
 **Communities Table**
 
 ```sql
-CREATE TABLE Communities (
+CREATE TABLE communities (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name TEXT NOT NULL,
   description TEXT,
@@ -185,7 +185,7 @@ CREATE TABLE Communities (
 **Votes Table**
 
 ```sql
-CREATE TABLE Votes (
+CREATE TABLE votes (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   post_id BIGINT NOT NULL REFERENCES Posts(id),
   user_id UUID NOT NULL,
@@ -386,7 +386,7 @@ const { data, isLoading, error } = useQuery({
   queryKey: ['posts'],
   queryFn: async () => {
     const { data, error } = await supabase
-      .from('Posts')
+      .from('posts')
       .select('*')
       .order('created_at', { ascending: false });
     

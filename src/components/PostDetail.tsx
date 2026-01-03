@@ -21,7 +21,7 @@ interface PostDetailProps {
 
 const fetchPost = async (postId: number): Promise<Post> => {
     const { data, error } = await supabase
-        .from('Posts')
+        .from('posts')
         .select('*')
         .eq('id', postId)
         .single();

@@ -13,7 +13,7 @@ export interface Post {
 }
 
 const fetchPosts = async (): Promise<Post[]> => {
-    const {data, error} = await supabase.from('Posts').select('*').order('created_at', {ascending: false});
+    const {data, error} = await supabase.from('posts').select('*').order('created_at', {ascending: false});
     if (error) {
         throw new Error("Error fetching posts: " + error.message);
     }

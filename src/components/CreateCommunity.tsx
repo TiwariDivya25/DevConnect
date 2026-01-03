@@ -11,7 +11,7 @@ interface CommunityInput {
 
 const createCommunity = async (community: CommunityInput) => {
   const { error, data } = await supabase
-    .from("Communities")
+    .from("communities")
     .insert([community])
     .select();
 

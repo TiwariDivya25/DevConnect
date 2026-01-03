@@ -22,7 +22,7 @@ interface CommentSectionProps {
 
 const fetchComments = async (postId: number): Promise<Comment[]> => {
   const { data, error } = await supabase
-    .from('Comments')
+    .from('comments')
     .select('*')
     .eq('post_id', postId)
     .order('created_at', { ascending: true });
@@ -42,7 +42,7 @@ const createComment = async (
     throw new Error('You must be logged in to comment.');
   }
 
-  const { error } = await supabase.from('Comments').insert({
+  const { error } = await supabase.from('comments').insert({
     post_id: postId,
     content: content,
     user_id: userId,
