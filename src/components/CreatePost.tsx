@@ -5,6 +5,7 @@ import { supabase } from '../supabase-client';
 import { useAuth } from '../context/AuthContext';
 import type { Community } from './CommunityList';
 import { Upload, AlertCircle, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface PostInput {
     title: string;
@@ -26,6 +27,8 @@ const fetchCommunities = async (): Promise<Community[]> => {
 }
 
 const CreatePost = () => {
+    const navigate = useNavigate();
+    
     const queryClient = useQueryClient();
     
     const uploadPost = async (
@@ -99,7 +102,7 @@ const CreatePost = () => {
             setCommunityId(null);
             queryClient.invalidateQueries({queryKey: ['posts']});
             setTimeout(() => {
-                window.location.href = '/';
+                navigate('/');
             }, 2000);
         }
     })
