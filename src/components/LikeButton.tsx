@@ -17,7 +17,7 @@ interface Vote {
 
 const like = async (likeValue: number, postId: number, userId: string) => {
     const { data: existingVote } = await supabase
-        .from('Votes')
+        .from('votes')
         .select("*")
         .eq("post_id", postId)
         .eq("user_id", userId)
@@ -27,7 +27,7 @@ const like = async (likeValue: number, postId: number, userId: string) => {
         if (existingVote.vote === likeValue) {
             // User is unliking the post
             const { error } = await supabase
-                .from('Votes')
+                .from('votes')
                 .delete()
                 .eq("post_id", postId)
                 .eq("user_id", userId);
@@ -37,7 +37,7 @@ const like = async (likeValue: number, postId: number, userId: string) => {
         }
     } else {
         const { error } = await supabase
-            .from('Votes')
+            .from('votes')
             .insert({ post_id: postId, user_id: userId, vote: likeValue });
         
         if (error) {
@@ -48,7 +48,7 @@ const like = async (likeValue: number, postId: number, userId: string) => {
 
 const fetchLikes = async (postId: number): Promise<Vote[]> => {
     const { data, error } = await supabase
-        .from('Votes')
+        .from('votes')
         .select('*')
         .eq('post_id', postId);
     if (error) {

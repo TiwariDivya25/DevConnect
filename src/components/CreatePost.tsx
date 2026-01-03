@@ -15,7 +15,7 @@ interface PostInput {
 
 const fetchCommunities = async (): Promise<Community[]> => {
     const { data, error } = await supabase
-        .from('Communities')
+        .from('communities')
         .select('*')
         .order('created_at', { ascending: false });
     
@@ -60,7 +60,7 @@ const CreatePost = () => {
             .from('post-images')
             .getPublicUrl(filePath);
 
-        const {data, error} = await supabase.from("Posts").insert({
+        const {data, error} = await supabase.from("posts").insert({
             title: post.title,
             content: post.content,
             image_url: publicUrl.publicUrl,

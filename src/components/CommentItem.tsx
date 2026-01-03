@@ -25,7 +25,7 @@ const createReply = async (
     throw new Error("You must be logged in to reply.");
   }
 
-  const { error } = await supabase.from("Comments").insert({
+  const { error } = await supabase.from("comments").insert({
     post_id: postId,
     content: replyContent,
     parent_comment_id: parentCommentId,
