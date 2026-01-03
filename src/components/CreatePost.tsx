@@ -32,8 +32,9 @@ const CreatePost = () => {
         if (!imageFile) {
             throw new Error("Image file is required");
         }
-
-        const filePath = `${post.title}-${Date.now()}-${imageFile.name}`;
+        
+        const safeTitle = post.title.replace(/[^a-zA-Z0-9-_]/g, '_'); // replace unsafe chars
+        const filePath = `${safeTitle}-${Date.now()}-${imageFile.name}`;
 
         const {error: imageError} = await supabase.storage
             .from('post-images')
