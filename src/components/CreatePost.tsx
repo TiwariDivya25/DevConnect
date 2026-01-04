@@ -6,6 +6,8 @@ import { useAuth } from '../context/AuthContext';
 import type { Community } from './CommunityList';
 import { Upload, AlertCircle, CheckCircle } from 'lucide-react';
 
+const MAX_CHARS = 500;
+
 interface PostInput {
     title: string;
     content: string;
@@ -107,6 +109,11 @@ const CreatePost = () => {
             alert('Please fill in all fields');
             return;
         }
+
+        if (content.length > MAX_CHARS) {
+            alert('Content exceeds character limit');
+            return;
+        }
         
         mutate({
             post: {
@@ -124,7 +131,6 @@ const CreatePost = () => {
             const file = e.target.files[0];
             setImageFile(file);
             
-            // Create preview
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result as string);
@@ -140,7 +146,6 @@ const CreatePost = () => {
 
     return (
         <div className="min-h-screen bg-slate-950 pt-16">
-            {/* Header */}
             <div className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 py-8">
                 <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h1 className="text-4xl font-bold text-white mb-2">Create a Post</h1>
@@ -148,11 +153,9 @@ const CreatePost = () => {
                 </div>
             </div>
 
-            {/* Content */}
             <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <form onSubmit={handleSubmit} className="bg-slate-900/50 border border-slate-800 rounded-lg p-8 space-y-6">
                     
-                    {/* Success Message */}
                     {isSuccess && (
                         <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
@@ -160,7 +163,6 @@ const CreatePost = () => {
                         </div>
                     )}
 
-                    {/* Error Message */}
                     {error && (
                         <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg flex items-start gap-3">
                             <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
@@ -171,7 +173,6 @@ const CreatePost = () => {
                         </div>
                     )}
 
-                    {/* User Info */}
                     {user?.user_metadata?.avatar_url && (
                         <div className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
                             <img 
@@ -186,7 +187,6 @@ const CreatePost = () => {
                         </div>
                     )}
 
-                    {/* Title */}
                     <div>
                         <label htmlFor="title" className="block text-sm font-semibold text-white mb-2">
                             Title
@@ -204,7 +204,6 @@ const CreatePost = () => {
                         <p className="text-xs text-gray-500 mt-1">Keep it short and descriptive</p>
                     </div>
 
-                    {/* Content */}
                     <div>
                         <label htmlFor="content" className="block text-sm font-semibold text-white mb-2">
                             Content
@@ -213,16 +212,20 @@ const CreatePost = () => {
                             id="content"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
-                            className="w-full bg-slate-800/50 border border-slate-700 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 transition resize-none"
+                            className={`w-full bg-slate-800/50 border ${content.length > MAX_CHARS ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-slate-700 focus:border-cyan-500/50 focus:ring-cyan-500/20'} rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-1 transition resize-none`}
                             rows={5}
                             placeholder="Share your thoughts, experiences, or insights..."
                             required
                             disabled={isPending}
                         />
-                        <p className="text-xs text-gray-500 mt-1">Write something meaningful</p>
+                        <div className="flex justify-between mt-1">
+                            <p className="text-xs text-gray-500">Write something meaningful</p>
+                            <p className={`text-xs font-medium ${content.length > MAX_CHARS ? 'text-red-500 font-bold' : 'text-gray-400'}`}>
+                                {content.length} / {MAX_CHARS}
+                            </p>
+                        </div>
                     </div>
 
-                    {/* Community Selection */}
                     <div>
                         <label htmlFor="community" className="block text-sm font-semibold text-white mb-2">
                             Community (Optional)
@@ -248,7 +251,6 @@ const CreatePost = () => {
                         )}
                     </div>
 
-                    {/* Image Upload */}
                     <div>
                         <label htmlFor="image" className="block text-sm font-semibold text-white mb-2">
                             Cover Image
@@ -274,7 +276,6 @@ const CreatePost = () => {
                             </label>
                         </div>
 
-                        {/* Image Preview */}
                         {imagePreview && (
                             <div className="mt-4">
                                 <p className="text-xs text-gray-500 mb-2">Preview:</p>
@@ -287,13 +288,14 @@ const CreatePost = () => {
                         )}
                     </div>
 
-                    {/* Submit Button */}
                     <button 
                         type="submit" 
-                        disabled={isPending || isSuccess}
-                        className="w-full px-6 py-3 bg-cyan-600 hover:bg-cyan-700 disabled:bg-cyan-600/50 text-white font-semibold rounded-lg transition-colors duration-300"
+                        disabled={isPending || isSuccess || content.length > MAX_CHARS}
+                        className={`w-full px-6 py-3 font-semibold rounded-lg transition-colors duration-300 ${content.length > MAX_CHARS ? 'bg-red-600 cursor-not-allowed' : 'bg-cyan-600 hover:bg-cyan-700'} text-white disabled:opacity-50`}
                     >
-                        {isPending ? (
+                        {content.length > MAX_CHARS ? (
+                            "Too Long to Post"
+                        ) : isPending ? (
                             <span className="flex items-center justify-center gap-2">
                                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                                 Creating...
