@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useParams, Link } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabase-client";
-import { Github, Book, Code, Star, ExternalLink, User, RefreshCw, Globe, GraduationCap, FileText, Save, X as XIcon } from "lucide-react";
+import { Github, Book, Code, Star, ExternalLink, User, RefreshCw, Globe, GraduationCap, FileText, Save, X as XIcon, Edit, Trash2, MessageSquare, Layout, CheckCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 
@@ -25,6 +25,15 @@ interface Profile {
   portfolio_url?: string;
   learning_now?: string;
   resume_url?: string;
+}
+
+interface UserPost {
+  id: number;
+  title: string;
+  content: string;
+  image_url: string;
+  created_at: string;
+  user_id: string;
 }
 
 const DUMMY_PROFILES: Record<string, Profile> = {
@@ -94,6 +103,7 @@ const fetchProfile = async (id: string): Promise<Profile> => {
 const ProfilePage = () => {
   const { id } = useParams<{ id: string }>();
   const { user, syncProfile } = useAuth();
+  const queryClient = useQueryClient();
   const [isSyncing, setIsSyncing] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -117,9 +127,63 @@ const ProfilePage = () => {
     }
   });
 
+  const { data: userPosts, isLoading: isLoadingPosts } = useQuery({
+    queryKey: ["userPosts", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("user_id", id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      return data as UserPost[];
+    },
+    enabled: !!id,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (postId: number) => {
+      const { error } = await supabase
+        .from("posts")
+        .delete()
+        .eq("id", postId);
+
+      if (error) throw error;
+    },
+    onMutate: async (postId) => {
+      await queryClient.cancelQueries({ queryKey: ["userPosts", id] });
+      const previousPosts = queryClient.getQueryData(["userPosts", id]);
+      queryClient.setQueryData(["userPosts", id], (old: UserPost[] | undefined) => 
+        old?.filter(post => post.id !== postId)
+      );
+      return { previousPosts };
+    },
+    onError: (err: any, _postId, context) => {
+      if (context?.previousPosts) {
+        queryClient.setQueryData(["userPosts", id], context.previousPosts);
+      }
+      console.error("Deletion failed:", err);
+      alert(`Deletion failed: ${err.message || "Unknown error"}. Check RLS policies.`);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["userPosts", id] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
+  const handleDeletePost = (postId: number) => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      deleteMutation.mutate(postId);
+    }
+  };
+
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+
   const handleSaveExtras = async () => {
     if (!user || user.id !== id) return;
     
+    setSaveStatus('saving');
     try {
       const { error } = await supabase
         .from("profiles")
@@ -131,10 +195,15 @@ const ProfilePage = () => {
         .eq("id", user.id);
 
       if (error) throw error;
-      setIsEditing(false);
+      setSaveStatus('success');
+      setTimeout(() => {
+        setIsEditing(false);
+        setSaveStatus('idle');
+      }, 1000);
       refetch();
     } catch (err: any) {
       console.error("Error saving profile extras:", err);
+      setSaveStatus('error');
       alert(`Save failed: ${err.message}`);
     }
   };
@@ -337,6 +406,91 @@ const ProfilePage = () => {
                 )}
               </div>
             </section>
+            
+            {/* New Section: User's Posts */}
+            <section>
+              <div className="flex items-center gap-2 text-cyan-400 font-mono mb-6 uppercase tracking-widest text-sm">
+                <Layout className="w-4 h-4" />
+                <span>Dev Contributions</span>
+              </div>
+
+              <div className="space-y-4">
+                {isLoadingPosts ? (
+                  <div className="text-gray-500 font-mono animate-pulse">Fetching posts...</div>
+                ) : userPosts && userPosts.length > 0 ? (
+                  userPosts.map((post) => (
+                    <div 
+                      key={post.id}
+                      className="bg-slate-900/40 border border-slate-800 p-6 rounded-xl hover:border-slate-700 transition flex flex-col sm:flex-row gap-6"
+                    >
+                      {post.image_url && (
+                        <div className="w-full sm:w-32 h-32 flex-shrink-0">
+                          <img 
+                            src={post.image_url} 
+                            alt={post.title} 
+                            className="w-full h-full object-cover rounded-lg border border-slate-800"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start mb-2">
+                          <Link to={`/post/${post.id}`}>
+                            <h3 className="text-lg font-bold text-white hover:text-cyan-400 transition truncate pr-4">
+                              {post.title}
+                            </h3>
+                          </Link>
+                          {isOwnProfile && (
+                            <div className="flex gap-2">
+                              <Link 
+                                to={`/edit-post/${post.id}`}
+                                className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition"
+                                title="Edit Post"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Link>
+                              <button 
+                                onClick={() => handleDeletePost(post.id)}
+                                disabled={deleteMutation.isPending}
+                                className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                title="Delete Post"
+                              >
+                                {deleteMutation.isPending ? (
+                                  <div className="w-4 h-4 border-2 border-red-500/30 border-t-red-500 rounded-full animate-spin"></div>
+                                ) : (
+                                  <Trash2 className="w-4 h-4" />
+                                )}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
+                          {post.content}
+                        </p>
+                        <div className="flex items-center gap-4 text-xs font-mono text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <MessageSquare className="w-3 h-3" />
+                            <span>view_thread();</span>
+                          </span>
+                          <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-gray-500 font-mono italic p-12 border border-dashed border-slate-800 rounded-xl text-center">
+                    <p className="mb-4">No posts created yet.</p>
+                    {isOwnProfile && (
+                      <Link 
+                        to="/create" 
+                        className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4"
+                      >
+                        Create your first post
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </div>
+            </section>
           </div>
 
           {/* Sidebar: Languages & Tech */}
@@ -353,8 +507,18 @@ const ProfilePage = () => {
                     <button onClick={() => setIsEditing(false)} className="text-red-400 hover:text-red-300">
                       <XIcon className="w-4 h-4" />
                     </button>
-                    <button onClick={handleSaveExtras} className="text-green-400 hover:text-green-300">
-                      <Save className="w-4 h-4" />
+                    <button 
+                      onClick={handleSaveExtras}
+                      disabled={saveStatus === 'saving'}
+                      className="text-green-400 hover:text-green-300 disabled:opacity-50 transition flex items-center gap-1"
+                    >
+                      {saveStatus === 'saving' ? (
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                      ) : saveStatus === 'success' ? (
+                        <CheckCircle className="w-4 h-4" />
+                      ) : (
+                        <Save className="w-4 h-4" />
+                      )}
                     </button>
                   </div>
                 )}

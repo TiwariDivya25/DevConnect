@@ -15,7 +15,7 @@ interface PostInput {
 
 const fetchCommunities = async (): Promise<Community[]> => {
     const { data, error } = await supabase
-        .from('Communities')
+        .from('communities')
         .select('*')
         .order('created_at', { ascending: false });
     
@@ -28,7 +28,7 @@ const fetchCommunities = async (): Promise<Community[]> => {
 const CreatePost = () => {
     const queryClient = useQueryClient();
     
-    const uploadPost = async (post: PostInput, imageFile: File | null) => {
+    const uploadPost = async (post: PostInput, imageFile: File | null, userId: string) => {
         if (!imageFile) {
             throw new Error("Image file is required");
         }
@@ -47,12 +47,13 @@ const CreatePost = () => {
             .from('post-images')
             .getPublicUrl(filePath);
 
-        const {data, error} = await supabase.from("Posts").insert({
+        const {data, error} = await supabase.from("posts").insert({
             title: post.title,
             content: post.content,
             image_url: publicUrl.publicUrl,
             avatar_url: post.avatar_url,
-            community_id: post.community_id
+            community_id: post.community_id,
+            user_id: userId
         }).select();
 
         if (error) {
@@ -74,8 +75,8 @@ const CreatePost = () => {
     });
 
     const {mutate, isPending, error, isSuccess} = useMutation({
-        mutationFn: (data: {post: PostInput, imageFile: File | null}) => {
-            return uploadPost(data.post, data.imageFile);
+        mutationFn: (data: {post: PostInput, imageFile: File | null, userId: string}) => {
+            return uploadPost(data.post, data.imageFile, data.userId);
         },
         onSuccess: () => {
             setTitle('');
@@ -110,12 +111,13 @@ const CreatePost = () => {
         
         mutate({
             post: {
-                title, 
-                content, 
+                title,
+                content,
                 avatar_url: user.user_metadata?.avatar_url || null,
                 community_id: communityId
-            }, 
-            imageFile
+            },
+            imageFile,
+            userId: user.id
         });
     }
 

@@ -8,6 +8,7 @@ import ProfilePage from './pages/ProfilePage.tsx'
 import CreateCommunityPage from './pages/CreateCommunityPage.tsx'
 import {CommunityPage} from './pages/CommunityPage.tsx'
 import { CommunitiesPage } from './pages/CommunitiesPage.tsx'
+import EditPostPage from './pages/EditPostPage.tsx'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/create" element={<CreatePostPage />} />
             <Route path="/post/:id" element={<PostPage />} />
+            <Route path="/edit-post/:id" element={<EditPostPage />} />
             <Route path="/communities/create" element={<CreateCommunityPage />} />
             <Route path="/communities" element={<CommunitiesPage />} />
             <Route path="/communities/:id" element={<CommunityPage />} />
