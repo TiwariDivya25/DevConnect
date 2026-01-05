@@ -67,6 +67,9 @@ DevConnect is a full-stack web application that enables developers to:
 - 📁 **File Sharing** - Share images and files in conversations
 - 🔔 **Live Notifications** - Real-time typing indicators and message notifications
 - 👤 **User Presence** - See who's online and their status
+- 📅 **Event Management** - Organize meetups, hackathons, and webinars with registration
+- 🤝 **Networking** - Connect with other developers at events
+- 🔔 **Event Reminders** - Get notified about upcoming events
 - 🎨 **Modern UI** - Dark theme with cyan accents, professional design
 - 📱 **Responsive Design** - Works on desktop and mobile
 
@@ -92,7 +95,11 @@ src/
 │   ├── MessageInput.tsx           # Message composition
 │   ├── ConversationHeader.tsx     # Chat header with actions
 │   ├── CreateConversationModal.tsx # New chat creation
-│   └── MessageNotificationBadge.tsx # Unread message indicator
+│   ├── MessageNotificationBadge.tsx # Unread message indicator
+│   ├── EventCard.tsx              # Individual event card
+│   ├── EventFilters.tsx           # Event filtering interface
+│   ├── EventAttendees.tsx         # Event attendee management
+│   └── NetworkingPanel.tsx        # Event networking features
 ├── pages/
 │   ├── Home.tsx                   # Home page
 │   ├── PostPage.tsx               # Post detail page
@@ -100,13 +107,18 @@ src/
 │   ├── CommunityPage.tsx          # Single community page
 │   ├── CreatePostPage.tsx         # Post creation page
 │   ├── CreateCommunityPage.tsx    # Community creation page
-│   └── MessagesPage.tsx           # Messaging interface page
+│   ├── MessagesPage.tsx           # Messaging interface page
+│   ├── EventsPage.tsx             # Events listing page
+│   ├── EventDetailPage.tsx        # Event detail and registration
+│   └── CreateEventPage.tsx        # Event creation page
 ├── context/
 │   └── AuthContext.tsx            # Authentication context
 ├── hooks/
-│   └── useMessaging.ts            # Messaging-related hooks
+│   ├── useMessaging.ts            # Messaging-related hooks
+│   └── useEvents.ts               # Event management hooks
 ├── types/
-│   └── messaging.ts               # TypeScript interfaces for messaging
+│   ├── messaging.ts               # TypeScript interfaces for messaging
+│   └── events.ts                  # TypeScript interfaces for events
 ├── supabase-client.ts             # Supabase configuration
 ├── App.tsx                        # Main app component
 └── index.css                      # Global styles
@@ -215,10 +227,15 @@ CREATE TABLE Votes (
 
 For the complete messaging schema including conversations, messages, reactions, and real-time features, see `database-schema-messaging.sql`.
 
+**Event Management Tables**
+
+For the complete event management schema including events, registrations, networking, and reminders, see `database-schema-events.sql`.
+
 **Storage Setup**
 - Create a bucket named `post-images` in Supabase Storage
 - Create a bucket named `message-files` in Supabase Storage (private)
-- Set `post-images` bucket to public
+- Create a bucket named `event-images` in Supabase Storage (public)
+- Set `post-images` and `event-images` buckets to public
 - Set `message-files` bucket to private
 
 ### Running the Project
@@ -248,6 +265,15 @@ Quick setup:
 2. Create the `message-files` storage bucket (private)
 3. Enable real-time for messaging tables
 4. Navigate to `/messages` to start chatting!
+
+## 📅 Setting Up Event Management
+
+For detailed instructions on setting up the event management system, see [EVENT_MANAGEMENT_SETUP.md](EVENT_MANAGEMENT_SETUP.md).
+
+Quick setup:
+1. Run the SQL schema from `database-schema-events.sql`
+2. Create the `event-images` storage bucket (public)
+3. Navigate to `/events` to discover and create events!
 
 ## 🤝 Contributing
 

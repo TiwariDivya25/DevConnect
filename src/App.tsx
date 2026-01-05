@@ -7,6 +7,9 @@ import CreateCommunityPage from './pages/CreateCommunityPage.tsx'
 import {CommunityPage} from './pages/CommunityPage.tsx'
 import { CommunitiesPage } from './pages/CommunitiesPage.tsx'
 import MessagesPage from './pages/MessagesPage.tsx'
+import EventsPage from './pages/EventsPage.tsx'
+import EventDetailPage from './pages/EventDetailPage.tsx'
+import CreateEventPage from './pages/CreateEventPage.tsx'
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
             <Route path="/communities" element={<CommunitiesPage />} />
             <Route path="/communities/:id" element={<CommunityPage />} />
             <Route path="/messages" element={<MessagesPage />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/events/create" element={<CreateEventPage />} />
+            <Route path="/events/:id" element={<EventDetailPage />} />
           </Routes>
         </div>
       </div>
