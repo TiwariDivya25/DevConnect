@@ -12,7 +12,7 @@ const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
 
-    <Router>
+    <Router basename={import.meta.env.VITE_BASE_PATH || "/DevConnect"}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <AuthProvider>

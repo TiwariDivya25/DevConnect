@@ -17,8 +17,8 @@ export const fetchCommunityPost = async (
   communityId: number
 ): Promise<PostWithCommunity[]> => {
   const { data, error } = await supabase
-    .from("Posts")
-    .select("*, Communities(name)")
+    .from("posts")
+    .select("*, communities(name)")
     .eq("community_id", communityId)
     .order("created_at", { ascending: false });
 
