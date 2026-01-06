@@ -8,8 +8,8 @@ import MessageNotificationBadge from './MessageNotificationBadge';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { signInWithGithub, signOut, user } = useAuth();
     const { theme, toggleTheme } = useTheme();
+    const { signInWithGithub, signOut, user, isLoading } = useAuth();
 
     const displayName = user?.user_metadata?.full_name || user?.user_metadata?.user_name || user?.email;
     
@@ -56,7 +56,9 @@ const Navbar = () => {
                         className="w-9 h-9 rounded-full ring-2 ring-cyan-400/50"
                     />
                 )}
-                {user ? (
+                {isLoading ? (
+                  <div className="px-4 py-2 font-mono text-sm text-gray-400">loading...</div>
+                    ) : user ? (
                     <>
                         <span className="font-mono text-sm text-cyan-300">{displayName}</span>
                         <button 
