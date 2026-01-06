@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Post } from "./PostList";
 import { supabase } from "../supabase-client";
 import PostItem from "./PostItem";
+import PostSkeleton from "./PostSkeleton"; // Import the skeleton component
 
 interface Props {
   communityId: number;
@@ -32,8 +33,25 @@ export const CommunityDisplay = ({ communityId }: Props) => {
     queryFn: () => fetchCommunityPost(communityId),
   });
 
-  if (isLoading)
-    return <div className="text-center py-4">Loading posts...</div>;
+  // Skeleton loading state
+  if (isLoading) {
+    return (
+      <div>
+        {/* Skeleton header */}
+        <div className="mb-10 text-center justify-center animate-pulse">
+          <div className="h-10 bg-cyan-900/30 rounded w-48 mx-auto mb-2"></div>
+          <div className="h-4 bg-slate-700/30 rounded w-40 mx-auto"></div>
+        </div>
+
+        {/* Skeleton posts */}
+        <div className="mx-auto flex flex-col gap-6">
+          {[...Array(3)].map((_, index) => (
+            <PostSkeleton key={`skeleton-${index}`} />
+          ))}
+        </div>
+      </div>
+    );
+  }
   
   if (error)
     return (
@@ -57,7 +75,6 @@ export const CommunityDisplay = ({ communityId }: Props) => {
       </div>
 
       {data && data.length > 0 ? (
-        
         <div className="mx-auto flex flex-col gap-6">
           {data.map((post) => (
             <PostItem key={post.id} post={post} />
