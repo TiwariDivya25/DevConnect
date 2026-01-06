@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.tsx'
 import CreatePostPage from './pages/CreatePostPage.tsx'
 import Navbar from './components/Navbar.tsx'
+import Footer from './components/Footer.tsx'
 import PostPage from './pages/PostPage.tsx'
 import CreateCommunityPage from './pages/CreateCommunityPage.tsx'
 import {CommunityPage} from './pages/CommunityPage.tsx'
@@ -31,6 +32,21 @@ function App() {
         </Router>
       </div>
     </>
+    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors">
+      <Navbar />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create" element={<CreatePostPage />} />
+          <Route path="/post/:id" element={<PostPage />} />
+          <Route path="/communities/create" element={<CreateCommunityPage />} />
+          <Route path="/communities" element={<CommunitiesPage />} />
+          <Route path="/communities/:id" element={<CommunityPage />} />
+          <Route path="/messages" element={<MessagesPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   )
 }
 
