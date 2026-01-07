@@ -1,9 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabase-client';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import type { 
-  Conversation, 
   Message, 
   ConversationWithDetails, 
   CreateConversationData, 
@@ -349,7 +348,7 @@ export const useMessageReactions = () => {
       
       if (error) throw error;
     },
-    onSuccess: (_, { messageId }) => {
+    onSuccess: () => {
       // Get conversation_id from the message to invalidate the right query
       queryClient.invalidateQueries({ queryKey: ['messages'] });
     },

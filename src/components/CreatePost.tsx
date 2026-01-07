@@ -2,7 +2,7 @@ import React, { type ChangeEvent } from 'react'
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../supabase-client';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import type { Community } from './CommunityList';
 import { Upload, AlertCircle, CheckCircle } from 'lucide-react';
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { Phone, Video, Settings, Users, Search, Pin, MoreVertical, UserPlus } from 'lucide-react';
 import type { ConversationWithDetails } from '../types/messaging';
 
@@ -29,7 +29,6 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
     }
     
     // For direct messages, show online status
-    const otherParticipant = conversation.participants?.find(p => p.user_id !== user?.id);
     return 'Online'; // This would be dynamic based on presence
   };
 

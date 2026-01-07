@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useSendMessage, useTypingIndicator } from '../hooks/useMessaging';
 import { Send, Paperclip, Image, Smile, X } from 'lucide-react';
 import { supabase } from '../supabase-client';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 interface MessageInputProps {
   conversationId: number;
