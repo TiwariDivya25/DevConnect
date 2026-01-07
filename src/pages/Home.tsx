@@ -43,35 +43,37 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Hero Section */}
-      <div className="bg-linear-to-b from-slate-900 via-slate-950 to-slate-950 border-b border-cyan-900/30 pt-20 pb-12">
+      <div className="bg-linear-to-b from-slate-900 via-slate-950 to-slate-950 border-b border-cyan-900/30 pt-12 md:pt-20 pb-8 md:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-6xl font-bold font-mono mb-4 text-white leading-tight">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="order-2 lg:order-1 mt-8 lg:mt-0">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold font-mono mb-4 md:mb-6 text-white leading-tight">
                 <span className="text-cyan-400">Dev</span>Connect
               </h1>
-              <p className="text-xl text-gray-400 font-mono mb-8">
-              {displayText}
-              <span className="animate-pulse text-cyan-400">|</span>
-              </p>
-              <div className="flex gap-4">
+              <div className="min-h-[72px] md:min-h-[84px] mb-6 md:mb-8">
+                <p className="text-lg md:text-xl text-gray-400 font-mono">
+                  {displayText}
+                  <span className="animate-pulse text-cyan-400">|</span>
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <Link 
                   to="/create"
-                  className="flex items-center gap-2 px-6 py-3 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono font-bold transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20"
+                  className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 md:py-3 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono font-bold transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 text-sm md:text-base"
                 >
-                  <Plus className="w-5 h-5" />
+                  <Plus className="w-4 h-4 md:w-5 md:h-5" />
                   create post
                 </Link>
                 <Link 
                   to="/communities"
-                  className="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-gray-600/30 rounded-lg text-gray-300 font-mono font-bold transition-all duration-300"
+                  className="px-4 py-3 md:px-6 md:py-3 bg-slate-800/50 hover:bg-slate-800 border border-gray-600/30 rounded-lg text-gray-300 font-mono font-bold transition-all duration-300 text-sm md:text-base text-center"
                 >
                   explore communities
                 </Link>
               </div>
             </div>
-            <div className="hidden md:block">
-              <div className="bg-linear-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-900/30 rounded-lg p-8 font-mono text-sm text-gray-300">
+            <div className="order-1 lg:order-2">
+              <div className="bg-linear-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-900/30 rounded-lg p-6 md:p-8 font-mono text-sm text-gray-300">
                 <div className="text-green-400">// Connect with developers</div>
                 <div className="text-cyan-400 mt-2">const developer = <span className="text-emerald-400">{'{}'}</span></div>
                 <div className="ml-4 text-gray-400 mt-1">skills: <span className="text-emerald-400">['web', 'mobile', 'ml']</span></div>
@@ -80,6 +82,19 @@ const Home = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Posts Section */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="flex flex-col items-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-white mb-2">
+            <span className="text-cyan-400">~/</span>recent_posts
+          </h2>
+          <p className="text-gray-400 font-mono text-xs sm:text-sm mb-6 md:mb-8">
+            latest updates from the community
+          </p>
+          <PostList />
         </div>
       </div>
 
