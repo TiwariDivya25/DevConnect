@@ -1,86 +1,103 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { type User } from "@supabase/supabase-js";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useEffect, useState } from "react";
+import { type User, AuthError } from "@supabase/supabase-js";
 import { supabase } from "../supabase-client";
 
 interface AuthContextType {
     user: User | null;
-    isLoading: boolean;
+    loading: boolean;
     signInWithGithub: () => Promise<void>;
+    signInWithEmail: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+    signUpWithEmail: (email: string, password: string, metadata?: { full_name?: string }) => Promise<{ error: AuthError | null }>;
     signOut: () => Promise<void>;
+    resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+    updatePassword: (password: string) => Promise<{ error: AuthError | null }>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session
-    const initializeAuth = async () => {
-      try {
-        setIsLoading(true);
-        const { data: { session } } = await supabase.auth.getSession();
-        setUser(session?.user ?? null);
-      } catch (error) {
-        console.error("Error initializing auth:", error);
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Check active sessions and subscribe to auth changes
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
-    initializeAuth();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setUser(session?.user ?? null);
-        setIsLoading(false);
-      }
-    );
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
     return () => {
-      subscription.unsubscribe();
+      listener.subscription.unsubscribe();
     };
   }, []);
 
   const signInWithGithub = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({ 
-        provider: "github",
-        options: {
-          redirectTo: window.location.origin + '/auth/callback'
-        }
-      });
-      if (error) throw error;
-    } catch (error) {
-      console.error("GitHub sign-in error:", error);
-      throw error;
-    }
+    const { error } = await supabase.auth.signInWithOAuth({ 
+      provider: "github",
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+    if (error) throw error;
+  };
+
+  const signInWithEmail = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { error };
+  };
+
+  const signUpWithEmail = async (email: string, password: string, metadata?: { full_name?: string }) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: metadata,
+        emailRedirectTo: `${window.location.origin}/`,
+      },
+    });
+    return { error };
   };
 
   const signOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-    } catch (error) {
-      console.error("Sign out error:", error);
-      throw error;
-    }
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  };
+
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    return { error };
+  };
+
+  const updatePassword = async (password: string) => {
+    const { error } = await supabase.auth.updateUser({
+      password: password,
+    });
+    return { error };
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, signInWithGithub, signOut }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading,
+      signInWithGithub, 
+      signInWithEmail,
+      signUpWithEmail,
+      signOut,
+      resetPassword,
+      updatePassword
+    }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = (): AuthContextType => {
-    const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
-    return context;
 };

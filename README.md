@@ -1,10 +1,10 @@
 # DevConnect
 
 
-<img width="1363" height="676" alt="image" src="https://github.com/user-attachments/assets/69bc4a39-05e4-4db8-a434-d55edcd43abc" />
+<img width="1363" height="676" alt="image" src="./src/assets/1.png" />
 
 
-<img width="1365" height="672" alt="image" src="https://github.com/user-attachments/assets/226afa89-5584-4b1c-a95b-d1f1a8da5e9b" />
+<img width="1365" height="672" alt="image" src="./src/assets/2.png" />
 
 
 A modern social platform for developers to share ideas, build communities, and connect with like-minded developers worldwide.
@@ -58,8 +58,9 @@ DevConnect is a full-stack web application that enables developers to:
 
 ## ✨ Features
 
-- 🔐 **GitHub Authentication** - Sign in with GitHub account
+- 🔐 **GitHub Authentication** - Sign in with GitHub account ,Gmail based authentication
 - 📝 **Create Posts** - Share posts with images and content
+- 👤 **Profile Dashboard** - View user details, email, account info, and manage sessions
 - 💬 **Nested Comments** - Multi-level comment threads with collapse/expand
 - 👥 **Communities** - Create and manage developer communities
 - ❤️ **Likes System** - Vote on posts and comments
@@ -67,6 +68,9 @@ DevConnect is a full-stack web application that enables developers to:
 - 📁 **File Sharing** - Share images and files in conversations
 - 🔔 **Live Notifications** - Real-time typing indicators and message notifications
 - 👤 **User Presence** - See who's online and their status
+- 📅 **Event Management** - Create, manage, and attend developer events and meetups
+- 🎟️ **Event Registration** - RSVP system with attendance tracking
+- 🌐 **Virtual Events** - Support for online events with meeting links
 - 🎨 **Modern UI** - Dark theme with cyan accents, professional design
 - 📱 **Responsive Design** - Works on desktop and mobile
 
@@ -92,7 +96,14 @@ src/
 │   ├── MessageInput.tsx           # Message composition
 │   ├── ConversationHeader.tsx     # Chat header with actions
 │   ├── CreateConversationModal.tsx # New chat creation
-│   └── MessageNotificationBadge.tsx # Unread message indicator
+│   ├── MessageNotificationBadge.tsx # Unread message indicator
+│   ├── EventCard.tsx              # Individual event card
+│   ├── EventList.tsx              # List of events
+│   ├── EventDetail.tsx            # Full event view
+│   ├── CreateEventForm.tsx        # Event creation form
+│   ├── EventFilters.tsx           # Event filtering controls
+│   ├── AttendeeList.tsx           # Event attendees display
+│   └── EventActions.tsx           # Event interaction buttons
 ├── pages/
 │   ├── Home.tsx                   # Home page
 │   ├── PostPage.tsx               # Post detail page
@@ -100,16 +111,23 @@ src/
 │   ├── CommunityPage.tsx          # Single community page
 │   ├── CreatePostPage.tsx         # Post creation page
 │   ├── CreateCommunityPage.tsx    # Community creation page
-│   └── MessagesPage.tsx           # Messaging interface page
+│   ├── MessagesPage.tsx           # Messaging interface page
+│   ├── EventsPage.tsx             # Events listing page
+│   ├── CreateEventPage.tsx        # Event creation page
+│   └── EventDetailPage.tsx        # Single event page
 ├── context/
-│   └── AuthContext.tsx            # Authentication context
+│   ├── AuthContext.tsx            # Authentication context
+|   └── ThemeContext.tsx           # Dark/light theme context 
 ├── hooks/
 │   └── useMessaging.ts            # Messaging-related hooks
 ├── types/
-│   └── messaging.ts               # TypeScript interfaces for messaging
+│   ├── messaging.ts               # TypeScript interfaces for messaging
+│   └── events.ts                  # TypeScript interfaces for events
 ├── supabase-client.ts             # Supabase configuration
+├── theme.css                      # Theme-related global styles
 ├── App.tsx                        # Main app component
 └── index.css                      # Global styles
+
 ```
 
 ## 🚀 Getting Started
@@ -211,6 +229,40 @@ CREATE TABLE Votes (
 );
 ```
 
+**Events Table**
+
+```sql
+CREATE TABLE Events (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  event_date TIMESTAMP NOT NULL,
+  location TEXT,
+  is_virtual BOOLEAN DEFAULT FALSE,
+  meeting_link TEXT,
+  max_attendees INTEGER,
+  image_url TEXT,
+  tags TEXT[],
+  organizer_id UUID NOT NULL REFERENCES auth.users(id),
+  community_id BIGINT REFERENCES Communities(id),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+**Event Attendees Table**
+
+```sql
+CREATE TABLE EventAttendees (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  event_id BIGINT NOT NULL REFERENCES Events(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  status TEXT DEFAULT 'attending' CHECK (status IN ('attending', 'maybe', 'not_attending')),
+  registered_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(event_id, user_id)
+);
+```
+
 **Messaging Tables**
 
 For the complete messaging schema including conversations, messages, reactions, and real-time features, see `database-schema-messaging.sql`.
@@ -218,8 +270,10 @@ For the complete messaging schema including conversations, messages, reactions, 
 **Storage Setup**
 - Create a bucket named `post-images` in Supabase Storage
 - Create a bucket named `message-files` in Supabase Storage (private)
+- Create a bucket named `event-images` in Supabase Storage (public)
 - Set `post-images` bucket to public
 - Set `message-files` bucket to private
+- Set `event-images` bucket to public
 
 ### Running the Project
 
@@ -248,6 +302,20 @@ Quick setup:
 2. Create the `message-files` storage bucket (private)
 3. Enable real-time for messaging tables
 4. Navigate to `/messages` to start chatting!
+
+## 📅 Setting Up Event Management
+
+For detailed instructions on setting up the event management system, see the documentation in `/docs/`:
+
+- [EVENT_SCHEMA.md](docs/EVENT_SCHEMA.md) - Database schema and relationships
+- [EVENT_API.md](docs/EVENT_API.md) - API endpoints and usage
+- [EVENT_TYPES.md](docs/EVENT_TYPES.md) - TypeScript type definitions
+- [EVENT_INTEGRATION.md](docs/EVENT_INTEGRATION.md) - Integration patterns and hooks
+
+Quick setup:
+1. Run the SQL schema from `docs/EVENT_SCHEMA.md`
+2. Create the `event-images` storage bucket (public)
+3. Navigate to `/events` to start creating events!
 
 ## 🤝 Contributing
 
@@ -351,10 +419,10 @@ Closes #123
 ## 🔧 Key Components
 
 ### Authentication (AuthContext.tsx)
-Manages user authentication state and GitHub OAuth login/logout.
+Manages user authentication state including email/password login, GitHub OAuth, logout, password reset, and profile session handling.
 
 ```typescript
-const { user, signInWithGithub, signOut } = useAuth();
+const { signInWithGithub, signOut, user, isLoading } = useAuth();
 ```
 
 ### Posts (PostItem.tsx, PostList.tsx)
@@ -369,6 +437,13 @@ Manages post votes with optimistic updates and cache invalidation.
 ### Communities (CommunityList.tsx, CommunityDisplay.tsx)
 Shows community listings and posts within communities.
 
+### User Account Pages
+- `/signin` – Email & GitHub login
+- `/signup` – Create account
+- `/reset-password` – Password recovery
+- `/profile` – User profile dashboard
+
+
 ## 📊 Database Schema
 
 ### Key Relationships
@@ -378,6 +453,10 @@ Shows community listings and posts within communities.
 - **Comments** → **Comments** (1:N, self-referencing for nested replies)
 - **Posts** → **Communities** (N:1)
 - **Posts** → **Votes** (1:N)
+- **Events** → **Users** (organizer_id): Many-to-One
+- **Events** → **Communities** (community_id): Many-to-One (optional)
+- **Events** → **EventAttendees**: One-to-Many
+- **EventAttendees** → **Users**: Many-to-One
 
 ### Query Patterns
 

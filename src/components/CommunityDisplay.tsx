@@ -1,32 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Post } from "./PostList";
-import { supabase } from "../supabase-client";
 import PostItem from "./PostItem";
+import { fetchCommunityPost } from "../utils/communityApi";
 
 interface Props {
   communityId: number;
 }
 
-interface PostWithCommunity extends Post {
+interface PostWithCommunity {
+  id: number;
+  title: string;
+  content: string;
+  image_url?: string;
+  avatar_url?: string;
+  community_id?: number;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
   communities: { 
     name: string;
   };
 }
 
-export const fetchCommunityPost = async (
-  communityId: number
-): Promise<PostWithCommunity[]> => {
-  const { data, error } = await supabase
-    .from("Posts")
-    .select("*, Communities(name)")
-    .eq("community_id", communityId)
-    .order("created_at", { ascending: false });
-
-  if (error) throw new Error(error.message);
-  return data as PostWithCommunity[]; 
-};
-
-export const CommunityDisplay = ({ communityId }: Props) => {
+const CommunityDisplay = ({ communityId }: Props) => {
   const { data, error, isLoading } = useQuery<PostWithCommunity[], Error>({
     queryKey: ["communityPost", communityId],
     queryFn: () => fetchCommunityPost(communityId),

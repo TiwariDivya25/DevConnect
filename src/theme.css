@@ -3,16 +3,16 @@ html.light {
   color-scheme: light;
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #64748b;
-  --border-color: #e2e8f0;
-  --border-subtle: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
+  --text-primary: #1e293b;
+  --text-secondary: #334155;
+  --text-tertiary: #475569;
+  --border-color: #cbd5e1;
+  --border-subtle: #e2e8f0;
   --accent-cyan: #0891b2;
-  --accent-cyan-light: #06b6d4;
+  --accent-cyan-light: #0e7490;
   --accent-cyan-bg: #ecf9ff;
-  --shadow: rgba(0, 0, 0, 0.08);
+  --shadow: rgba(0, 0, 0, 0.1);
 }
 
 /* Dark Mode */
@@ -41,89 +41,203 @@ body {
 
 /* Light Mode Color Overrides */
 html.light .bg-slate-950 {
-  background-color: #f1f5f9;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 html.light .bg-slate-900 {
   background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Specific page backgrounds and titles */
+html.light .min-h-screen {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-slate-950 {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-slate-900 {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html.light .from-slate-900 {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+}
+
+html.light .via-slate-950 {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc, #f1f5f9) !important;
+}
+
+html.light .to-slate-950 {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+}
+
+html.light .bg-gradient-to-b {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+  border-bottom: 2px solid #cbd5e1 !important;
+}
+
+/* Hero section titles */
+html.light .text-6xl {
+  color: #000000 !important;
+  font-weight: 900 !important;
+}
+
+html.light .text-4xl {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+/* Navbar and main titles */
+html.light nav {
+  background-color: #f8fafc !important;
+  border-bottom: 2px solid #cbd5e1 !important;
 }
 
 html.light .text-white {
-  color: #0f172a;
+  color: #000000 !important;
+  font-weight: 700;
 }
 
 html.light .text-gray-300 {
-  color: #4b5563;
+  color: #1f2937 !important;
+  font-weight: 600;
+}
+
+html.light .text-slate-300 {
+  color: #1f2937 !important;
+  font-weight: 600;
+}
+
+html.light .text-slate-400 {
+  color: #374151 !important;
+  font-weight: 600;
 }
 
 html.light .text-cyan-300 {
-  color: #0891b2;
+  color: #0891b2 !important;
+  font-weight: 700;
 }
 
 html.light .text-cyan-400 {
-  color: #06b6d4;
+  color: #0e7490 !important;
+  font-weight: 700;
 }
 
 html.light .text-red-300 {
-  color: #dc2626;
+  color: #dc2626 !important;
+  font-weight: 600;
+}
+
+/* DevConnect logo and main titles */
+html.light .font-mono {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+/* Specific section improvements */
+html.light h1, html.light h2, html.light h3 {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+html.light .font-bold {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+html.light .font-semibold {
+  color: #111827 !important;
+  font-weight: 700 !important;
+}
+
+/* Logo specific styling */
+html.light .text-xl {
+  color: #000000 !important;
+  font-weight: 900 !important;
+}
+
+/* Large text elements */
+html.light .text-3xl, html.light .text-4xl, html.light .text-5xl {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+/* Button text */
+html.light button {
+  font-weight: 600 !important;
+}
+
+html.light .border-slate-700 {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .border-slate-800 {
+  border-color: #94a3b8 !important;
 }
 
 html.light .border-cyan-900\/30 {
-  border-color: rgba(8, 145, 178, 0.2);
+  border-color: rgba(8, 145, 178, 0.3) !important;
 }
 
 html.light .border-red-500 {
-  border-color: #ef4444;
+  border-color: #ef4444 !important;
 }
 
 html.light .border-cyan-400\/50 {
-  border-color: rgba(6, 182, 212, 0.4);
+  border-color: rgba(6, 182, 212, 0.5) !important;
 }
 
 html.light .bg-cyan-900\/20 {
-  background-color: rgba(8, 145, 178, 0.15);
+  background-color: rgba(8, 145, 178, 0.1) !important;
 }
 
 html.light .bg-cyan-900\/30 {
-  background-color: rgba(8, 145, 178, 0.25);
+  background-color: rgba(8, 145, 178, 0.15) !important;
 }
 
 html.light .bg-cyan-900\/50 {
-  background-color: rgba(8, 145, 178, 0.35);
+  background-color: rgba(8, 145, 178, 0.2) !important;
 }
 
 html.light .bg-red-900\/20 {
-  background-color: rgba(127, 29, 29, 0.2);
+  background-color: rgba(220, 38, 38, 0.1) !important;
 }
 
 html.light .bg-red-900\/40 {
-  background-color: rgba(127, 29, 29, 0.35);
-}
-
-html.light .ring-cyan-400\/50 {
-  border-color: rgba(6, 182, 212, 0.5);
-}
-
-html.light .border-red-500\/50 {
-  border-color: rgba(239, 68, 68, 0.4);
+  background-color: rgba(220, 38, 38, 0.15) !important;
 }
 
 html.light .hover\:text-cyan-400:hover {
-  color: #06b6d4;
+  color: #0e7490 !important;
 }
 
 html.light .hover\:bg-cyan-900\/20:hover {
-  background-color: rgba(8, 145, 178, 0.15);
+  background-color: rgba(8, 145, 178, 0.1) !important;
 }
 
 html.light .hover\:text-white:hover {
-  color: #0f172a;
+  color: #1e293b !important;
 }
 
 html.light .hover\:bg-cyan-900\/50:hover {
-  background-color: rgba(8, 145, 178, 0.35);
+  background-color: rgba(8, 145, 178, 0.2) !important;
 }
 
 html.light .hover\:bg-red-900\/40:hover {
-  background-color: rgba(127, 29, 29, 0.35);
+  background-color: rgba(220, 38, 38, 0.15) !important;
+}
+
+html.light .hover\:border-cyan-500:hover {
+  border-color: #06b6d4 !important;
+}
+
+html.light .hover\:border-slate-500:hover {
+  border-color: #64748b !important;
 }
