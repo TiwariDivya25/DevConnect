@@ -1,13 +1,14 @@
-
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
-import { Code2, Menu, X, MessageSquare, Calendar } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Code2, Menu, X, MessageSquare, Calendar, Sun, Moon } from 'lucide-react';
 import MessageNotificationBadge from './MessageNotificationBadge';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { signInWithGithub, signOut, user } = useAuth();
+    const { theme, toggleTheme } = useTheme();
+    const { signInWithGithub, signOut, user, isLoading } = useAuth();
 
     const displayName = user?.user_metadata?.full_name || user?.user_metadata?.user_name || user?.email;
     
@@ -40,6 +41,17 @@ const Navbar = () => {
 
             {/*Desktop Auth*/}
             <div className="hidden md:flex items-center gap-4">
+                <button
+                    onClick={toggleTheme}
+                    className="p-2 rounded-lg bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 text-cyan-300 transition"
+                    aria-label="Toggle theme"
+                >
+                    {theme === 'light' ? (
+                        <Moon className="w-5 h-5" />
+                    ) : (
+                        <Sun className="w-5 h-5" />
+                    )}
+                </button>
                 {user?.user_metadata?.avatar_url && (
                     <img 
                         src={user.user_metadata.avatar_url}
@@ -47,7 +59,9 @@ const Navbar = () => {
                         className="w-9 h-9 rounded-full ring-2 ring-cyan-400/50"
                     />
                 )}
-                {user ? (
+                {isLoading ? (
+                  <div className="px-4 py-2 font-mono text-sm text-gray-400">loading...</div>
+                    ) : user ? (
                     <>
                         <span className="font-mono text-sm text-cyan-300">{displayName}</span>
                         <button 
@@ -90,7 +104,7 @@ const Navbar = () => {
                 <Calendar className="w-4 h-4" />
                 ~/events
               </Link>
-              <Link to="/messages" className="block px-4 py-2 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition relative flex items-center gap-2">
+              <Link to="/messages" className="flex px-4 py-2 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition relative items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 ~/messages
                 <MessageNotificationBadge />
@@ -103,6 +117,23 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden pb-4 pt-2 border-t border-cyan-900/30 bg-slate-900/50">
             <div className="flex flex-col gap-3 items-start px-4">
+              <button
+                onClick={toggleTheme}
+                className="w-full px-4 py-2 rounded-lg bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 text-cyan-300 font-mono text-sm transition flex items-center justify-center gap-2"
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? (
+                    <>
+                        <Moon className="w-4 h-4" />
+                        Dark Mode
+                    </>
+                ) : (
+                    <>
+                        <Sun className="w-4 h-4" />
+                        Light Mode
+                    </>
+                )}
+              </button>
               {user?.user_metadata?.avatar_url && (
                 <img
                   src={user.user_metadata.avatar_url}

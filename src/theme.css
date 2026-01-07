@@ -1,0 +1,129 @@
+/* Light Mode (Default) */
+html.light {
+  color-scheme: light;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --border-color: #e2e8f0;
+  --border-subtle: #f1f5f9;
+  --accent-cyan: #0891b2;
+  --accent-cyan-light: #06b6d4;
+  --accent-cyan-bg: #ecf9ff;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+/* Dark Mode */
+html.dark {
+  color-scheme: dark;
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --border-color: #334155;
+  --border-subtle: #1e293b;
+  --accent-cyan: #06b6d4;
+  --accent-cyan-light: #22d3ee;
+  --accent-cyan-bg: #164e63;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* Apply theme styles to elements */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light Mode Color Overrides */
+html.light .bg-slate-950 {
+  background-color: #f1f5f9;
+}
+
+html.light .bg-slate-900 {
+  background-color: #f8fafc;
+}
+
+html.light .text-white {
+  color: #0f172a;
+}
+
+html.light .text-gray-300 {
+  color: #4b5563;
+}
+
+html.light .text-cyan-300 {
+  color: #0891b2;
+}
+
+html.light .text-cyan-400 {
+  color: #06b6d4;
+}
+
+html.light .text-red-300 {
+  color: #dc2626;
+}
+
+html.light .border-cyan-900\/30 {
+  border-color: rgba(8, 145, 178, 0.2);
+}
+
+html.light .border-red-500 {
+  border-color: #ef4444;
+}
+
+html.light .border-cyan-400\/50 {
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+html.light .bg-cyan-900\/20 {
+  background-color: rgba(8, 145, 178, 0.15);
+}
+
+html.light .bg-cyan-900\/30 {
+  background-color: rgba(8, 145, 178, 0.25);
+}
+
+html.light .bg-cyan-900\/50 {
+  background-color: rgba(8, 145, 178, 0.35);
+}
+
+html.light .bg-red-900\/20 {
+  background-color: rgba(127, 29, 29, 0.2);
+}
+
+html.light .bg-red-900\/40 {
+  background-color: rgba(127, 29, 29, 0.35);
+}
+
+html.light .ring-cyan-400\/50 {
+  border-color: rgba(6, 182, 212, 0.5);
+}
+
+html.light .border-red-500\/50 {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+html.light .hover\:text-cyan-400:hover {
+  color: #06b6d4;
+}
+
+html.light .hover\:bg-cyan-900\/20:hover {
+  background-color: rgba(8, 145, 178, 0.15);
+}
+
+html.light .hover\:text-white:hover {
+  color: #0f172a;
+}
+
+html.light .hover\:bg-cyan-900\/50:hover {
+  background-color: rgba(8, 145, 178, 0.35);
+}
+
+html.light .hover\:bg-red-900\/40:hover {
+  background-color: rgba(127, 29, 29, 0.35);
+}

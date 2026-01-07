@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import { supabase } from '../supabase-client';
 import { useAuth } from '../context/AuthContext';
@@ -82,10 +83,12 @@ const LikeButton = ({ postId, onLikeCountChange }: Props) => {
     const likeCount = votes ? votes.filter(vote => vote.vote === 1).length : 0;
     const userVote = votes?.find(vote => vote.user_id === user?.id)?.vote || 0;
 
-    // Update parent component with like count
-    if (onLikeCountChange && votes) {
-        onLikeCountChange(likeCount);
-    }
+    // Update parent component with like count using useEffect to avoid re-render loops
+    useEffect(() => {
+        if (onLikeCountChange && votes) {
+            onLikeCountChange(likeCount);
+        }
+    }, [likeCount, onLikeCountChange, votes]);
 
     if (isLoading) {
         return (
