@@ -1,4 +1,4 @@
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { MessageCircle, Users, Lock, Globe } from 'lucide-react';
 import type { Conversation, ConversationWithDetails } from '../types/messaging';
 

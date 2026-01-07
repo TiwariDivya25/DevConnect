@@ -9,6 +9,16 @@ import {CommunityPage} from './pages/CommunityPage.tsx'
 import { CommunitiesPage } from './pages/CommunitiesPage.tsx'
 import MessagesPage from './pages/MessagesPage.tsx'
 import NotFound from './components/NotFound.tsx'  // Import the 404 page
+import EventsPage from './pages/EventsPage.tsx'
+import EventDetailPage from './pages/EventDetailPage.tsx'
+import CreateEventPage from './pages/CreateEventPage.tsx'
+import LoginPage from './pages/LoginPage.tsx'
+import RegisterPage from './pages/RegisterPage.tsx'
+import ForgetPasswordPage from './pages/ForgotPasswordPage.tsx'
+import ResetPasswordPage from './pages/ResetPasswordPage.tsx'
+import PublicRoute from './components/PublicRoute.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
+import ProfilePage from './pages/ProfilePage.tsx'
 
 function App() {
   return (
@@ -37,12 +47,27 @@ function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/create" element={<CreatePostPage />} />
           <Route path="/post/:id" element={<PostPage />} />
-          <Route path="/communities/create" element={<CreateCommunityPage />} />
           <Route path="/communities" element={<CommunitiesPage />} />
           <Route path="/communities/:id" element={<CommunityPage />} />
-          <Route path="/messages" element={<MessagesPage />} />
+          <Route path="/events" element={<EventsPage />} />
+
+          {/* Public Routes */}
+          <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+          <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+          <Route path="/forgot-password" element={<PublicRoute><ForgetPasswordPage /></PublicRoute>} />
+
+          {/* Reset password route */}
+          <Route path='reset-password' element={<ResetPasswordPage />} />
+
+          {/* protected routes */}
+          <Route path="/create" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+          <Route path="/communities/create" element={<ProtectedRoute><CreateCommunityPage /></ProtectedRoute>} />
+          <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
+          <Route path="/events/create" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
+          <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+
         </Routes>
       </main>
       <Footer />

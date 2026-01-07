@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCreateConversation } from '../hooks/useMessaging';
 import { supabase } from '../supabase-client';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { X, Search, Users, MessageCircle, Check } from 'lucide-react';
 import type { Conversation } from '../types/messaging';
 

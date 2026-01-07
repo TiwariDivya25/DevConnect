@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Comment } from "./CommentSection";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from '../hooks/useAuth';
 import { supabase } from "../supabase-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp } from "lucide-react";

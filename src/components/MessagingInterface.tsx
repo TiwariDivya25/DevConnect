@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useConversations, useMessages, useRealtimeMessages, useTypingIndicator } from '../hooks/useMessaging';
-import { MessageSquare, Users, Search, Plus, Settings, Phone, Video, MoreVertical } from 'lucide-react';
+import { MessageSquare, Search, Plus } from 'lucide-react';
 import ConversationList from './ConversationList';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';

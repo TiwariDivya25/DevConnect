@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../supabase-client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CommentItem } from './CommentItem';
