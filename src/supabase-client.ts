@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import createMockSupabase from './utils/mockSupabase';
 
 // Read environment variables (do NOT force-cast)
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -16,12 +17,12 @@ const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true';
 export const supabase: SupabaseClient | null =
   !isDemoMode && supabaseUrl && supabaseAnonKey
     ? createClient(supabaseUrl, supabaseAnonKey, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-        },
-      })
-    : null;
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    })
+    : createMockSupabase();
 
 /**
  * Helper flag to check if backend is available
