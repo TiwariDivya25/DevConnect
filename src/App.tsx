@@ -20,6 +20,7 @@ import PublicRoute from './components/PublicRoute.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import Contributors from './pages/Contributors.tsx'
+import FeaturesPage from './pages/FeaturesPage.tsx'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/communities/:id" element={<CommunityPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/contributors" element={<Contributors />} />
+          <Route path="/features" element={<FeaturesPage />} />
 
 
           {/* Public Routes */}
