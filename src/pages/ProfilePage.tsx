@@ -44,7 +44,7 @@ export default function ProfilePage() {
 
             <div className="space-y-6">
               <div>
-                <h1 className="text-3xl font-bold mb-2  name">
+                <h1 className="text-3xl font-bold mb-2">
                   {displayName}
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400">
