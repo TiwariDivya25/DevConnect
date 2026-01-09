@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { type User, AuthError } from "@supabase/supabase-js";
-import { supabase } from "../supabase-client";
+import { supabase, isBackendAvailable } from "../supabase-client";
 
 /* ===================== TYPES ===================== */
 
@@ -13,6 +13,7 @@ interface ApiError {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+ feature/centralized-api-error-handling-83
   authError: ApiError | null;
 
   signInWithGithub: () => Promise<void>;
@@ -64,6 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   /* ---------- Session Sync ---------- */
   useEffect(() => {
+ feature/centralized-api-error-handling-83
     const initSession = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
@@ -87,6 +89,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
+    // ✅ DEMO MODE / NO BACKEND
+    if (!isBackendAvailable || !supabase) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    // ✅ Normal Supabase flow
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
     return () => {
       listener.subscription.unsubscribe();
     };
@@ -95,6 +118,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   /* ===================== ACTIONS ===================== */
 
   const signInWithGithub = async () => {
+ feature/centralized-api-error-handling-83
     try {
       setAuthError(null);
 
@@ -127,6 +151,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       );
       return { error: err as AuthError };
     }
+
+    if (!isBackendAvailable || !supabase) {
+      throw new Error("Authentication is disabled in demo mode");
+    }
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+    if (error) throw error;
+  };
+
+  const signInWithEmail = async (email: string, password: string) => {
+    if (!isBackendAvailable || !supabase) {
+      return { error: null };
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { error };
+
   };
 
   const signUpWithEmail = async (
@@ -134,6 +183,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     password: string,
     metadata?: { full_name?: string }
   ) => {
+feature/centralized-api-error-handling-83
     try {
       setAuthError(null);
       const { error } = await supabase.auth.signUp({
@@ -191,6 +241,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       );
       return { error: err as AuthError };
     }
+
+    if (!isBackendAvailable || !supabase) {
+      return { error: null };
+    }
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: metadata,
+        emailRedirectTo: `${window.location.origin}/`,
+      },
+    });
+    return { error };
+  };
+
+  const signOut = async () => {
+    if (!isBackendAvailable || !supabase) return;
+
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  };
+
+  const resetPassword = async (email: string) => {
+    if (!isBackendAvailable || !supabase) {
+      return { error: null };
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    return { error };
+  };
+
+  const updatePassword = async (password: string) => {
+    if (!isBackendAvailable || !supabase) {
+      return { error: null };
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      password,
+    });
+    return { error };
+
   };
 
   return (
@@ -198,7 +292,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         user,
         loading,
+feature/centralized-api-error-handling-83
         authError,
+
         signInWithGithub,
         signInWithEmail,
         signUpWithEmail,
@@ -211,6 +307,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     </AuthContext.Provider>
   );
 };
+ feature/centralized-api-error-handling-83
 
 /* ===================== HOOK ===================== */
 
@@ -221,3 +318,4 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
