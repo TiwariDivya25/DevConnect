@@ -1,12 +1,15 @@
 
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext';
-import { Code2, Menu, X } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
+import { Code2, Menu, X, MessageSquare, Calendar, Sun, Moon } from 'lucide-react';
+import MessageNotificationBadge from './MessageNotificationBadge';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { signInWithGithub, signOut, user } = useAuth();
+    const { theme, toggleTheme } = useTheme();
+    const { signOut, user } = useAuth();
 
     const displayName = user?.user_metadata?.full_name || user?.user_metadata?.user_name || user?.email;
     
@@ -26,20 +29,45 @@ const Navbar = () => {
                 <Link to="/create" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200">~/create</Link>
                 <Link to="/communities" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200">~/communities</Link>
                 <Link to="/communities/create" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200">~/new-community</Link>
+                <Link to="/events" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 relative flex items-center gap-1">
+                    ~/events
+                </Link>
+                <Link to="/messages" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 relative flex items-center gap-1">
+                    ~/messages
+                    <MessageNotificationBadge />
+                </Link>
+                <Link to="/contributors"
+                   className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200" >
+                  ~/contributors
+                 </Link>
+
             </div>
 
             {/*Desktop Auth*/}
             <div className="hidden md:flex items-center gap-4">
-                {user?.user_metadata?.avatar_url && (
-                    <img 
-                        src={user.user_metadata.avatar_url}
-                        alt="User Avatar"
-                        className="w-9 h-9 rounded-full ring-2 ring-cyan-400/50"
-                    />
-                )}
+                <button
+                    onClick={toggleTheme}
+                    className="p-2 rounded-lg bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 text-cyan-300 transition"
+                    aria-label="Toggle theme"
+                >
+                    {theme === 'light' ? (
+                        <Moon className="w-5 h-5" />
+                    ) : (
+                        <Sun className="w-5 h-5" />
+                    )}
+                </button>
                 {user ? (
                     <>
-                        <span className="font-mono text-sm text-cyan-300">{displayName}</span>
+                        <Link to="/profile" className="font-mono text-sm text-cyan-300 hover:text-cyan-400 transition flex items-center gap-2">
+                            {user?.user_metadata?.avatar_url && (
+                                <img 
+                                    src={user.user_metadata.avatar_url}
+                                    alt="User Avatar"
+                                    className="w-6 h-6 rounded-full ring-2 ring-cyan-400/50"
+                                />
+                            )}
+                            {displayName}
+                        </Link>
                         <button 
                             onClick={signOut} 
                             className="px-4 py-2 bg-red-900/20 hover:bg-red-900/40 border border-red-500/50 rounded-lg text-red-300 font-mono text-sm transition"
@@ -48,12 +76,20 @@ const Navbar = () => {
                         </button>
                     </>
                 ) : (   
-                    <button 
-                        onClick={signInWithGithub} 
-                        className="px-4 py-2 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition"
-                    >
-                        sign in
-                    </button>
+                    <>
+                        <Link 
+                            to="/login"
+                            className="px-4 py-2 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition"
+                        >
+                            sign in
+                        </Link>
+                        <Link 
+                            to="/register"
+                            className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 rounded-lg text-slate-900 font-mono text-sm font-bold transition"
+                        >
+                            sign up
+                        </Link>
+                    </>
                 )}
             </div>
 
@@ -76,6 +112,15 @@ const Navbar = () => {
               <Link to="/create" className="block px-4 py-2 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition">~/create</Link>
               <Link to="/communities" className="block px-4 py-2 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition">~/communities</Link>
               <Link to="/communities/create" className="block px-4 py-2 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition">~/new-community</Link>
+              <Link to="/events" className="block px-4 py-2 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition relative flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                ~/events
+              </Link>
+              <Link to="/messages" className="flex px-4 py-2 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition relative items-center gap-2">
+                <MessageSquare className="w-4 h-4" />
+                ~/messages
+                <MessageNotificationBadge />
+              </Link>
             </div>
           </div>
         )}
@@ -84,16 +129,38 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden pb-4 pt-2 border-t border-cyan-900/30 bg-slate-900/50">
             <div className="flex flex-col gap-3 items-start px-4">
-              {user?.user_metadata?.avatar_url && (
-                <img
-                  src={user.user_metadata.avatar_url}
-                  alt="User Avatar"
-                  className="w-9 h-9 rounded-full ring-2 ring-cyan-400/50"
-                />
-              )}
+              <button
+                onClick={toggleTheme}
+                className="w-full px-4 py-2 rounded-lg bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 text-cyan-300 font-mono text-sm transition flex items-center justify-center gap-2"
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? (
+                    <>
+                        <Moon className="w-4 h-4" />
+                        Dark Mode
+                    </>
+                ) : (
+                    <>
+                        <Sun className="w-4 h-4" />
+                        Light Mode
+                    </>
+                )}
+              </button>
               {user ? (
                 <>
-                  <span className="font-mono text-sm text-cyan-300">{displayName}</span>
+                  <Link 
+                    to="/profile"
+                    className="w-full flex items-center gap-3 px-4 py-2 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition"
+                  >
+                    {user?.user_metadata?.avatar_url && (
+                      <img
+                        src={user.user_metadata.avatar_url}
+                        alt="User Avatar"
+                        className="w-6 h-6 rounded-full ring-2 ring-cyan-400/50"
+                      />
+                    )}
+                    {displayName}
+                  </Link>
                   <button 
                     onClick={signOut} 
                     className="w-full px-4 py-2 bg-red-900/20 hover:bg-red-900/40 border border-red-500/50 rounded-lg text-red-300 font-mono text-sm transition"
@@ -102,12 +169,20 @@ const Navbar = () => {
                   </button>
                 </>
               ) : (
-                <button 
-                  onClick={signInWithGithub} 
-                  className="w-full px-4 py-2 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition"
-                >
-                  sign in
-                </button>
+                <>
+                  <Link 
+                    to="/login"
+                    className="w-full block text-center px-4 py-2 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition"
+                  >
+                    sign in
+                  </Link>
+                  <Link 
+                    to="/register"
+                    className="w-full block text-center px-4 py-2 bg-cyan-500 hover:bg-cyan-600 rounded-lg text-slate-900 font-mono text-sm font-bold transition"
+                  >
+                    sign up
+                  </Link>
+                </>
               )}
             </div>
           </div>

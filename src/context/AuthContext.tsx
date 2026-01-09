@@ -1,5 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
-import { type User } from "@supabase/supabase-js";
+import { type User, AuthError } from "@supabase/supabase-js";
 import { supabase } from "../supabase-client";
 
 /* ===================== TYPES ===================== */
@@ -11,12 +12,25 @@ interface ApiError {
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   authError: ApiError | null;
+
   signInWithGithub: () => Promise<void>;
+  signInWithEmail: (
+    email: string,
+    password: string
+  ) => Promise<{ error: AuthError | null }>;
+  signUpWithEmail: (
+    email: string,
+    password: string,
+    metadata?: { full_name?: string }
+  ) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+  updatePassword: (password: string) => Promise<{ error: AuthError | null }>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 /* ===================== HELPERS ===================== */
 
@@ -24,7 +38,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
  * Centralized error formatter
  * Ensures consistent, user-friendly error responses
  */
-const formatAuthError = (error: unknown, fallbackMessage: string): ApiError => {
+const formatAuthError = (
+  error: unknown,
+  fallbackMessage: string
+): ApiError => {
   if (error instanceof Error) {
     return {
       success: false,
@@ -42,6 +59,7 @@ const formatAuthError = (error: unknown, fallbackMessage: string): ApiError => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<ApiError | null>(null);
 
   /* ---------- Session Sync ---------- */
@@ -55,6 +73,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setAuthError(
           formatAuthError(err, "Failed to restore authentication session")
         );
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -63,6 +83,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
+        setLoading(false);
       }
     );
 
@@ -71,7 +92,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  /* ---------- Actions ---------- */
+  /* ===================== ACTIONS ===================== */
 
   const signInWithGithub = async () => {
     try {
@@ -79,6 +100,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
+        options: {
+          redirectTo: window.location.origin,
+        },
       });
 
       if (error) throw error;
@@ -89,10 +113,49 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const signInWithEmail = async (email: string, password: string) => {
+    try {
+      setAuthError(null);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      return { error };
+    } catch (err) {
+      setAuthError(
+        formatAuthError(err, "Email sign-in failed. Please try again.")
+      );
+      return { error: err as AuthError };
+    }
+  };
+
+  const signUpWithEmail = async (
+    email: string,
+    password: string,
+    metadata?: { full_name?: string }
+  ) => {
+    try {
+      setAuthError(null);
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata,
+          emailRedirectTo: `${window.location.origin}/`,
+        },
+      });
+      return { error };
+    } catch (err) {
+      setAuthError(
+        formatAuthError(err, "Account creation failed. Please try again.")
+      );
+      return { error: err as AuthError };
+    }
+  };
+
   const signOut = async () => {
     try {
       setAuthError(null);
-
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
     } catch (err) {
@@ -102,13 +165,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      setAuthError(null);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      return { error };
+    } catch (err) {
+      setAuthError(
+        formatAuthError(err, "Failed to reset password. Please try again.")
+      );
+      return { error: err as AuthError };
+    }
+  };
+
+  const updatePassword = async (password: string) => {
+    try {
+      setAuthError(null);
+      const { error } = await supabase.auth.updateUser({ password });
+      return { error };
+    } catch (err) {
+      setAuthError(
+        formatAuthError(err, "Failed to update password. Please try again.")
+      );
+      return { error: err as AuthError };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
+        loading,
         authError,
         signInWithGithub,
+        signInWithEmail,
+        signUpWithEmail,
         signOut,
+        resetPassword,
+        updatePassword,
       }}
     >
       {children}
