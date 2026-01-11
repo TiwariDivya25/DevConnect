@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { CommunityDisplay } from "../components/CommunityDisplay";
+import CommunityDisplay from "../components/CommunityDisplay";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 

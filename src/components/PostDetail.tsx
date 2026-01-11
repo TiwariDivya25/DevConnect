@@ -100,10 +100,10 @@ const PostDetail = ({ postId }: PostDetailProps) => {
                         <img 
                             src={post.avatar_url} 
                             alt="User avatar"
-                            className="w-10 h-10 rounded-full mr-3 flex-shrink-0 object-cover"
+                            className="w-10 h-10 rounded-full mr-3 shrink-0 object-cover"
                         />
                     ) : (
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-400 via-pink-500 to-orange-400 rounded-full mr-3 flex-shrink-0"></div>
+                        <div className="w-10 h-10 bg-linear-to-br from-purple-400 via-pink-500 to-orange-400 rounded-full mr-3 shrink-0"></div>
                     )}
                     <div>
                         <h1 className="text-lg font-semibold text-gray-900">{post.title}</h1>
