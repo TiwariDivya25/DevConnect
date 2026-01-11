@@ -4,7 +4,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../supabase-client';
 import { useAuth } from '../hooks/useAuth';
 import type { Community } from './CommunityList';
-import { Upload, AlertCircle, CheckCircle } from 'lucide-react';
+import { Upload} from 'lucide-react';
+import { showError, showSuccess } from '../utils/toast';
 
 const MAX_CHARS = 500;
 
@@ -75,20 +76,28 @@ const CreatePost = () => {
         queryFn: fetchCommunities
     });
 
-    const {mutate, isPending, error, isSuccess} = useMutation({
+    const {mutate, isPending,  isSuccess} = useMutation({
         mutationFn: (data: {post: PostInput, imageFile: File | null}) => {
             return uploadPost(data.post, data.imageFile);
         },
         onSuccess: () => {
+            showSuccess('Post created successfully!');
+
             setTitle('');
             setContent('');
             setImageFile(null);
             setImagePreview(null);
             setCommunityId(null);
+
             queryClient.invalidateQueries({queryKey: ['posts']});
+
             setTimeout(() => {
                 window.location.href = '/';
             }, 2000);
+
+        },
+        onError:(err:Error)=>{
+            showError(err.message || "Failed To Create Post");
         }
     })
 
@@ -96,22 +105,22 @@ const CreatePost = () => {
         e.preventDefault();
         
         if (!user) {
-            alert('You must be logged in to create a post');
+            showError('You must be logged in to create a post');
             return;
         }
         
         if (!imageFile) {
-            alert('Please select an image');
+            showError('Please select an image');
             return;
         }
 
         if (!title.trim() || !content.trim()) {
-            alert('Please fill in all fields');
+            showError('Please fill in all fields');
             return;
         }
 
         if (content.length > MAX_CHARS) {
-            alert('Content exceeds character limit');
+            showError('Content exceeds character limit');
             return;
         }
         
@@ -155,23 +164,8 @@ const CreatePost = () => {
 
             <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <form onSubmit={handleSubmit} className="bg-slate-900/50 border border-slate-800 rounded-lg p-8 space-y-6">
+        
                     
-                    {isSuccess && (
-                        <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg flex items-center gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                            <span className="text-green-400">Post created successfully! Redirecting...</span>
-                        </div>
-                    )}
-
-                    {error && (
-                        <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg flex items-start gap-3">
-                            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                            <div>
-                                <p className="text-red-400 font-semibold">Error creating post</p>
-                                <p className="text-red-300 text-sm">{error.message}</p>
-                            </div>
-                        </div>
-                    )}
 
                     {user?.user_metadata?.avatar_url && (
                         <div className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
@@ -312,4 +306,4 @@ const CreatePost = () => {
     );
 }
 
-export default CreatePost
+export default CreatePost;

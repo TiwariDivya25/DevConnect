@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { supabase } from "../supabase-client";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import {showSuccess, showError} from '../utils/toast';
 
 interface CommunityInput {
   name: string;
@@ -28,6 +29,9 @@ export const CreateCommunity = () => {
   const { mutate, isPending, isError, error, isSuccess } = useMutation({
     mutationFn: createCommunity,
     onSuccess: () => {
+      
+      showSuccess("Community created successfully");
+
       queryClient.invalidateQueries({ queryKey: ["communities"] });
       setName("");
       setDescription("");
@@ -35,12 +39,15 @@ export const CreateCommunity = () => {
         navigate("/communities");
       }, 1500);
     },
+    onError: (error: Error) => {
+      showError(error.message || "Error creating community");
+    }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !description.trim()) {
-      alert("Please fill in all fields");
+      showError("Please fill in all fields");
       return;
     }
     mutate({ name, description });
@@ -51,25 +58,6 @@ export const CreateCommunity = () => {
       <form onSubmit={handleSubmit} className="bg-slate-900/50 border border-slate-800 rounded-lg p-8">
         <h2 className="text-3xl font-semibold text-white mb-2">Create Community</h2>
         <p className="text-gray-400 mb-6">Build a space for developers to connect and collaborate</p>
-
-        {/* Success Message */}
-        {isSuccess && (
-          <div className="mb-6 p-4 bg-green-500/10 border border-green-500/50 rounded-lg flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-400" />
-            <span className="text-green-400">Community created successfully! Redirecting...</span>
-          </div>
-        )}
-
-        {/* Error Message */}
-        {isError && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-red-400" />
-            <div>
-              <p className="text-red-400 font-semibold">Error creating community</p>
-              <p className="text-red-300 text-sm">{error?.message || "Please try again"}</p>
-            </div>
-          </div>
-        )}
 
         <div className="mb-6">
           <label htmlFor="name" className="block text-sm font-semibold text-white mb-2">

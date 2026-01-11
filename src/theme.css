@@ -304,3 +304,174 @@ html.light .hover\:border-cyan-500:hover {
 html.light .hover\:border-slate-500:hover {
   border-color: #64748b !important;
 }
+
+/* ===== Toast Notifications ===== */
+
+/* Base Toast Container */
+.Toastify__toast-container {
+  z-index: 9999;
+}
+
+/* Base Toast Styles */
+.Toastify__toast {
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px var(--shadow), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  min-height: 64px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.Toastify__toast:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px var(--shadow), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.Toastify__toast-body {
+  margin: 0;
+  padding: 0 8px;
+  line-height: 1.5;
+}
+
+/* Close Button */
+.Toastify__close-button {
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+.Toastify__close-button > svg {
+  height: 18px;
+  width: 18px;
+}
+
+/* Progress Bar */
+.Toastify__progress-bar {
+  height: 4px !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+/* ===== Light Mode Toast ===== */
+html.light .Toastify__toast {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .Toastify__toast--success {
+  border-left: 4px solid #10b981 !important;
+  background: linear-gradient(to right, #ecfdf5 0%, #ffffff 10%) !important;
+}
+
+html.light .Toastify__toast--success .Toastify__progress-bar {
+  background: linear-gradient(to right, #10b981, #059669) !important;
+}
+
+html.light .Toastify__toast--error {
+  border-left: 4px solid #ef4444 !important;
+  background: linear-gradient(to right, #fef2f2 0%, #ffffff 10%) !important;
+}
+
+html.light .Toastify__toast--error .Toastify__progress-bar {
+  background: linear-gradient(to right, #ef4444, #dc2626) !important;
+}
+
+html.light .Toastify__toast--info {
+  border-left: 4px solid #0891b2 !important;
+  background: linear-gradient(to right, #ecf9ff 0%, #ffffff 10%) !important;
+}
+
+html.light .Toastify__toast--info .Toastify__progress-bar {
+  background: linear-gradient(to right, #0891b2, #0e7490) !important;
+}
+
+html.light .Toastify__toast--warning {
+  border-left: 4px solid #f59e0b !important;
+  background: linear-gradient(to right, #fffbeb 0%, #ffffff 10%) !important;
+}
+
+html.light .Toastify__toast--warning .Toastify__progress-bar {
+  background: linear-gradient(to right, #f59e0b, #d97706) !important;
+}
+
+html.light .Toastify__close-button {
+  color: #64748b;
+}
+
+html.light .Toastify__close-button:hover {
+  color: #1e293b;
+}
+
+/* ===== Dark Mode Toast ===== */
+html.dark .Toastify__toast {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+}
+
+html.dark .Toastify__toast--success {
+  border-left: 4px solid #22d3ee !important;
+  background: linear-gradient(to right, #164e63 0%, #1e293b 15%) !important;
+}
+
+html.dark .Toastify__toast--success .Toastify__progress-bar {
+  background: linear-gradient(to right, #22d3ee, #06b6d4) !important;
+}
+
+html.dark .Toastify__toast--error {
+  border-left: 4px solid #ef4444 !important;
+  background: linear-gradient(to right, #7f1d1d 0%, #1e293b 15%) !important;
+}
+
+html.dark .Toastify__toast--error .Toastify__progress-bar {
+  background: linear-gradient(to right, #f87171, #ef4444) !important;
+}
+
+html.dark .Toastify__toast--info {
+  border-left: 4px solid #38bdf8 !important;
+  background: linear-gradient(to right, #0c4a6e 0%, #1e293b 15%) !important;
+}
+
+html.dark .Toastify__toast--info .Toastify__progress-bar {
+  background: linear-gradient(to right, #38bdf8, #0284c7) !important;
+}
+
+html.dark .Toastify__toast--warning {
+  border-left: 4px solid #fbbf24 !important;
+  background: linear-gradient(to right, #78350f 0%, #1e293b 15%) !important;
+}
+
+html.dark .Toastify__toast--warning .Toastify__progress-bar {
+  background: linear-gradient(to right, #fbbf24, #f59e0b) !important;
+}
+
+html.dark .Toastify__close-button {
+  color: #94a3b8;
+}
+
+html.dark .Toastify__close-button:hover {
+  color: #f8fafc;
+}
+
+/* Animation Enhancements */
+@keyframes toastSlideIn {
+  from {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.Toastify__toast--top-center {
+  animation: toastSlideIn 0.4s ease-out;
+}

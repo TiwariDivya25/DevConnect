@@ -1,4 +1,5 @@
 import { Calendar, MapPin, Users, User } from 'lucide-react'
+import { showSuccess, showError } from "../utils/toast";
 
 interface Event {
   id: number
@@ -30,6 +31,24 @@ const mockEvent: Event = {
 export default function EventDetailPage() {
   // In real app, fetch event by id: const event = await fetchEventById(id)
   const event = mockEvent
+
+  const handleJoinEvent = () => {
+  if (event.attendees >= event.maxAttendees) {
+    showError("This event is already full");
+    return;
+  }
+  showSuccess("You have successfully joined the event");
+};
+
+const handleShareEvent = () => {
+  try {
+    navigator.clipboard.writeText(window.location.href);
+    showSuccess("Event link copied to clipboard");
+  } catch {
+    showError("Failed to copy event link");
+  }
+};
+
 
   if (!event) {
     return (

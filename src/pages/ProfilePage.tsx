@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { User, Mail, Calendar, Shield, Camera, Edit3, Globe, Github, Twitter } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
+import {showSuccess, showError} from "../utils/toast";
 
 export default function ProfilePage() {
   const { user, signOut, updateProfile } = useAuth();
@@ -24,8 +25,14 @@ export default function ProfilePage() {
   }
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/login");
+    try{
+      await signOut();
+      showSuccess("Signed Out Successfully");
+      navigate("/login");
+    }
+    catch{
+      showError("Failed to Sign Out");
+    }
   };
 
   const handleEditToggle = () => {
@@ -71,11 +78,14 @@ export default function ProfilePage() {
       
       if (error) {
         setUpdateError(error.message);
+        showError("Failed to update profile");
       } else {
+        showSuccess("Profile updated successfully");
         setIsEditing(false);
       }
     } catch (err: any) {
-      setUpdateError(err.message || "An error occurred while updating profile");
+      showError("Failed to update profile");
+      console.log("Profile update error:", err);
     } finally {
       setIsUpdating(false);
     }

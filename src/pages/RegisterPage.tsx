@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate, Link } from "react-router";
 import { Github } from "lucide-react";
+import { showSuccess, showError } from "../utils/toast";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,8 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+
+
 
   const { signUpWithEmail, signInWithGithub } = useAuth();
   const navigate = useNavigate();
@@ -39,18 +42,20 @@ export default function RegisterPage() {
 
       if (error) {
         if (error.message.includes("already registered")) {
-          setError("This email is already registered. Please sign in instead.");
+          showError("Email already registered. Please sign in.");
+        
         } else {
-          setError(error.message);
+          showError(error.message);
+          
         }
       } else {
-        setSuccess(
-          "Account created successfully! You can now sign in with your credentials."
-        );
+        showSuccess("Account created successfully! Redirecting to login...");
         setTimeout(() => navigate("/login"), 2000);
       }
-    } catch {
-      setError("An unexpected error occurred");
+    }
+     catch {
+      showError("Something went wrong. Please try again.");
+
     } finally {
       setLoading(false);
     }
@@ -61,7 +66,7 @@ export default function RegisterPage() {
     try {
       await signInWithGithub();
     } catch {
-      setError("Failed to sign up with GitHub");
+      showError("GitHub signup failed");
     }
   };
 

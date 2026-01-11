@@ -2,6 +2,7 @@ import { useState, useEffect, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 import { supabase } from "../supabase-client";
 import { Lock } from "lucide-react";
+import { showSuccess, showError } from "../utils/toast";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -15,7 +16,7 @@ export default function ResetPasswordPage() {
     // Check if we have a valid session from the reset link
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        setError("Invalid or expired reset link. Please request a new password reset.");
+        showError("Invalid or expired reset link. Please request a new password reset.");
       }
     });
   }, []);
@@ -45,14 +46,15 @@ export default function ResetPasswordPage() {
       if (error) {
         setError(error.message);
       } else {
-        setSuccess("Password updated successfully! Redirecting to login...");
+        showSuccess("Password updated successfully! Redirecting.");
+
         setTimeout(() => {
           navigate("/login");
         }, 2000);
       }
     } catch (err) {
       console.error('Password update error:', err);
-      setError("An unexpected error occurred");
+      showError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

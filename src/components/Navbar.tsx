@@ -1,16 +1,32 @@
-
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
 import { Code2, Menu, X, MessageSquare, Calendar, Sun, Moon, User, Settings, LogOut } from 'lucide-react';
 import MessageNotificationBadge from './MessageNotificationBadge';
+import { showSuccess, showError } from "../utils/toast";
+
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { theme, toggleTheme } = useTheme();
     const { signOut, user } = useAuth();
+    const navigate = useNavigate();
+
+
+    const handleSignOut=async()=>{
+      try{
+        await signOut();
+        showSuccess("Logged out successfully");
+        navigate("/login");
+
+      }
+      catch{
+        showError("Failed to log out");
+      }
+    }
 
     const displayName = user?.user_metadata?.full_name || user?.user_metadata?.user_name || user?.email;
     
@@ -70,7 +86,14 @@ const Navbar = () => {
                                     className="w-6 h-6 rounded-full ring-2 ring-cyan-400/50"
                                 />
                             )}
-                            <span>{displayName}</span>
+                            {displayName}
+                        </button>
+                        
+                        <button 
+                            onClick={handleSignOut} 
+                            className="px-4 py-2 bg-red-900/20 hover:bg-red-900/40 border border-red-500/50 rounded-lg text-red-300 font-mono text-sm transition"
+                        >
+                            logout
                         </button>
                         
                         {isUserMenuOpen && (
@@ -202,10 +225,7 @@ const Navbar = () => {
                     Dashboard
                   </Link>
                   <button 
-                    onClick={() => {
-                      signOut();
-                      setIsMenuOpen(false);
-                    }}
+                    onClick={handleSignOut} 
                     className="w-full px-4 py-2 bg-red-900/20 hover:bg-red-900/40 border border-red-500/50 rounded-lg text-red-300 font-mono text-sm transition"
                   >
                     logout

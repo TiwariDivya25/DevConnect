@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate, Link } from "react-router";
 import { Github } from "lucide-react";
+import { showSuccess, showError } from "../utils/toast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,19 +22,20 @@ export default function LoginPage() {
       const { error } = await signInWithEmail(email, password);
       if (error) {
         if (error.message.includes("Email not confirmed")) {
-          setError(
-            "Please verify your email address before signing in. Check your inbox."
-          );
+          showError("Please verify your email address before signing in." );
+
         } else if (error.message.includes("Invalid login credentials")) {
-          setError("Invalid email or password. Please try again.");
+          showError("Invalid email or password.");
+
         } else {
-          setError(error.message);
+          showError(error.message);
         }
       } else {
+        showSuccess("Logged in successfully!");
         navigate("/");
       }
     } catch {
-      setError("An unexpected error occurred");
+      showError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -43,8 +45,9 @@ export default function LoginPage() {
     setError("");
     try {
       await signInWithGithub();
+      showSuccess("Logged in successfully!");
     } catch {
-      setError("Failed to sign in with GitHub");
+      showError("Github login Failed");
     }
   };
 

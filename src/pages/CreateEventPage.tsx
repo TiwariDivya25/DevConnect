@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Calendar, MapPin, Users, Clock, Image } from 'lucide-react'
+import {showError,showSuccess} from "../utils/toast";
 
 export default function CreateEventPage() {
   const [formData, setFormData] = useState({
@@ -16,7 +17,8 @@ export default function CreateEventPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle form submission
-    console.log('Event created:', formData)
+    showSuccess("Event created successfully!");
+    console.log('Event created:', formData);
     // Redirect to events page or show success message
   }
 
