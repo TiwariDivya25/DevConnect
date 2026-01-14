@@ -7,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signInWithGithub: () => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signInWithEmail: (
     email: string,
     password: string
@@ -67,6 +68,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
     if (error) throw error;
   };
+  const signInWithGoogle = async () => {
+  if (!isBackendAvailable || !supabase) {
+    throw new Error("Authentication is disabled in demo mode");
+  }
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.origin,
+    },
+  });
+
+  if (error) throw error;
+};
 
   const signInWithEmail = async (email: string, password: string) => {
     if (!isBackendAvailable || !supabase) {
@@ -159,6 +174,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signInWithGithub,
         signInWithEmail,
         signUpWithEmail,
+        signInWithGoogle,
         signOut,
         resetPassword,
         updatePassword,
