@@ -13,15 +13,23 @@ const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true';
  * - Available when env vars exist and demo mode is disabled
  * - Null in demo mode or when env vars are missing
  */
-export const supabase: SupabaseClient | null =
-  !isDemoMode && supabaseUrl && supabaseAnonKey
-    ? createClient(supabaseUrl, supabaseAnonKey, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-        },
-      })
-    : null;
+let supabaseInstance: SupabaseClient | null = null;
+
+try {
+  if (!isDemoMode && supabaseUrl && supabaseAnonKey) {
+    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    });
+  }
+} catch (error) {
+  console.warn('Supabase client initialization failed, using mock data:', error);
+  supabaseInstance = null;
+}
+
+export const supabase = supabaseInstance;
 
 /**
  * Helper flag to check if backend is available

@@ -2,6 +2,8 @@ import { useState, type FormEvent } from "react";
 import { useAuth } from '../hooks/useAuth';
 import { Link } from "react-router";
 import { ArrowLeft } from "lucide-react";
+import { showSuccess, showError } from "../utils/toast";
+
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -21,11 +23,11 @@ export default function ForgotPasswordPage() {
       if (error) {
         setError(error.message);
       } else {
-        setSuccess("Password reset email sent! Please check your inbox.");
+        showSuccess("Password reset email sent !");
       }
     } catch (err) {
       console.error('Password reset error:', err);
-      setError("An unexpected error occurred");
+      showError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

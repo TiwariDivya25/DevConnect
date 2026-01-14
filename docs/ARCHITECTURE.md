@@ -34,7 +34,32 @@
 4. Supabase exchanges code for JWT token  
 5. Token stored in `localStorage` / session  
 6. All subsequent API calls include JWT token  
-7. Supabase RLS policies validate user permissions  
+7. Supabase RLS policies validate user permissions
+
+### Profile Management Flow
+1. User navigates to **Profile** page
+2. Profile data fetched from **Profiles** table
+3. User clicks **Edit Profile** button
+4. Form allows updating bio, location, website, social links, and avatar
+5. Image upload handled via file input with preview
+6. Updated data saved to **Profiles** table with RLS validation
+
+### Dashboard & Real-time Activity Flow
+1. User navigates to **Dashboard** page
+2. Dashboard fetches user's recent activity from multiple tables (Posts, Comments, Votes, CommunityMembers)
+3. Real-time subscriptions monitor for new activities
+4. Activity feed updates automatically when new events occur
+5. Supabase real-time channels push updates to the dashboard
+6. Query invalidation refreshes the activity feed with new data
+
+### Enhanced Event Detail Flow
+1. User clicks on an event from the events list
+2. Event details fetched from **Events** table with related data
+3. Banner image displayed prominently at the top
+4. Comprehensive event information shown (dates, location, attendees, stats)
+5. Real-time attendance tracking updates automatically
+6. Interactive registration options (Going, Maybe, Can't attend)
+7. Share functionality for event promotion
 
 ---
 
@@ -72,6 +97,8 @@
 - **Comments** – Nested comments on posts  
 - **Communities** – Developer interest groups  
 - **Votes** – Post likes and interactions  
+- **Events** – Community events and meetups  
+- **EventAttendees** – Event registration and attendance tracking  
 
 ### Messaging Tables
 - **Conversations** – Chat threads (direct/group)  
@@ -81,6 +108,7 @@
 
 ### Authentication
 - **auth.users** – Supabase-managed user accounts  
+- **Profiles** – Extended user profile information (bio, location, social links)  
 - User profiles derived from GitHub OAuth metadata  
 
 ---

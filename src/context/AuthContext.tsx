@@ -19,6 +19,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
   updatePassword: (password: string) => Promise<{ error: AuthError | null }>;
+  updateProfile: (metadata: { full_name?: string; avatar_url?: string; bio?: string; location?: string; website?: string; github?: string; twitter?: string }) => Promise<{ error: AuthError | null }>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -128,6 +129,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return { error };
   };
 
+  const updateProfile = async (metadata: { full_name?: string; avatar_url?: string; bio?: string; location?: string; website?: string; github?: string; twitter?: string }) => {
+    if (!isBackendAvailable || !supabase) {
+      // In demo mode, update the local user state
+      if (user) {
+        const updatedUser = {
+          ...user,
+          user_metadata: {
+            ...user.user_metadata,
+            ...metadata
+          }
+        };
+        setUser(updatedUser);
+      }
+      return { error: null };
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      data: metadata
+    });
+    return { error };
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -139,6 +162,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signOut,
         resetPassword,
         updatePassword,
+        updateProfile,
       }}
     >
       {children}

@@ -6,10 +6,10 @@ This guide explains how to get started, follow best practices, and submit high�
 ---
 
 ## Quick Links
-- [Setup Guide](SETUP.md) – Development environment setup  
-- [Architecture](ARCHITECTURE.md) – System overview  
-- [Database Schema](DATABASE.md) – Database documentation  
-- [Code of Conduct](CODE_OF_CONDUCT.md) – Community guidelines   
+- [Setup Guide](/docs/SETUP.md) – Development environment setup  
+- [Architecture](/docs/ARCHITECTURE.md) – System overview  
+- [Database Schema](/docs/DATABASE.md) – Database documentation  
+- [Code of Conduct](/docs/CODE_OF_CONDUCT.md) – Community guidelines   
 
 ---
 
@@ -37,7 +37,7 @@ cd devconnect
 
 ## Development Setup
 
-Follow the detailed [Setup Guide](SETUP.md).
+Follow the detailed [Setup Guide](/docs/SETUP.md).
 
 Basic steps:
 
@@ -306,8 +306,8 @@ All contributors are listed in **CONTRIBUTORS.md** 💙
 ---
 
 ## Need Help?
-- Review [SETUP.md](SETUP.md)  
-- Check [ARCHITECTURE.md](ARCHITECTURE.md)  
+- Review [SETUP.md](/docs/SETUP.md)  
+- Check [ARCHITECTURE.md](/docs/ARCHITECTURE.md)  
 - Explore existing code patterns  
 - Open a discussion  
 
