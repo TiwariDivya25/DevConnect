@@ -2,6 +2,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from "react-router";
 import { User, Mail, Calendar, Shield } from "lucide-react";
 import { format } from "date-fns";
+import SkillsSection from '../components/SkillsSection';
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
@@ -76,6 +77,10 @@ export default function ProfilePage() {
                     <p className="font-mono text-xs font-medium text-gray-900 dark:text-white">{user.id}</p>
                   </div>
                 </div>
+              </div>
+
+              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                <SkillsSection userId={user.id} currentUserId={user.id} isOwnProfile={true} />
               </div>
 
               <div className="pt-6 border-t border-gray-200 dark:border-gray-700">

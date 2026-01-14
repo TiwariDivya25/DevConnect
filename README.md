@@ -61,6 +61,7 @@ DevConnect is a full-stack web application that enables developers to:
 - 🔐 **GitHub Authentication** - Sign in with GitHub account ,Gmail based authentication
 - 📝 **Create Posts** - Share posts with images and content
 - 👤 **Profile Dashboard** - View user details, email, account info, and manage sessions
+- 🎯 **Skill Endorsements** - Add skills to profile and receive peer endorsements
 - 💬 **Nested Comments** - Multi-level comment threads with collapse/expand
 - 👥 **Communities** - Create and manage developer communities
 - ❤️ **Likes System** - Vote on posts and comments
@@ -103,7 +104,8 @@ src/
 │   ├── CreateEventForm.tsx        # Event creation form
 │   ├── EventFilters.tsx           # Event filtering controls
 │   ├── AttendeeList.tsx           # Event attendees display
-│   └── EventActions.tsx           # Event interaction buttons
+│   ├── EventActions.tsx           # Event interaction buttons
+│   └── SkillsSection.tsx          # Skills display and endorsement
 ├── pages/
 │   ├── Home.tsx                   # Home page
 │   ├── PostPage.tsx               # Post detail page
@@ -119,10 +121,13 @@ src/
 │   ├── AuthContext.tsx            # Authentication context
 |   └── ThemeContext.tsx           # Dark/light theme context 
 ├── hooks/
-│   └── useMessaging.ts            # Messaging-related hooks
+│   ├── useMessaging.ts            # Messaging-related hooks
+│   ├── useEvents.ts               # Event-related hooks
+│   └── useSkills.ts               # Skill endorsement hooks
 ├── types/
 │   ├── messaging.ts               # TypeScript interfaces for messaging
-│   └── events.ts                  # TypeScript interfaces for events
+│   ├── events.ts                  # TypeScript interfaces for events
+│   └── skills.ts                  # TypeScript interfaces for skills
 ├── supabase-client.ts             # Supabase configuration
 ├── theme.css                      # Theme-related global styles
 ├── App.tsx                        # Main app component
@@ -267,6 +272,28 @@ CREATE TABLE EventAttendees (
 
 For the complete messaging schema including conversations, messages, reactions, and real-time features, see `database-schema-messaging.sql`.
 
+**Skills Tables**
+
+```sql
+CREATE TABLE Skills (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  skill_name TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(user_id, skill_name)
+);
+
+CREATE TABLE SkillEndorsements (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  skill_id BIGINT NOT NULL REFERENCES Skills(id) ON DELETE CASCADE,
+  endorser_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(skill_id, endorser_id)
+);
+```
+
+For the complete skills schema with RLS policies, see `database-schema-skills.sql`.
+
 **Storage Setup**
 - Create a bucket named `post-images` in Supabase Storage
 - Create a bucket named `message-files` in Supabase Storage (private)
@@ -316,6 +343,15 @@ Quick setup:
 1. Run the SQL schema from `docs/EVENT_SCHEMA.md`
 2. Create the `event-images` storage bucket (public)
 3. Navigate to `/events` to start creating events!
+
+## 🎯 Setting Up Skill Endorsements
+
+For detailed instructions on setting up the skill endorsement system, see [SKILL_ENDORSEMENT.md](SKILL_ENDORSEMENT.md).
+
+Quick setup:
+1. Run the SQL schema from `database-schema-skills.sql`
+2. Skills appear automatically on user profiles
+3. Visit `/profile` to add your skills and get endorsed!
 
 ## 🤝 Contributing
 
@@ -457,6 +493,9 @@ Shows community listings and posts within communities.
 - **Events** → **Communities** (community_id): Many-to-One (optional)
 - **Events** → **EventAttendees**: One-to-Many
 - **EventAttendees** → **Users**: Many-to-One
+- **Users** → **Skills** (1:N)
+- **Skills** → **SkillEndorsements** (1:N)
+- **Users** → **SkillEndorsements** (1:N)
 
 ### Query Patterns
 
