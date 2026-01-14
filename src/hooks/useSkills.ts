@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../supabase-client';
-import { SkillWithEndorsements } from '../types/skills';
+import type { Skill } from '../types/skills';
+
+type SkillWithEndorsements = Skill & {
+  endorsement_count: number;
+  user_has_endorsed: boolean;
+};
 
 export const useUserSkills = (userId: string, currentUserId?: string) => {
   return useQuery({
