@@ -1,5 +1,5 @@
-import { EventCard } from './EventCard';
-import type { EventWithDetails, EventFilters } from '../types/events';
+import { EventCard } from "./EventCard";
+import type { EventWithDetails, EventFilters } from "../types/events";
 
 interface EventListProps {
   events: EventWithDetails[];
@@ -9,10 +9,10 @@ interface EventListProps {
   className?: string;
 }
 
-export const EventList = ({ 
-  events, 
-  emptyMessage = "No events found", 
-  className = "" 
+export const EventList = ({
+  events,
+  emptyMessage = "No events found",
+  className = "",
 }: EventListProps) => {
   if (events.length === 0) {
     return (
