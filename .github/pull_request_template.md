@@ -1,88 +1,117 @@
 ## 📝 Description
-<!-- Briefly describe what this PR does -->
-<!-- Example: "Adds nested comments support to posts" -->
+This PR introduces a peer-based Developer Skill Endorsement system that allows users to showcase their skills on their profiles and receive endorsements from other community members, building trust and credibility within the DevConnect platform.
 
 ## 🎯 Type of Change
-<!-- Mark the relevant option with an "x" -->
 - [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
+- [x] ✨ New feature (non-breaking change that adds functionality)
 - [ ] 💥 Breaking change (fix or feature that would cause existing functionality to change)
 - [ ] 📚 Documentation update
-- [ ] 🎨 UI/UX improvement
+- [x] 🎨 UI/UX improvement
 - [ ] ⚡ Performance improvement
 - [ ] ♿ Accessibility improvement
 - [ ] 🔧 Refactoring
 
 ## 🔗 Related Issues
-<!-- Link related issues here -->
-<!-- Example: Closes #123, Related to #456 -->
-Closes #
+Closes #[issue-number]
 
 ## 📋 Changes Made
-<!-- List the key changes in this PR -->
-- [ ] Change 1
-- [ ] Change 2
-- [ ] Change 3
+- [x] Created Skills and SkillEndorsements database tables with RLS policies
+- [x] Implemented SkillsSection component for profile skill management
+- [x] Added custom hooks (useSkills) for skill CRUD and endorsement operations
+- [x] Integrated skill endorsements into ProfilePage
+- [x] Added TypeScript interfaces for type safety
+- [x] Included comprehensive documentation in SKILL_ENDORSEMENT.md
+- [x] Updated README with skill endorsement feature details
 
 ## 🧪 Testing
-<!-- Describe how you tested these changes -->
-<!-- Example: Tested on localhost:5173 in Chrome and Firefox -->
 
 - [ ] Unit tests added/updated
-- [ ] Tested on desktop
-- [ ] Tested on mobile
-- [ ] Manual testing completed
+- [x] Tested on desktop
+- [x] Tested on mobile
+- [x] Manual testing completed
 
 **Testing Steps:**
-1. Step 1
-2. Step 2
-3. Step 3
+1. Navigate to `/profile` page
+2. Click "Add Skill" button and add a skill (e.g., "React", "TypeScript")
+3. Verify skill appears in the skills section
+4. Visit another user's profile (if available)
+5. Click the thumbs-up icon to endorse their skills
+6. Verify endorsement count increases
+7. Click again to remove endorsement
+8. Try to endorse your own skills (should be disabled)
+9. Test in both light and dark mode
 
 ## 🎨 Screenshots/Demo
-<!-- If applicable, add screenshots or GIFs showing the changes -->
-<!-- For UI changes, please include before/after screenshots -->
+<!-- Add screenshots showing the skills section on profile page -->
+<!-- Show: Adding skills, endorsing skills, endorsement counts -->
 
 ## 📦 Dependencies
-<!-- List any new dependencies added -->
-- [ ] No new dependencies
+- [x] No new dependencies
 - [ ] New dependencies added (list below)
-  - dependency-name@version
 
 ## ✅ Checklist
-<!-- Ensure all items are completed before submitting -->
 
 ### Code Quality
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] My changes generate no new warnings
-- [ ] I ran `npm run lint` and fixed all issues
+- [x] My code follows the style guidelines of this project
+- [x] I have performed a self-review of my own code
+- [x] I have commented my code, particularly in hard-to-understand areas
+- [x] My changes generate no new warnings
+- [x] I ran `npm run lint` and fixed all issues
 
 ### Testing & Functionality
-- [ ] I have tested my changes thoroughly
+- [x] I have tested my changes thoroughly
 - [ ] New and existing tests pass locally with my changes
 - [ ] I have added tests that prove my fix is effective or my feature works
 
 ### Documentation
-- [ ] I have updated the documentation accordingly
-- [ ] I have updated the README if needed
-- [ ] I have added/updated inline comments where necessary
+- [x] I have updated the documentation accordingly
+- [x] I have updated the README if needed
+- [x] I have added/updated inline comments where necessary
 
 ### Git & Commits
-- [ ] My commits have clear, descriptive messages
-- [ ] My branch is up to date with the base branch
-- [ ] I have not included unnecessary commits
+- [x] My commits have clear, descriptive messages
+- [x] My branch is up to date with the base branch
+- [x] I have not included unnecessary commits
 
 ### Breaking Changes
-- [ ] This PR does not introduce breaking changes
-- [ ] I have documented any breaking changes clearly
+- [x] This PR does not introduce breaking changes
+- [x] I have documented any breaking changes clearly
 
 ## 📝 Additional Context
-<!-- Add any other context about the PR here -->
-<!-- Example: This is the first part of implementing feature X -->
+
+**Database Setup Required:**
+Before merging, the database schema must be executed in Supabase:
+```sql
+-- Run the contents of database-schema-skills.sql in Supabase SQL Editor
+```
+
+**Key Features:**
+- Users can add/remove skills on their profile
+- Other users can endorse skills (one endorsement per skill per user)
+- Real-time endorsement counts displayed
+- Self-endorsement prevention via RLS policies
+- Dark mode support with responsive design
+
+**Security:**
+- Row Level Security (RLS) policies prevent self-endorsements
+- Unique constraints prevent duplicate skills and endorsements
+- Cascade deletes maintain referential integrity
 
 ## 🔍 Reviewer Notes
-<!-- Any specific things you'd like reviewers to focus on? -->
+
+Please pay special attention to:
+- **Database schema and RLS policies** - Ensure security policies are correctly implemented
+- **TypeScript types** - Verify all interfaces are properly defined
+- **Component architecture** - Check if hooks are used efficiently
+- **UI/UX** - Test the component in both light and dark modes
+- **Error handling** - Verify appropriate error messages are shown
 
 ## 🚀 Deployment Notes
-<!-- Any deployment considerations or migration steps needed? -->
+
+**Pre-deployment steps:**
+1. Execute `database-schema-skills.sql` in Supabase SQL Editor
+2. Verify Skills and SkillEndorsements tables are created
+3. Confirm RLS policies are enabled on both tables
+4. Test with multiple user accounts to verify endorsement flow
+
+**No breaking changes** - This feature is additive and doesn't affect existing functionality.

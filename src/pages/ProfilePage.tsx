@@ -2,6 +2,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from "react-router";
 import { User, Mail, Calendar, Shield, Camera, Edit3, Globe, Github, Twitter } from "lucide-react";
 import { format } from "date-fns";
+import SkillsSection from '../components/SkillsSection';
 import { useState } from "react";
 import {showSuccess, showError} from "../utils/toast";
 
@@ -285,6 +286,18 @@ export default function ProfilePage() {
                     )}
                   </div>
 
+              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                <SkillsSection userId={user.id} currentUserId={user.id} isOwnProfile={true} />
+              </div>
+
+              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={handleSignOut}
+                  className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition"
+                >
+                  Sign Out
+                </button>
+              </div>
                   <div className="grid gap-4 mt-6">
                     <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <Mail className="w-5 h-5 text-gray-500 dark:text-gray-400" />
