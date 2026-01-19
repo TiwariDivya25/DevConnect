@@ -1,5 +1,5 @@
 import { useAuth } from '../hooks/useAuth';
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { User, Mail, Calendar, Shield, Camera, Edit3, Globe, Github, Twitter } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";

@@ -1,6 +1,6 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { useAuth } from '../hooks/useAuth';
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { Github, Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, X, Sun, Moon } from "lucide-react";
 
 export default function LoginPage() {

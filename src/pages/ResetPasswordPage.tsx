@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
 import { Lock } from "lucide-react";
 import { showSuccess, showError } from "../utils/toast";

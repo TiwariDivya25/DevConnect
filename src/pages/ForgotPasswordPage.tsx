@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useAuth } from '../hooks/useAuth';
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { showSuccess, showError } from "../utils/toast";
 
