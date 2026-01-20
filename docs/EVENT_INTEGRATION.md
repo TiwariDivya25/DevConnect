@@ -102,3 +102,64 @@ export const CreateEventPage = () => {
   );
 };
 ```
+## Event Attendance Hooks
+
+### useEventAttendance Hook
+Manages event registration and attendance status updates with optimistic UI updates and proper error handling.
+
+```typescript
+export const useEventAttendance = () => {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const register = useMutation({
+    mutationFn: async ({ 
+      eventId, 
+      status 
+    }: { 
+      eventId: number; 
+      status: 'attending' | 'maybe' | 'not_attending' 
+    }) => {
+      if (!user) throw new Error('User not authenticated');
+      
+      const { data, error } = await supabase
+        .from('EventAttendees')
+        .upsert({
+          event_id: eventId,
+          user_id: user.id,
+          status
+        }, {
+          onConflict: 'event_id,user_id'
+        })
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_, { eventId }) => {
+      queryClient.invalidateQueries({ queryKey: ['event', eventId] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+    }
+  });
+
+  return { register, isRegistering: register.isPending };
+};
+```
+
+### Usage in EventDetailPage
+```typescript
+const { register, isRegistering } = useEventAttendance();
+
+const handleAttendance = (status: 'attending' | 'maybe' | 'not_attending') => {
+  if (!user) {
+    showError('Please sign in to register for events');
+    return;
+  }
+
+  register({ eventId, status }, {
+    onSuccess: () => showSuccess('You are now ' + status + ' this event'),
+    onError: (error) => showError(error.message || 'Failed to register')
+  });
+};
+```

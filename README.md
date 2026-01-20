@@ -71,13 +71,26 @@ DevConnect is a full-stack web application that enables developers to:
 - 📁 **File Sharing** - Share images and files in conversations
 - 🔔 **Live Notifications** - Real-time typing indicators and message notifications
 - 👤 **User Presence** - See who's online and their status
-- 📅 **Event Management** - Create, manage, and attend developer events and meetups
-- 🎟️ **Event Registration** - RSVP system with attendance tracking
-- 🌐 **Virtual Events** - Support for online events with meeting links
-- 📸 **Event Detail Pages** - Beautiful, comprehensive event pages with banner images and rich details
-- 📊 **Real-time Event Stats** - Live updating event statistics and attendee information
 - 🎨 **Modern UI** - Dark theme with cyan accents, professional design
 - 📱 **Responsive Design** - Works on desktop and mobile
+
+### Event Management Features
+- 📅 **Event Creation** - Create virtual or in-person events with detailed information
+- 🎟️ **Three-Tier Attendance System**:
+  - ✅ **Going** - Confirmed attendance
+  - 🤔 **Maybe** - Tentative interest  
+  - ❌ **Not Attending** - Declined participation
+- 👥 **Capacity Management** - Set maximum attendees with real-time capacity tracking
+- 📊 **Visual Capacity Indicators** - Progress bars and percentage displays
+- 🚫 **Automatic Full-Event Handling** - Prevents over-registration
+- 📸 **Rich Event Detail Pages** - Comprehensive event pages with banner images and stats
+- 🌐 **Virtual Event Support** - Online events with meeting links (Zoom, Teams, etc.)
+- 📍 **Physical Event Support** - In-person events with location details
+- 🔔 **Event Notifications** - Toast notifications for registration success/errors
+- 📤 **Share Events** - Native share API integration with clipboard fallback
+- 🎯 **Smart Registration** - Authentication checks and capacity validation
+- 📅 **Past Event Handling** - Automatic disabling of registration for ended events
+- 👤 **Attendee Lists** - View all registered attendees with status indicators
 
 ## 📁 Project Structure
 
