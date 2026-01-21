@@ -9,14 +9,10 @@ import {
   Users, 
   User, 
   Clock, 
-  Tag, 
   Share2, 
-  Heart, 
   CheckCircle, 
   XCircle,
   Monitor,
-  Building,
-  Gauge
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -69,8 +65,8 @@ export default function EventDetailPage() {
       onSuccess: () => {
         showSuccess(`You are now ${status} this event`);
       },
-      onError: (error: any) => {
-        showError(error.message || 'Failed to register for event');
+      onError: (error: unknown) => {
+        showError(error instanceof Error ? error.message : 'Failed to register for event');
       }
     });
   };
@@ -79,8 +75,8 @@ export default function EventDetailPage() {
     try {
       navigator.clipboard.writeText(window.location.href);
       showSuccess("Event link copied to clipboard");
-    } catch {
-      showError("Failed to copy event link");
+    } catch (error: unknown) {
+      showError(error instanceof Error ? error.message : "Failed to copy event link");
     }
   };
 
@@ -109,14 +105,14 @@ export default function EventDetailPage() {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
+          <div className="w-full h-full bg-linear-to-br from-slate-800 to-slate-900 flex items-center justify-center">
             <div className="text-center">
               <div className="text-6xl mb-4">📅</div>
               <p className="text-slate-400">No image available</p>
             </div>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
         
         {/* Floating badge for past events */}
         {isPastEvent && (
@@ -174,7 +170,7 @@ export default function EventDetailPage() {
               </div>
               
               {/* Event Stats */}
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 min-w-[280px]">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 min-w-70">
                 <h3 className="font-bold text-slate-300 mb-4 font-mono">EVENT STATS</h3>
                 
                 <div className="space-y-4">
@@ -226,7 +222,7 @@ export default function EventDetailPage() {
                   
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="flex items-start gap-3">
-                      <Calendar className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
+                      <Calendar className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
                       <div>
                         <h3 className="font-semibold text-slate-300 mb-1">Date & Time</h3>
                         <p className="text-white">{formatDate(event.event_date)}</p>
@@ -235,7 +231,7 @@ export default function EventDetailPage() {
                     </div>
                     
                     <div className="flex items-start gap-3">
-                      <Clock className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
+                      <Clock className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
                       <div>
                         <h3 className="font-semibold text-slate-300 mb-1">Duration</h3>
                         <p className="text-white">2 hours</p>
@@ -245,7 +241,7 @@ export default function EventDetailPage() {
                     
                     {!event.is_virtual ? (
                       <div className="flex items-start gap-3">
-                        <MapPin className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
+                        <MapPin className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
                         <div>
                           <h3 className="font-semibold text-slate-300 mb-1">Location</h3>
                           <p className="text-white">{event.location}</p>
@@ -254,7 +250,7 @@ export default function EventDetailPage() {
                       </div>
                     ) : (
                       <div className="flex items-start gap-3">
-                        <Monitor className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
+                        <Monitor className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
                         <div>
                           <h3 className="font-semibold text-slate-300 mb-1">Meeting Link</h3>
                           <a 
@@ -271,7 +267,7 @@ export default function EventDetailPage() {
                     )}
                     
                     <div className="flex items-start gap-3">
-                      <User className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
+                      <User className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
                       <div>
                         <h3 className="font-semibold text-slate-300 mb-1">Organizer</h3>
                         <p className="text-white">{event.organizer_id}</p>
@@ -409,11 +405,11 @@ export default function EventDetailPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-slate-400">Created</span>
-                      <span className="text-slate-300">{format(new Date(event.created_at), 'MMM d, yyyy')}</span>
+                      <DateComponent dateString={event.created_at} />
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Last Updated</span>
-                      <span className="text-slate-300">{format(new Date(event.updated_at), 'MMM d, yyyy')}</span>
+                      <DateComponent dateString={event.updated_at} />
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Type</span>
@@ -429,3 +425,6 @@ export default function EventDetailPage() {
     </div>
   );
 }
+
+
+const DateComponent = ({ dateString }: { dateString: string }) => <span className="text-slate-300">{format(new Date(dateString), 'MMM d, yyyy')}</span>;

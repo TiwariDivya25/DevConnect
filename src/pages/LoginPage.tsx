@@ -1,7 +1,7 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate, Link } from "react-router-dom";
-import { Github, Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, X, Sun, Moon } from "lucide-react";
+import { Github, Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, X } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -170,7 +170,7 @@ export default function LoginPage() {
     <div className={`min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden transition-all duration-500 ${isDark ? 'dark' : ''}`}>
       
       {/* Animated Background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${t.background} transition-all duration-500`}>
+      <div className={`absolute inset-0 bg-linear-to-br ${t.background} transition-all duration-500`}>
         {/* Animated Particles */}
         {particles.map((particle, i) => (
           <div
@@ -210,7 +210,7 @@ export default function LoginPage() {
         {/* Glass Container */}
         <div className="relative group">
           {/* Outer Glow */}
-          <div className={`absolute -inset-0.5 bg-gradient-to-r ${t.glow} rounded-2xl blur opacity-50 group-hover:opacity-70 transition-all duration-500`}></div>
+          <div className={`absolute -inset-0.5 bg-linear-to-r ${t.glow} rounded-2xl blur opacity-50 group-hover:opacity-70 transition-all duration-500`}></div>
           
           {/* Glass Card */}
           <div 
@@ -219,7 +219,7 @@ export default function LoginPage() {
             onMouseLeave={() => setHoveredCard(null)}
           >
             {/* Animated Top Border */}
-            <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${
+            <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${
               isDark ? 'via-cyan-500/30' : 'via-blue-500/50'
             } to-transparent animate-border`}></div>
             
@@ -432,10 +432,10 @@ export default function LoginPage() {
                   <button
                     type="submit"
                     disabled={loading || isSuccess}
-                    className={`w-full group relative overflow-hidden py-3 px-4 bg-gradient-to-r ${t.button} hover:${t.buttonHover} rounded-xl text-white font-medium transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
+                    className={`w-full group relative overflow-hidden py-3 px-4 bg-linear-to-r ${t.button} hover:${t.buttonHover} rounded-xl text-white font-medium transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
                   >
                     {/* Shine Effect */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/10 to-transparent"></div>
                     
                     <div className="relative flex items-center justify-center space-x-2">
                       {loading ? (

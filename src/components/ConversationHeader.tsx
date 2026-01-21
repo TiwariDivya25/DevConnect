@@ -1,7 +1,16 @@
-import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { Phone, Video, Settings, Users, Search, Pin, MoreVertical, UserPlus } from 'lucide-react';
-import type { ConversationWithDetails } from '../types/messaging';
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import {
+  Phone,
+  Video,
+  Settings,
+  Users,
+  Search,
+  Pin,
+  MoreVertical,
+  UserPlus,
+} from "lucide-react";
+import type { ConversationWithDetails } from "../types/messaging";
 
 interface ConversationHeaderProps {
   conversation: ConversationWithDetails;
@@ -13,36 +22,42 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
 
   const getConversationName = () => {
     if (conversation.name) return conversation.name;
-    
+
     // For direct messages, show the other participant's name
-    const otherParticipant = conversation.participants?.find(p => p.user_id !== user?.id);
-    return otherParticipant?.user?.user_metadata?.full_name || 
-           otherParticipant?.user?.user_metadata?.user_name || 
-           otherParticipant?.user?.email || 
-           'Unknown User';
+    const otherParticipant = conversation.participants?.find(
+      (p) => p.user_id !== user?.id,
+    );
+    return (
+      otherParticipant?.user?.user_metadata?.full_name ||
+      otherParticipant?.user?.user_metadata?.user_name ||
+      otherParticipant?.user?.email ||
+      "Unknown User"
+    );
   };
 
   const getConversationStatus = () => {
-    if (conversation.type === 'group') {
+    if (conversation.type === "group") {
       const memberCount = conversation.participants?.length || 0;
       return `${memberCount} members`;
     }
-    
+
     // For direct messages, show online status
-    return 'Online'; // This would be dynamic based on presence
+    return "Online"; // This would be dynamic based on presence
   };
 
   const getConversationAvatar = () => {
-    if (conversation.type === 'group') {
+    if (conversation.type === "group") {
       return (
         <div className="w-10 h-10 bg-cyan-900/30 border border-cyan-400/50 rounded-full flex items-center justify-center">
           <Users className="w-5 h-5 text-cyan-400" />
         </div>
       );
     }
-    
+
     // For direct messages, show the other participant's avatar
-    const otherParticipant = conversation.participants?.find(p => p.user_id !== user?.id);
+    const otherParticipant = conversation.participants?.find(
+      (p) => p.user_id !== user?.id,
+    );
     if (otherParticipant?.user?.user_metadata?.avatar_url) {
       return (
         <div className="relative">
@@ -56,7 +71,7 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
         </div>
       );
     }
-    
+
     return (
       <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
         <span className="text-sm text-gray-300">
@@ -72,9 +87,11 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
         {/* Left Side - Conversation Info */}
         <div className="flex items-center gap-3">
           {getConversationAvatar()}
-          
+
           <div>
-            <h2 className="font-semibold text-white">{getConversationName()}</h2>
+            <h2 className="font-semibold text-white">
+              {getConversationName()}
+            </h2>
             <p className="text-sm text-gray-400">{getConversationStatus()}</p>
           </div>
         </div>
@@ -82,59 +99,53 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
         {/* Right Side - Actions */}
         <div className="flex items-center gap-2">
           {/* Voice Call */}
-          <button
-            className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
+          <Button
             title="Voice call"
           >
             <Phone className="w-5 h-5" />
-          </button>
+          </Button>
 
           {/* Video Call */}
-          <button
-            className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
+          <Button
             title="Video call"
           >
             <Video className="w-5 h-5" />
-          </button>
+          </Button>
 
           {/* Search Messages */}
-          <button
-            className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
+          <Button
             title="Search messages"
           >
             <Search className="w-5 h-5" />
-          </button>
+          </Button>
 
           {/* Group Actions */}
-          {conversation.type === 'group' && (
+          {conversation.type === "group" && (
             <>
               {/* Add Member */}
-              <button
-                className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
+              <Button
                 title="Add member"
               >
                 <UserPlus className="w-5 h-5" />
-              </button>
+              </Button>
 
               {/* Pinned Messages */}
-              <button
-                className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
+              <Button
                 title="Pinned messages"
               >
                 <Pin className="w-5 h-5" />
-              </button>
+              </Button>
             </>
           )}
 
           {/* More Options */}
           <div className="relative">
-            <button
+            <Button
               onClick={() => setShowMenu(!showMenu)}
-              className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
               title="More options"
             >
               <MoreVertical className="w-5 h-5" />
-            </button>
+            </Button>
 
             {/* Dropdown Menu */}
             {showMenu && (
@@ -146,8 +157,8 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
                       Conversation Settings
                     </div>
                   </button>
-                  
-                  {conversation.type === 'group' && (
+
+                  {conversation.type === "group" && (
                     <>
                       <button className="w-full px-4 py-2 text-left text-gray-300 hover:bg-slate-800 hover:text-white transition">
                         <div className="flex items-center gap-3">
@@ -155,7 +166,7 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
                           Manage Members
                         </div>
                       </button>
-                      
+
                       <button className="w-full px-4 py-2 text-left text-gray-300 hover:bg-slate-800 hover:text-white transition">
                         <div className="flex items-center gap-3">
                           <Pin className="w-4 h-4" />
@@ -164,11 +175,13 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
                       </button>
                     </>
                   )}
-                  
+
                   <div className="border-t border-slate-700 my-1" />
-                  
+
                   <button className="w-full px-4 py-2 text-left text-red-400 hover:bg-slate-800 transition">
-                    {conversation.type === 'group' ? 'Leave Group' : 'Block User'}
+                    {conversation.type === "group"
+                      ? "Leave Group"
+                      : "Block User"}
                   </button>
                 </div>
               </div>
@@ -178,7 +191,7 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
       </div>
 
       {/* Group Members Preview */}
-      {conversation.type === 'group' && conversation.participants && (
+      {conversation.type === "group" && conversation.participants && (
         <div className="mt-3 flex items-center gap-2">
           <div className="flex -space-x-2">
             {conversation.participants.slice(0, 5).map((participant) => (
@@ -188,16 +201,23 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
                     src={participant.user.user_metadata.avatar_url}
                     alt=""
                     className="w-6 h-6 rounded-full ring-2 ring-slate-900"
-                    title={participant.user.user_metadata.full_name || participant.user.user_metadata.user_name}
+                    title={
+                      participant.user.user_metadata.full_name ||
+                      participant.user.user_metadata.user_name
+                    }
                   />
                 ) : (
-                  <div 
+                  <div
                     className="w-6 h-6 bg-slate-600 rounded-full ring-2 ring-slate-900 flex items-center justify-center"
-                    title={participant.user?.user_metadata?.full_name || participant.user?.user_metadata?.user_name}
+                    title={
+                      participant.user?.user_metadata?.full_name ||
+                      participant.user?.user_metadata?.user_name
+                    }
                   >
                     <span className="text-xs text-gray-300">
-                      {participant.user?.user_metadata?.full_name?.[0] || 
-                       participant.user?.user_metadata?.user_name?.[0] || '?'}
+                      {participant.user?.user_metadata?.full_name?.[0] ||
+                        participant.user?.user_metadata?.user_name?.[0] ||
+                        "?"}
                     </span>
                   </div>
                 )}
@@ -205,11 +225,13 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
             ))}
             {conversation.participants.length > 5 && (
               <div className="w-6 h-6 bg-slate-700 rounded-full ring-2 ring-slate-900 flex items-center justify-center">
-                <span className="text-xs text-gray-300">+{conversation.participants.length - 5}</span>
+                <span className="text-xs text-gray-300">
+                  +{conversation.participants.length - 5}
+                </span>
               </div>
             )}
           </div>
-          
+
           <span className="text-xs text-gray-400 ml-2">
             {conversation.participants.length} members
           </span>
@@ -220,3 +242,20 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
 };
 
 export default ConversationHeader;
+
+const Button = ({
+  children,
+  title,
+  ...props
+}: {
+  children: React.ReactNode;
+  title: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button
+    {...props}
+    className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
+    title={title}
+  >
+    {children}
+  </button>
+);

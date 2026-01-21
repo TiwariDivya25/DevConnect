@@ -182,7 +182,7 @@ const MessageList = ({ messages }: MessageListProps) => {
             <div className={`flex gap-3 group ${isOwnMessage ? 'flex-row-reverse' : ''}`}>
               {/* Avatar */}
               {!isOwnMessage && (
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   {message.sender?.user_metadata?.avatar_url ? (
                     <img
                       src={message.sender.user_metadata.avatar_url}
@@ -223,7 +223,7 @@ const MessageList = ({ messages }: MessageListProps) => {
                 {/* Message Bubble */}
                 <div
                   className={`
-                    relative p-3 rounded-lg break-words
+                    relative p-3 rounded-lg wrap-break-word
                     ${isOwnMessage 
                       ? 'bg-cyan-900/30 border border-cyan-400/50 text-white' 
                       : 'bg-slate-800/50 border border-slate-700 text-white'

@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
-import { AlertCircle, CheckCircle } from "lucide-react";
 import {showSuccess, showError} from '../utils/toast';
 
 interface CommunityInput {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../supabase-client';
@@ -9,11 +9,7 @@ import {
   MessageSquare, 
   Calendar, 
   Code2, 
-  Plus, 
   Star, 
-  Clock, 
-  Activity, 
-  LogOut,
   GitBranch,
   User,
   MessageCircle,
@@ -244,7 +240,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-950 border-b border-cyan-900/30">
+      <div className="bg-linear-to-r from-slate-900 via-slate-950 to-slate-950 border-b border-cyan-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between">
             <div>

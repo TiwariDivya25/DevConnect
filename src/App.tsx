@@ -24,7 +24,7 @@ import DashboardPage from './pages/DashboardPage.tsx'
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors">
+    <div className="min-h-screen flex flex-col bg-(--bg-primary) text-(--text-primary) transition-colors">
       <Navbar />
       <main className="flex-1">
         <Routes>

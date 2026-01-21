@@ -183,7 +183,7 @@ export default function RegisterPage() {
     <div className={`min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden transition-all duration-500 ${isDark ? 'dark' : ''}`}>
       
       {/* Animated Background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${t.background} transition-all duration-500`}>
+      <div className={`absolute inset-0 bg-linear-to-br ${t.background} transition-all duration-500`}>
         {/* Animated Particles */}
         {particles.map((particle, i) => (
           <div
@@ -222,7 +222,7 @@ export default function RegisterPage() {
         {/* Glass Container */}
         <div className="relative group">
           {/* Outer Glow */}
-          <div className={`absolute -inset-0.5 bg-gradient-to-r ${t.glow} rounded-2xl blur opacity-50 group-hover:opacity-70 transition-all duration-500`}></div>
+          <div className={`absolute -inset-0.5 bg-linear-to-r ${t.glow} rounded-2xl blur opacity-50 group-hover:opacity-70 transition-all duration-500`}></div>
           
           {/* Glass Card */}
           <div 
@@ -231,7 +231,7 @@ export default function RegisterPage() {
             onMouseLeave={() => setHoveredCard(null)}
           >
             {/* Animated Top Border */}
-            <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${
+            <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${
               isDark ? 'via-cyan-500/30' : 'via-blue-500/50'
             } to-transparent animate-border`}></div>
             
@@ -267,7 +267,7 @@ export default function RegisterPage() {
                 <div className="animate-fade-in mb-4">
                   <div className={`relative ${t.success} border rounded-xl p-4`}>
                     {/* Success Glow */}
-                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${t.successGlow} rounded-xl blur opacity-50`}></div>
+                    <div className={`absolute -inset-0.5 bg-linear-to-r ${t.successGlow} rounded-xl blur opacity-50`}></div>
                     <div className="relative">
                       <div className="flex items-center space-x-2">
                         <div className={`w-8 h-8 ${
@@ -305,7 +305,7 @@ export default function RegisterPage() {
                     <div className="flex items-center justify-center space-x-3">
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                         isDark ? 'bg-gray-800' : 'bg-gray-100'
-                      } group-hover:bg-gray-700 transition-colors`}>
+                      } group-hover:bg-gray-800 transition-colors`}>
                         <Github className={`w-4 h-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
                       </div>
                       <span className={`${t.socialText} font-medium group-hover:${
@@ -518,10 +518,10 @@ export default function RegisterPage() {
                   <button
                     type="submit"
                     disabled={loading || success}
-                    className={`w-full group relative overflow-hidden py-3 px-4 bg-gradient-to-r ${t.button} hover:${t.buttonHover} rounded-xl text-white font-medium transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
+                    className={`w-full group relative overflow-hidden py-3 px-4 bg-linear-to-r ${t.button} hover:${t.buttonHover} rounded-xl text-white font-medium transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
                   >
                     {/* Shine Effect */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/10 to-transparent"></div>
                     
                     <div className="relative flex items-center justify-center space-x-2">
                       {loading ? (
@@ -600,3 +600,13 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+
+
+const Input = (props: React.JSX.IntrinsicElements["input"]): React.JSX.Element => (
+  <input
+    {...props}
+    className={`w-full pl-10 pr-10 py-2.5 ${t.input} rounded-xl ${t.inputText} placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 ${isDark ? 'focus:ring-blue-500/30' : 'focus:ring-blue-400/30'
+                          } transition-all duration-300`}
+  />
+);

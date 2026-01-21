@@ -27,7 +27,7 @@ const PostItem = ({ post }: Props) => {
                 )}
 
                 {/* Content */}
-                <div className="p-6 space-y-4 flex-grow">
+                <div className="p-6 space-y-4 grow">
                     {/* Header with Avatar */}
                     <div className="flex items-center gap-4">
                         {post.avatar_url ? (
