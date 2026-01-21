@@ -43,9 +43,9 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Hero Section */}
-      <div className="bg-linear-to-b from-slate-900 via-slate-950 to-slate-950 border-b border-cyan-900/30 pt-20 pb-12">
+      <div className="bg-linear-to-b from-slate-900 via-slate-950 to-slate-950 border-b border-cyan-900/30 pt-12 md:pt-20 pb-10 md:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-center m-2">
             <div>
               <h1 className="text-6xl font-bold font-mono mb-4 text-white leading-tight">
                 <span className="text-cyan-400">Dev</span>Connect
@@ -64,7 +64,7 @@ const Home = () => {
                 </Link>
                 <Link 
                   to="/communities"
-                  className="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-gray-600/30 rounded-lg text-gray-300 font-mono font-bold transition-all duration-300"
+                  className="px-6 py-3 text-center bg-slate-800/50 hover:bg-slate-800 border border-gray-600/30 rounded-lg text-gray-300 font-mono font-bold transition-all duration-300"
                 >
                   explore communities
                 </Link>
@@ -85,14 +85,11 @@ const Home = () => {
 
       {/* Posts Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          
-        </div>
         <div className="flex flex-col items-center">
-          <h2 className="text-4xl font-bold font-mono text-white mb-2">
+          <h2 className="text-4xl font-bold font-mono text-white mb-5">
             <span className="text-cyan-400">~/</span>recent_posts
           </h2>
-          <p className="text-gray-400 font-mono text-sm">
+          <p className="text-gray-400 font-mono text-sm mb-10">
             latest updates from the community
           </p>
           <PostList />
