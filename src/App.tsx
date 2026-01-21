@@ -5,7 +5,7 @@ import Navbar from './components/Navbar.tsx'
 import Footer from './components/Footer.tsx'
 import PostPage from './pages/PostPage.tsx'
 import CreateCommunityPage from './pages/CreateCommunityPage.tsx'
-import {CommunityPage} from './pages/CommunityPage.tsx'
+import { CommunityPage } from './pages/CommunityPage.tsx'
 import { CommunitiesPage } from './pages/CommunitiesPage.tsx'
 import MessagesPage from './pages/MessagesPage.tsx'
 import EventsPage from './pages/EventsPage.tsx'
@@ -20,6 +20,7 @@ import PublicRoute from './components/PublicRoute.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import Contributors from './pages/Contributors.tsx'
+import CareersPage from './pages/CareersPage.tsx'
 import DashboardPage from './pages/DashboardPage.tsx'
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/communities/:id" element={<CommunityPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/contributors" element={<Contributors />} />
+          <Route path="/careers" element={<CareersPage />} />
 
 
           {/* Public Routes */}

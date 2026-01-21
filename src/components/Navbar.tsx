@@ -9,14 +9,14 @@ const Navbar = () => {
     const { signOut, user } = useAuth();
 
     const displayName = user?.user_metadata?.full_name || user?.user_metadata?.user_name || user?.email;
-    
+
     return (
         <nav className="bg-slate-950 border-b border-cyan-900/30 text-white sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
-                    <Link 
-                        to="/" 
+                    <Link
+                        to="/"
                         className="flex items-center gap-2 font-mono font-bold text-xl hover:text-cyan-400 transition group flex-shrink-0 ml-4" // 添加了 ml-4
                     >
                         <Code2 className="w-6 h-6 text-cyan-400 group-hover:animate-pulse" />
@@ -36,32 +36,38 @@ const Navbar = () => {
                             ~/messages
                             <MessageNotificationBadge />
                         </Link>
-                        <Link 
+                        <Link
                             to="/communities/create"
                             className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap"
                         >
                             ~/new-community
                         </Link>
                         {/* Contributors 链接 - 添加了右边间距 */}
-                        <Link 
+                        <Link
                             to="/contributors"
-                            className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap mr-4" // 添加了 mr-4
+                            className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap" // 添加了 mr-4
                         >
                             ~/contributors
+                        </Link>
+                        <Link
+                            to="/careers"
+                            className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap mr-4"
+                        >
+                            ~/careers
                         </Link>
                     </div>
 
                     {/* Desktop Auth - Right aligned */}
                     <div className="hidden md:flex items-center gap-4 flex-shrink-0">
-                       
+
                         {user ? (
                             <>
-                                <Link 
-                                    to="/profile" 
+                                <Link
+                                    to="/profile"
                                     className="font-mono text-sm text-cyan-300 hover:text-cyan-400 transition flex items-center gap-2 whitespace-nowrap"
                                 >
                                     {user?.user_metadata?.avatar_url && (
-                                        <img 
+                                        <img
                                             src={user.user_metadata.avatar_url}
                                             alt="User Avatar"
                                             className="w-8 h-8 rounded-full ring-2 ring-cyan-400/50 object-cover"
@@ -69,22 +75,22 @@ const Navbar = () => {
                                     )}
                                     <span className="max-w-[120px] truncate">{displayName}</span>
                                 </Link>
-                                <button 
-                                    onClick={signOut} 
+                                <button
+                                    onClick={signOut}
                                     className="px-4 py-2 bg-red-900/20 hover:bg-red-900/40 border border-red-500/50 rounded-lg text-red-300 font-mono text-sm transition whitespace-nowrap"
                                 >
                                     logout
                                 </button>
                             </>
-                        ) : (   
+                        ) : (
                             <>
-                                <Link 
+                                <Link
                                     to="/login"
                                     className="px-4 py-2 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition whitespace-nowrap"
                                 >
                                     sign in
                                 </Link>
-                                <Link 
+                                <Link
                                     to="/register"
                                     className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 rounded-lg text-slate-900 font-mono text-sm font-bold transition whitespace-nowrap"
                                 >
@@ -98,7 +104,7 @@ const Navbar = () => {
                     <div className="md:hidden flex items-center gap-2">
                         {user && user?.user_metadata?.avatar_url && (
                             <Link to="/profile" className="md:hidden">
-                                <img 
+                                <img
                                     src={user.user_metadata.avatar_url}
                                     alt="User Avatar"
                                     className="w-8 h-8 rounded-full ring-2 ring-cyan-400/50 object-cover"
@@ -120,44 +126,44 @@ const Navbar = () => {
                         {/* Mobile nav links */}
                         <div className="pb-4 pt-2 border-t border-cyan-900/30 bg-slate-900/95">
                             <div className="flex flex-col gap-2">
-                                <Link 
-                                    to="/" 
+                                <Link
+                                    to="/"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 ml-4" // 添加了 ml-4
                                 >
                                     ~/home
                                 </Link>
-                                <Link 
-                                    to="/create" 
+                                <Link
+                                    to="/create"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
                                 >
                                     ~/create
                                 </Link>
-                                <Link 
-                                    to="/communities" 
+                                <Link
+                                    to="/communities"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
                                 >
                                     ~/communities
                                 </Link>
-                                <Link 
-                                    to="/communities/create" 
+                                <Link
+                                    to="/communities/create"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
                                 >
                                     ~/new-community
                                 </Link>
-                                <Link 
-                                    to="/events" 
+                                <Link
+                                    to="/events"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
                                 >
                                     <Calendar className="w-4 h-4" />
                                     ~/events
                                 </Link>
-                                <Link 
-                                    to="/messages" 
+                                <Link
+                                    to="/messages"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition items-center gap-3"
                                 >
@@ -166,12 +172,19 @@ const Navbar = () => {
                                     <MessageNotificationBadge />
                                 </Link>
                                 {/* 添加的 contributors 链接 - 移动端 */}
-                                <Link 
-                                    to="/contributors" 
+                                <Link
+                                    to="/contributors"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 mr-4" // 添加了 mr-4
+                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
                                 >
                                     ~/contributors
+                                </Link>
+                                <Link
+                                    to="/careers"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 mr-4"
+                                >
+                                    ~/careers
                                 </Link>
                             </div>
                         </div>
@@ -194,18 +207,18 @@ const Navbar = () => {
                                                 <p className="font-mono text-xs text-gray-400 truncate">{user.email}</p>
                                             </div>
                                         </div>
-                                        <Link 
+                                        <Link
                                             to="/profile"
                                             onClick={() => setIsMenuOpen(false)}
                                             className="w-full text-center px-4 py-3 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition"
                                         >
                                             View Profile
                                         </Link>
-                                        <button 
+                                        <button
                                             onClick={() => {
                                                 signOut();
                                                 setIsMenuOpen(false);
-                                            }} 
+                                            }}
                                             className="w-full px-4 py-3 bg-red-900/20 hover:bg-red-900/40 border border-red-500/50 rounded-lg text-red-300 font-mono text-sm transition"
                                         >
                                             logout
@@ -213,14 +226,14 @@ const Navbar = () => {
                                     </>
                                 ) : (
                                     <>
-                                        <Link 
+                                        <Link
                                             to="/login"
                                             onClick={() => setIsMenuOpen(false)}
                                             className="w-full text-center px-4 py-3 bg-cyan-900/30 hover:bg-cyan-900/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono text-sm transition"
                                         >
                                             sign in
                                         </Link>
-                                        <Link 
+                                        <Link
                                             to="/register"
                                             onClick={() => setIsMenuOpen(false)}
                                             className="w-full text-center px-4 py-3 bg-cyan-500 hover:bg-cyan-600 rounded-lg text-slate-900 font-mono text-sm font-bold transition"
