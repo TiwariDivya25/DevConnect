@@ -61,6 +61,9 @@ DevConnect is a full-stack web application that enables developers to:
 - 🔐 **GitHub Authentication** - Sign in with GitHub account ,Gmail based authentication
 - 📝 **Create Posts** - Share posts with images and content
 - 👤 **Profile Dashboard** - View user details, email, account info, and manage sessions
+- ✏️ **Profile Editing** - Update profile information including bio, location, website, and social links (GitHub, Twitter)
+- 🖼️ **Avatar Upload** - Upload custom profile pictures with real-time preview
+- 📊 **Real-time Dashboard** - Monitor your activity with live-updating dashboard and recent activity feed
 - 💬 **Nested Comments** - Multi-level comment threads with collapse/expand
 - 👥 **Communities** - Create and manage developer communities
 - ❤️ **Likes System** - Vote on posts and comments
@@ -71,6 +74,8 @@ DevConnect is a full-stack web application that enables developers to:
 - 📅 **Event Management** - Create, manage, and attend developer events and meetups
 - 🎟️ **Event Registration** - RSVP system with attendance tracking
 - 🌐 **Virtual Events** - Support for online events with meeting links
+- 📸 **Event Detail Pages** - Beautiful, comprehensive event pages with banner images and rich details
+- 📊 **Real-time Event Stats** - Live updating event statistics and attendee information
 - 🎨 **Modern UI** - Dark theme with cyan accents, professional design
 - 📱 **Responsive Design** - Works on desktop and mobile
 

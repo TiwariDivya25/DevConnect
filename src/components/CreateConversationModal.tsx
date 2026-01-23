@@ -4,6 +4,8 @@ import { supabase } from '../supabase-client';
 import { useAuth } from '../hooks/useAuth';
 import { X, Search, Users, MessageCircle, Check } from 'lucide-react';
 import type { Conversation } from '../types/messaging';
+import { showSuccess,showError } from '../utils/toast';
+
 
 interface CreateConversationModalProps {
   onClose: () => void;
@@ -30,6 +32,7 @@ const CreateConversationModal = ({ onClose, onConversationCreated }: CreateConve
   const [groupDescription, setGroupDescription] = useState('');
   const [isPrivate, setIsPrivate] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
 
   const createConversation = useCreateConversation();
 
@@ -82,7 +85,7 @@ const CreateConversationModal = ({ onClose, onConversationCreated }: CreateConve
     if (selectedUsers.length === 0) return;
     
     if (conversationType === 'group' && !groupName.trim()) {
-      alert('Please enter a group name');
+      showError('Please enter a group name');
       return;
     }
 
@@ -98,10 +101,18 @@ const CreateConversationModal = ({ onClose, onConversationCreated }: CreateConve
       };
 
       const conversation = await createConversation.mutateAsync(conversationData);
+     
+      showSuccess(
+         conversationType === 'group'
+          ? "Group conversation created"
+           : "Conversation started"
+        );
+
       onConversationCreated(conversation);
+
     } catch (error) {
       console.error('Failed to create conversation:', error);
-      alert('Failed to create conversation. Please try again.');
+      showError('Failed to create conversation. Please try again.');
     } finally {
       setIsLoading(false);
     }

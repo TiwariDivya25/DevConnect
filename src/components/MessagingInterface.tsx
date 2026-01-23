@@ -8,6 +8,7 @@ import MessageInput from './MessageInput';
 import ConversationHeader from './ConversationHeader';
 import CreateConversationModal from './CreateConversationModal';
 import type { Conversation } from '../types/messaging';
+import { showError } from '../utils/toast';
 
 const MessagingInterface = () => {
   const { user } = useAuth();

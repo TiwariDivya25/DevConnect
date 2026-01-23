@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.tsx'
 import CreatePostPage from './pages/CreatePostPage.tsx'
 import Navbar from './components/Navbar.tsx'
@@ -20,6 +20,7 @@ import PublicRoute from './components/PublicRoute.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import Contributors from './pages/Contributors.tsx'
+import DashboardPage from './pages/DashboardPage.tsx'
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
           <Route path="/events/create" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
           <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
         </Routes>
