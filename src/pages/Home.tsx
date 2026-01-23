@@ -1,44 +1,45 @@
 import PostList from '../components/PostList';
+import GlobalSearch from '../components/GlobalSearch';
 import { Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
 const Home = () => {
-    const text =
+  const text =
     "Share ideas, build together, connect with developers worldwide...";
 
-      const [displayText, setDisplayText] = useState("");
-      const [index, setIndex] = useState(0);
-      const [isDeleting, setIsDeleting] = useState(false);
+  const [displayText, setDisplayText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-    useEffect(() => {
-      let timeout = null;
+  useEffect(() => {
+    let timeout = null;
 
-      if (!isDeleting && index < text.length) {
-    // Typing
-        timeout = setTimeout(() => {
-                  setDisplayText(text.slice(0, index + 1));
-                  setIndex((prev) => prev + 1);
-                }, 55);
-        } else if (!isDeleting && index === text.length) {
-    // Pause after typing
-            timeout = setTimeout(() => {
-          setIsDeleting(true);
-        }, 1200);
-      } else if (isDeleting && index > 0) {
-    // Deleting
-        timeout = setTimeout(() => {
+    if (!isDeleting && index < text.length) {
+      // Typing
+      timeout = setTimeout(() => {
+        setDisplayText(text.slice(0, index + 1));
+        setIndex((prev) => prev + 1);
+      }, 55);
+    } else if (!isDeleting && index === text.length) {
+      // Pause after typing
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1200);
+    } else if (isDeleting && index > 0) {
+      // Deleting
+      timeout = setTimeout(() => {
         setDisplayText(text.slice(0, index - 1));
         setIndex((prev) => prev - 1);
-        }, 35);
-      } else if (isDeleting && index === 0) {
-          setIsDeleting(false);
-          setDisplayText("");
-        }
-  return () => {
+      }, 35);
+    } else if (isDeleting && index === 0) {
+      setIsDeleting(false);
+      setDisplayText("");
+    }
+    return () => {
       if (timeout) clearTimeout(timeout);
     };
-}, [index, isDeleting, text]);
+  }, [index, isDeleting, text]);
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -51,18 +52,27 @@ const Home = () => {
                 <span className="text-cyan-400">Dev</span>Connect
               </h1>
               <p className="text-xl text-gray-400 font-mono mb-8">
-              {displayText}
-              <span className="animate-pulse text-cyan-400">|</span>
+                {displayText}
+                <span className="animate-pulse text-cyan-400">|</span>
               </p>
+
+              {/* Global Search - Hero Feature */}
+              <div className="mb-8">
+                <label className="block text-sm font-mono text-cyan-400 mb-3 tracking-wide">
+                  🔍 Search communities and developers
+                </label>
+                <GlobalSearch />
+              </div>
+
               <div className="flex gap-4">
-                <Link 
+                <Link
                   to="/create"
                   className="flex items-center gap-2 px-6 py-3 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-400/50 rounded-lg text-cyan-300 font-mono font-bold transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20"
                 >
                   <Plus className="w-5 h-5" />
                   create post
                 </Link>
-                <Link 
+                <Link
                   to="/communities"
                   className="px-6 py-3 text-center bg-slate-800/50 hover:bg-slate-800 border border-gray-600/30 rounded-lg text-gray-300 font-mono font-bold transition-all duration-300"
                 >
