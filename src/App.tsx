@@ -18,9 +18,11 @@ import ForgetPasswordPage from './pages/ForgotPasswordPage.tsx'
 import ResetPasswordPage from './pages/ResetPasswordPage.tsx'
 import PublicRoute from './components/PublicRoute.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
+import AdminRoute from './components/AdminRoute.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import Contributors from './pages/Contributors.tsx'
 import DashboardPage from './pages/DashboardPage.tsx'
+import AdminDashboardPage from './pages/AdminDashboardPage.tsx'
 
 function App() {
   return (
@@ -52,6 +54,9 @@ function App() {
           <Route path="/events/:id" element={<EventDetailPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
 
         </Routes>
       </main>

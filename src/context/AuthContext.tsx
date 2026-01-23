@@ -31,7 +31,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // ✅ DEMO MODE / NO BACKEND
     if (!isBackendAvailable || !supabase) {
-      setUser(null);
+      // Create a mock admin user for demo mode
+      const mockDemoUser: User = {
+        id: 'demo-admin-user-001',
+        aud: 'authenticated',
+        role: 'authenticated',
+        email: 'admin@devconnect.demo',
+        email_confirmed_at: new Date().toISOString(),
+        phone: '',
+        confirmed_at: new Date().toISOString(),
+        last_sign_in_at: new Date().toISOString(),
+        app_metadata: {
+          provider: 'email',
+          providers: ['email'],
+          role: 'admin',
+        },
+        user_metadata: {
+          full_name: 'Admin User (Demo)',
+          avatar_url: '',
+        },
+        identities: [],
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      
+      setUser(mockDemoUser);
       setLoading(false);
       return;
     }

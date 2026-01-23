@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth';
-import { Code2, Menu, X, MessageSquare, Calendar } from 'lucide-react';
+import { Code2, Menu, X, MessageSquare, Calendar, ShieldAlert } from 'lucide-react';
 import MessageNotificationBadge from './MessageNotificationBadge';
 
 const Navbar = () => {
@@ -56,6 +56,13 @@ const Navbar = () => {
                        
                         {user ? (
                             <>
+                                <Link 
+                                    to="/admin" 
+                                    className="font-mono text-sm text-cyan-300 hover:text-cyan-400 transition flex items-center gap-1 whitespace-nowrap"
+                                    title="Admin Panel"
+                                >
+                                    <ShieldAlert className="w-4 h-4" />
+                                </Link>
                                 <Link 
                                     to="/profile" 
                                     className="font-mono text-sm text-cyan-300 hover:text-cyan-400 transition flex items-center gap-2 whitespace-nowrap"
