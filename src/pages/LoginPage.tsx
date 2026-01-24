@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [particles, setParticles] = useState<Array<{x: number, y: number, size: number, speed: number}>>([]);
+  const [particles, setParticles] = useState<Array<{ x: number, y: number, size: number, speed: number }>>([]);
   const { signInWithEmail, signInWithGithub } = useAuth();
   const navigate = useNavigate();
 
@@ -21,14 +21,14 @@ export default function LoginPage() {
     // Check for saved theme preference or system preference
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     let initialTheme = 'dark';
     if (savedTheme) {
       initialTheme = savedTheme;
     } else if (!systemPrefersDark) {
       initialTheme = 'light';
     }
-    
+
     setTheme(initialTheme as 'light' | 'dark');
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(initialTheme);
@@ -49,7 +49,7 @@ export default function LoginPage() {
     };
 
     window.addEventListener('themeChanged', handleThemeChange as EventListener);
-    
+
     return () => {
       window.removeEventListener('themeChanged', handleThemeChange as EventListener);
     };
@@ -60,10 +60,10 @@ export default function LoginPage() {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
-    
+
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(newTheme);
-    
+
     const event = new CustomEvent('themeChanged', { detail: newTheme });
     window.dispatchEvent(event);
   };
@@ -114,7 +114,7 @@ export default function LoginPage() {
 
   // Theme-based classes (aligned with footer)
   const isDark = theme === 'dark';
-  
+
   const themeClasses = {
     light: {
       background: 'from-blue-50 via-gray-50 to-purple-50',
@@ -168,7 +168,7 @@ export default function LoginPage() {
 
   return (
     <div className={`min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden transition-all duration-500 ${isDark ? 'dark' : ''}`}>
-      
+
       {/* Animated Background */}
       <div className={`absolute inset-0 bg-linear-to-br ${t.background} transition-all duration-500`}>
         {/* Animated Particles */}
@@ -186,14 +186,12 @@ export default function LoginPage() {
             }}
           />
         ))}
-        
+
         {/* Floating Orbs */}
-        <div className={`absolute top-1/4 left-1/4 w-64 h-64 ${
-          isDark ? 'bg-cyan-500/5' : 'bg-blue-400/10'
-        } rounded-full blur-3xl animate-pulse`}></div>
-        <div className={`absolute bottom-1/4 right-1/4 w-64 h-64 ${
-          isDark ? 'bg-blue-500/5' : 'bg-indigo-400/10'
-        } rounded-full blur-3xl animate-pulse delay-1000`}></div>
+        <div className={`absolute top-1/4 left-1/4 w-64 h-64 ${isDark ? 'bg-cyan-500/5' : 'bg-blue-400/10'
+          } rounded-full blur-3xl animate-pulse`}></div>
+        <div className={`absolute bottom-1/4 right-1/4 w-64 h-64 ${isDark ? 'bg-blue-500/5' : 'bg-indigo-400/10'
+          } rounded-full blur-3xl animate-pulse delay-1000`}></div>
 
         {/* Animated Grid */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -204,40 +202,38 @@ export default function LoginPage() {
         }}></div>
       </div>
 
-    
+
       {/* Main Content */}
       <div className="relative w-full max-w-md z-10">
         {/* Glass Container */}
         <div className="relative group">
           {/* Outer Glow */}
           <div className={`absolute -inset-0.5 bg-linear-to-r ${t.glow} rounded-2xl blur opacity-50 group-hover:opacity-70 transition-all duration-500`}></div>
-          
+
           {/* Glass Card */}
-          <div 
+          <div
             className={`relative ${t.card} border ${t.border} rounded-2xl shadow-2xl`}
             onMouseEnter={() => setHoveredCard('main')}
             onMouseLeave={() => setHoveredCard(null)}
           >
             {/* Animated Top Border */}
-            <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${
-              isDark ? 'via-cyan-500/30' : 'via-blue-500/50'
-            } to-transparent animate-border`}></div>
-            
+            <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${isDark ? 'via-cyan-500/30' : 'via-blue-500/50'
+              } to-transparent animate-border`}></div>
+
             {/* Cross Button - Positioned inside container at top-right */}
             <div className="absolute top-3 right-3 z-10">
               <button
                 onClick={handleClose}
-                className={`p-2 rounded-lg backdrop-blur-sm border transition-all duration-300 hover:scale-110 active:scale-95 group ${
-                  isDark 
-                    ? 'bg-gray-900/40 border-white/10 hover:bg-red-500/20 hover:border-red-500/30 text-gray-300 hover:text-white' 
+                className={`p-2 rounded-lg backdrop-blur-sm border transition-all duration-300 hover:scale-110 active:scale-95 group ${isDark
+                    ? 'bg-gray-900/40 border-white/10 hover:bg-red-500/20 hover:border-red-500/30 text-gray-300 hover:text-white'
                     : 'bg-white/60 border-gray-300 hover:bg-red-50 hover:border-red-300 text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
                 aria-label="Close"
               >
                 <X className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
               </button>
             </div>
-            
+
             <div className="p-6">
               {/* Header */}
               <div className="text-center mb-6">
@@ -255,17 +251,14 @@ export default function LoginPage() {
                 <div className="animate-fade-in mb-4">
                   <div className={`rounded-xl ${t.success} border p-4`}>
                     <div className="flex items-center space-x-2">
-                      <div className={`w-8 h-8 ${
-                        isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'
-                      } rounded-full flex items-center justify-center animate-pulse`}>
-                        <ArrowRight className={`w-4 h-4 ${
-                          isDark ? 'text-emerald-400' : 'text-emerald-600'
-                        }`} />
+                      <div className={`w-8 h-8 ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'
+                        } rounded-full flex items-center justify-center animate-pulse`}>
+                        <ArrowRight className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-600'
+                          }`} />
                       </div>
                       <div>
-                        <p className={`font-medium ${
-                          isDark ? 'text-emerald-400' : 'text-emerald-700'
-                        } text-sm`}>Success! Redirecting...</p>
+                        <p className={`font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-700'
+                          } text-sm`}>Success! Redirecting...</p>
                       </div>
                     </div>
                   </div>
@@ -279,19 +272,16 @@ export default function LoginPage() {
                     onClick={handleGithubLogin}
                     onMouseEnter={() => setHoveredCard('github')}
                     onMouseLeave={() => setHoveredCard(null)}
-                    className={`w-full group relative ${t.socialButton} backdrop-blur-sm border rounded-xl p-3 transition-all duration-300 hover:scale-[1.02] ${
-                      isDark ? 'hover:border-cyan-500/30' : 'hover:border-blue-500/30'
-                    }`}
+                    className={`w-full group relative ${t.socialButton} backdrop-blur-sm border rounded-xl p-3 transition-all duration-300 hover:scale-[1.02] ${isDark ? 'hover:border-cyan-500/30' : 'hover:border-blue-500/30'
+                      }`}
                   >
                     <div className="flex items-center justify-center space-x-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        isDark ? 'bg-gray-800' : 'bg-gray-100'
-                      } group-hover:bg-gray-700 transition-colors`}>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDark ? 'bg-gray-800 group-hover:bg-gray-700' : 'bg-gray-100 group-hover:bg-gray-200'
+                        } transition-colors`}>
                         <Github className={`w-4 h-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
                       </div>
-                      <span className={`${t.socialText} font-medium group-hover:${
-                        isDark ? 'text-white' : 'text-gray-900'
-                      } transition-colors`}>Continue with GitHub</span>
+                      <span className={`${t.socialText} font-medium ${isDark ? 'group-hover:text-white' : 'group-hover:text-gray-900'
+                        } transition-colors`}>Continue with GitHub</span>
                     </div>
                   </button>
 
@@ -300,15 +290,13 @@ export default function LoginPage() {
                     className={`w-full group relative ${t.socialButton} backdrop-blur-sm border rounded-xl p-3 opacity-60 cursor-not-allowed`}
                   >
                     <div className="flex items-center justify-center space-x-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        isDark ? 'bg-gray-800' : 'bg-gray-100'
-                      }`}>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDark ? 'bg-gray-800' : 'bg-gray-100'
+                        }`}>
                         <Mail className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                       </div>
                       <span className={`${t.socialText} font-medium`}>Continue with Google</span>
-                      <span className={`text-xs ${
-                        isDark ? 'bg-gray-800 text-gray-400' : 'bg-gray-200 text-gray-600'
-                      } px-2 py-1 rounded-full`}>Soon</span>
+                      <span className={`text-xs ${isDark ? 'bg-gray-800 text-gray-400' : 'bg-gray-200 text-gray-600'
+                        } px-2 py-1 rounded-full`}>Soon</span>
                     </div>
                   </button>
                 </div>
@@ -319,9 +307,8 @@ export default function LoginPage() {
                     <div className={`w-full border-t ${t.border}`}></div>
                   </div>
                   <div className="relative flex justify-center">
-                    <span className={`px-3 ${
-                      isDark ? 'bg-gray-900/30' : 'bg-white/50'
-                    } ${t.subtext} text-xs font-medium`}>
+                    <span className={`px-3 ${isDark ? 'bg-gray-900/30' : 'bg-white/50'
+                      } ${t.subtext} text-xs font-medium`}>
                       Or with email
                     </span>
                   </div>
@@ -331,12 +318,10 @@ export default function LoginPage() {
                 {error && (
                   <div className={`animate-shake rounded-xl ${t.error} border p-3`}>
                     <div className="flex items-center space-x-2">
-                      <div className={`w-5 h-5 ${
-                        isDark ? 'bg-red-500/20' : 'bg-red-100'
-                      } rounded-full flex items-center justify-center`}>
-                        <div className={`w-2 h-2 ${
-                          isDark ? 'bg-red-500' : 'bg-red-600'
-                        } rounded-full`}></div>
+                      <div className={`w-5 h-5 ${isDark ? 'bg-red-500/20' : 'bg-red-100'
+                        } rounded-full flex items-center justify-center`}>
+                        <div className={`w-2 h-2 ${isDark ? 'bg-red-500' : 'bg-red-600'
+                          } rounded-full`}></div>
                       </div>
                       <p className="text-sm">{error}</p>
                     </div>
@@ -358,9 +343,8 @@ export default function LoginPage() {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className={`w-full pl-10 pr-4 py-2.5 ${t.input} rounded-xl ${t.inputText} placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 ${
-                            isDark ? 'focus:ring-blue-500/30' : 'focus:ring-blue-400/30'
-                          } transition-all duration-300`}
+                          className={`w-full pl-10 pr-4 py-2.5 ${t.input} rounded-xl ${t.inputText} placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 ${isDark ? 'focus:ring-blue-500/30' : 'focus:ring-blue-400/30'
+                            } transition-all duration-300`}
                           placeholder="you@example.com"
                         />
                       </div>
@@ -374,9 +358,8 @@ export default function LoginPage() {
                         </label>
                         <Link
                           to="/forgot-password"
-                          className={`text-xs ${
-                            isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-blue-600 hover:text-blue-700'
-                          } transition-colors`}
+                          className={`text-xs ${isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-blue-600 hover:text-blue-700'
+                            } transition-colors`}
                         >
                           Forgot?
                         </Link>
@@ -388,9 +371,8 @@ export default function LoginPage() {
                           required
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className={`w-full pl-10 pr-10 py-2.5 ${t.input} rounded-xl ${t.inputText} placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 ${
-                            isDark ? 'focus:ring-blue-500/30' : 'focus:ring-blue-400/30'
-                          } transition-all duration-300`}
+                          className={`w-full pl-10 pr-10 py-2.5 ${t.input} rounded-xl ${t.inputText} placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 ${isDark ? 'focus:ring-blue-500/30' : 'focus:ring-blue-400/30'
+                            } transition-all duration-300`}
                           placeholder="••••••••"
                         />
                         <button
@@ -399,13 +381,11 @@ export default function LoginPage() {
                           className="absolute right-3 top-1/2 transform -translate-y-1/2"
                         >
                           {showPassword ? (
-                            <EyeOff className={`w-4 h-4 ${t.textColor} hover:${
-                              isDark ? 'text-cyan-400' : 'text-blue-600'
-                            } transition-colors`} />
+                            <EyeOff className={`w-4 h-4 ${t.textColor} hover:${isDark ? 'text-cyan-400' : 'text-blue-600'
+                              } transition-colors`} />
                           ) : (
-                            <Eye className={`w-4 h-4 ${t.textColor} hover:${
-                              isDark ? 'text-cyan-400' : 'text-blue-600'
-                            } transition-colors`} />
+                            <Eye className={`w-4 h-4 ${t.textColor} hover:${isDark ? 'text-cyan-400' : 'text-blue-600'
+                              } transition-colors`} />
                           )}
                         </button>
                       </div>
@@ -416,11 +396,9 @@ export default function LoginPage() {
                       <input
                         id="remember-me"
                         type="checkbox"
-                        className={`h-3.5 w-3.5 rounded ${
-                          isDark ? 'bg-gray-800 border-white/10 text-cyan-500' : 'bg-white border-gray-300 text-blue-600'
-                        } focus:${
-                          isDark ? 'ring-cyan-500/20' : 'ring-blue-400/30'
-                        }`}
+                        className={`h-3.5 w-3.5 rounded ${isDark ? 'bg-gray-800 border-white/10 text-cyan-500' : 'bg-white border-gray-300 text-blue-600'
+                          } focus:${isDark ? 'ring-cyan-500/20' : 'ring-blue-400/30'
+                          }`}
                       />
                       <label htmlFor="remember-me" className={`ml-2 text-sm ${t.subtext}`}>
                         Keep me signed in
@@ -436,7 +414,7 @@ export default function LoginPage() {
                   >
                     {/* Shine Effect */}
                     <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/10 to-transparent"></div>
-                    
+
                     <div className="relative flex items-center justify-center space-x-2">
                       {loading ? (
                         <>
@@ -459,9 +437,8 @@ export default function LoginPage() {
                     Don't have an account?{" "}
                     <Link
                       to="/register"
-                      className={`font-medium ${
-                        isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-blue-600 hover:text-blue-700'
-                      } transition-colors`}
+                      className={`font-medium ${isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-blue-600 hover:text-blue-700'
+                        } transition-colors`}
                     >
                       Sign up
                     </Link>
@@ -476,15 +453,13 @@ export default function LoginPage() {
         <div className="mt-6 text-center">
           <p className={`text-xs ${t.subtext}`}>
             By signing in, you agree to our{" "}
-            <Link to="/terms" className={`hover:${
-              isDark ? 'text-gray-300' : 'text-gray-600'
-            } transition-colors`}>
+            <Link to="/terms" className={`hover:${isDark ? 'text-gray-300' : 'text-gray-600'
+              } transition-colors`}>
               Terms
             </Link>{" "}
             and{" "}
-            <Link to="/privacy" className={`hover:${
-              isDark ? 'text-gray-300' : 'text-gray-600'
-            } transition-colors`}>
+            <Link to="/privacy" className={`hover:${isDark ? 'text-gray-300' : 'text-gray-600'
+              } transition-colors`}>
               Privacy
             </Link>
           </p>
