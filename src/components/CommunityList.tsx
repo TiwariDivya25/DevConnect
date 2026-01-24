@@ -11,13 +11,22 @@ export interface Community {
 }
 
 const fetchCommunities = async (): Promise<Community[]> => {
+    // Check if supabase client is available
+    if (!supabase) {
+        console.warn('Supabase client not available');
+        return [];
+    }
+
     const { data, error } = await supabase
-        .from('Communities')
+        .from('communities')
         .select('*')
         .order('created_at', { ascending: false });
+
     if (error) {
+        console.error('Error fetching communities:', error);
         throw new Error("Error fetching communities: " + error.message);
     }
+
     return data as Community[];
 }
 
@@ -54,7 +63,7 @@ const CommunityList = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             {data.map((community) => (
-                <Link 
+                <Link
                     key={community.id}
                     to={`/communities/${community.id}`}
                     className="group"
@@ -67,8 +76,8 @@ const CommunityList = () => {
                                     {community.name}
                                 </h3>
                                 <p className="text-sm text-gray-400 font-mono">
-                                    {new Date(community.created_at).toLocaleDateString('en-US', { 
-                                        month: 'short', 
+                                    {new Date(community.created_at).toLocaleDateString('en-US', {
+                                        month: 'short',
                                         day: 'numeric',
                                         year: 'numeric'
                                     })}
