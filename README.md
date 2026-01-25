@@ -300,7 +300,7 @@ The app will be available at http://localhost:5173
 
 ## 💬 Setting Up Messaging
 
-For detailed instructions on setting up the real-time messaging system, see [MESSAGING_SETUP.md](MESSAGING_SETUP.md).
+For detailed instructions on setting up the real-time messaging system, see [MESSAGING_SETUP.md](.docs/MESSAGING_SETUP.md).
 
 Quick setup:
 1. Run the SQL schema from `database-schema-messaging.sql`
