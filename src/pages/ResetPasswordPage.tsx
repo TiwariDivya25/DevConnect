@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
 import { Lock } from "lucide-react";
 import { showSuccess, showError } from "../utils/toast";
+import Input from "../components/Input";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -16,7 +17,9 @@ export default function ResetPasswordPage() {
     // Check if we have a valid session from the reset link
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        showError("Invalid or expired reset link. Please request a new password reset.");
+        showError(
+          "Invalid or expired reset link. Please request a new password reset.",
+        );
       }
     });
   }, []);
@@ -53,7 +56,7 @@ export default function ResetPasswordPage() {
         }, 2000);
       }
     } catch (err) {
-      console.error('Password update error:', err);
+      console.error("Password update error:", err);
       showError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -86,16 +89,21 @@ export default function ResetPasswordPage() {
 
           {success && (
             <div className="rounded-md bg-green-50 dark:bg-green-900/20 p-4">
-              <p className="text-sm text-green-800 dark:text-green-400">{success}</p>
+              <p className="text-sm text-green-800 dark:text-green-400">
+                {success}
+              </p>
             </div>
           )}
 
           <form onSubmit={handlePasswordUpdate} className="space-y-4">
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium mb-2"
+              >
                 New Password
               </label>
-              <input
+              <Input
                 id="password"
                 name="password"
                 type="password"
@@ -110,10 +118,13 @@ export default function ResetPasswordPage() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium mb-2"
+              >
                 Confirm New Password
               </label>
-              <input
+              <Input
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
@@ -141,3 +152,4 @@ export default function ResetPasswordPage() {
     </div>
   );
 }
+

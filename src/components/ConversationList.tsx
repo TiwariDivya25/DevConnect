@@ -122,7 +122,7 @@ const ConversationList = ({ conversations, selectedConversation, onSelectConvers
 
                   {/* Timestamp */}
                   {conversation.last_message && (
-                    <span className="text-xs text-gray-400 flex-shrink-0">
+                    <span className="text-xs text-gray-400 shrink-0">
                       {formatLastMessageTime(conversation.last_message.created_at)}
                     </span>
                   )}
@@ -151,7 +151,7 @@ const ConversationList = ({ conversations, selectedConversation, onSelectConvers
 
                   {/* Unread Count */}
                   {hasUnread && (
-                    <div className="bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[20px] text-center flex-shrink-0">
+                    <div className="bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-5 text-center shrink-0">
                       {conversation.unread_count! > 99 ? '99+' : conversation.unread_count}
                     </div>
                   )}

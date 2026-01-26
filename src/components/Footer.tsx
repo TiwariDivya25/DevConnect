@@ -1,11 +1,8 @@
 import { Link } from "react-router-dom";
 import { 
-  Code2, Github, Mail, Heart, Twitter, Linkedin, MessageCircle, 
-  Send, Zap, Cpu, Shield, Cloud, Database, Code, 
-  TrendingUp, Calendar, ShieldCheck, CpuIcon, RadioTower, MessageSquare,
-  Users, Users2, Server, Globe, CheckCircle, X, Sparkles, Rocket,
-  Activity, Clock, Wifi, Terminal, Layers, ChevronUp, Home,
-  Users as UsersIcon, Plus, User, LogIn, UserPlus, GitMerge,
+  Code2, Github, Mail, Heart, Linkedin, MessageCircle, 
+  Send, Zap, Shield, Cloud, Database, Calendar, CpuIcon, RadioTower, MessageSquare, Users2, Server, CheckCircle, X, Sparkles, Rocket, ChevronUp, Home,
+  Users as UsersIcon, Plus, User, GitMerge,
   Sun, Moon
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -207,7 +204,7 @@ export default function Footer() {
           
           {/* Scan Line */}
           <div 
-            className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent animate-scan"
+            className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent animate-scan"
             style={{
               backgroundImage: `linear-gradient(to right, transparent, ${isDark ? '#06b6d4' : '#3b82f6'}, transparent)`
             }}
@@ -247,7 +244,7 @@ export default function Footer() {
             <div className="space-y-6">
               <div className="flex items-center gap-3 group">
                 <div className="relative">
-                  <div className={`absolute inset-0 bg-gradient-to-r ${isDark ? 'from-cyan-500 to-blue-500' : 'from-blue-500 to-indigo-500'} rounded-xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                  <div className={`absolute inset-0 bg-linear-to-r ${isDark ? 'from-cyan-500 to-blue-500' : 'from-blue-500 to-indigo-500'} rounded-xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-500`}></div>
                   <div className={`relative p-2 ${isDark ? 'bg-gray-900 border-cyan-500/20' : 'bg-white border-blue-200'} rounded-xl border group-hover:scale-105 transition-all duration-300 ${isDark ? 'group-hover:border-cyan-500/40' : 'group-hover:border-blue-300'}`}>
                     <Code2 className={`w-8 h-8 ${iconColor300} group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300`} />
                   </div>
@@ -314,7 +311,7 @@ export default function Footer() {
                     className={`group p-3 rounded-lg border transition-all duration-300 hover:translate-x-1 hover:shadow-lg relative overflow-hidden ${cardClasses}`}
                     style={{ transform: `translate(${parallaxX * 0.05}px, ${parallaxY * 0.05}px)` }}
                   >
-                    <div className={`absolute inset-0 bg-gradient-to-r ${isDark ? 'from-cyan-500/0 via-cyan-500/10 to-blue-500/0' : 'from-blue-500/0 via-blue-500/5 to-indigo-500/0'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                    <div className={`absolute inset-0 bg-linear-to-r ${isDark ? 'from-cyan-500/0 via-cyan-500/10 to-blue-500/0' : 'from-blue-500/0 via-blue-500/5 to-indigo-500/0'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                     <div className="relative flex items-center gap-2">
                       <link.icon className={`w-4 h-4 ${iconColor} group-hover:scale-110 transition-transform duration-300`} />
                       <span className={`text-sm font-medium ${isDark ? 'group-hover:text-white' : 'group-hover:text-blue-700'} transition-colors duration-300 ${textColorLight}`}>{link.label}</span>
@@ -347,7 +344,7 @@ export default function Footer() {
                       transitionDelay: `${i * 0.05}s`
                     }}
                   >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-cyan-500/0 via-cyan-500/5 to-blue-500/0' : 'from-blue-500/0 via-blue-500/3 to-indigo-500/0'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                    <div className={`absolute inset-0 bg-linear-to-br ${isDark ? 'from-cyan-500/0 via-cyan-500/5 to-blue-500/0' : 'from-blue-500/0 via-blue-500/3 to-indigo-500/0'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                     <div className="relative flex items-center gap-3">
                       <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-900' : 'bg-white border border-gray-200'} group-hover:scale-110 transition-transform duration-300 ${tech.color}`}>
                         <tech.icon className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
@@ -376,7 +373,7 @@ export default function Footer() {
               {/* Newsletter */}
               <form onSubmit={handleSubscribe} className="space-y-3">
                 <div className="relative group/input">
-                  <div className={`absolute inset-0 bg-gradient-to-r ${isDark ? 'from-cyan-500/10 to-blue-500/10' : 'from-blue-500/5 to-indigo-500/5'} rounded-xl opacity-0 group-hover/input:opacity-100 transition-opacity duration-300`}></div>
+                  <div className={`absolute inset-0 bg-linear-to-r ${isDark ? 'from-cyan-500/10 to-blue-500/10' : 'from-blue-500/5 to-indigo-500/5'} rounded-xl opacity-0 group-hover/input:opacity-100 transition-opacity duration-300`}></div>
                   <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-400'} ${isDark ? 'group-hover/input:text-cyan-400' : 'group-hover/input:text-blue-500'} transition-colors duration-300 z-10`} />
                   <input
                     type="email"
@@ -399,15 +396,15 @@ export default function Footer() {
                     subscriptionSuccess 
                       ? 'bg-green-600 hover:bg-green-700' 
                       : isDark
-                        ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700'
-                        : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700'
+                        ? 'bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700'
+                        : 'bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700'
                   } hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-white ${
                     isDark 
                       ? 'hover:shadow-cyan-500/25'
                       : 'hover:shadow-blue-500/25'
                   }`}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover/button:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-linear-to-r from-white/10 to-transparent opacity-0 group-hover/button:opacity-100 transition-opacity duration-300"></div>
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -448,7 +445,7 @@ export default function Footer() {
 
           {/* Footer Bottom */}
           <div className={`pt-8 border-t ${borderColor} relative group/bottom`}>
-            <div className={`absolute inset-0 bg-gradient-to-r from-transparent ${isDark ? 'via-cyan-500/10' : 'via-blue-500/5'} to-transparent opacity-0 group-hover/bottom:opacity-100 transition-opacity duration-500`}></div>
+            <div className={`absolute inset-0 bg-linear-to-r from-transparent ${isDark ? 'via-cyan-500/10' : 'via-blue-500/5'} to-transparent opacity-0 group-hover/bottom:opacity-100 transition-opacity duration-500`}></div>
             
             <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-3">
@@ -498,8 +495,8 @@ export default function Footer() {
             }`}></div>
             <div className={`relative p-3 backdrop-blur-sm border rounded-2xl shadow-lg group-hover:scale-105 transition-all duration-300 ${
               isDark
-                ? 'bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border-cyan-500/30 group-hover:border-cyan-500/50'
-                : 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 group-hover:border-blue-300'
+                ? 'bg-linear-to-br from-cyan-900/30 to-blue-900/30 border-cyan-500/30 group-hover:border-cyan-500/50'
+                : 'bg-linear-to-br from-blue-50 to-indigo-50 border-blue-200 group-hover:border-blue-300'
             }`}>
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-yellow-500" />

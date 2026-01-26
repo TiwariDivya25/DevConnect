@@ -155,7 +155,7 @@ const CreatePost = () => {
 
     return (
         <div className="min-h-screen bg-slate-950 pt-16">
-            <div className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 py-8">
+            <div className="bg-linear-to-b from-slate-900 to-slate-950 border-b border-slate-800 py-8">
                 <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h1 className="text-4xl font-bold text-white mb-2">Create a Post</h1>
                     <p className="text-gray-400">Share your ideas with the community</p>

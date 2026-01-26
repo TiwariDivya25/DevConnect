@@ -83,7 +83,7 @@ export default function ProfilePage() {
         showSuccess("Profile updated successfully");
         setIsEditing(false);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       showError("Failed to update profile");
       console.log("Profile update error:", err);
     } finally {
@@ -99,7 +99,7 @@ export default function ProfilePage() {
       <div className="max-w-3xl mx-auto">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 h-32"></div>
+          <div className="bg-linear-to-r from-blue-600 via-blue-500 to-cyan-500 h-32"></div>
           
           {/* Profile content */}
           <div className="px-8 pb-8">
@@ -201,7 +201,7 @@ export default function ProfilePage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
                           <Globe className="w-4 h-4" />
                           Website
                         </label>
@@ -217,7 +217,7 @@ export default function ProfilePage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
                           <Github className="w-4 h-4" />
                           GitHub
                         </label>
@@ -231,7 +231,7 @@ export default function ProfilePage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
                           <Twitter className="w-4 h-4" />
                           Twitter/X
                         </label>

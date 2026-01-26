@@ -117,7 +117,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
                         <img 
                             src={post.image_url} 
                             alt={post.title} 
-                            className="w-full h-auto object-contain max-h-[600px]"
+                            className="w-full h-auto object-contain max-h-150"
                         />
                     </div>
                 )}
