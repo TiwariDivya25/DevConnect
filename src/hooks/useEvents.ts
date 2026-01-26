@@ -12,19 +12,19 @@ export const useEvents = (filters?: EventFilters) => {
         if (!isBackendAvailable || !supabase) {
           // Return mock data in demo mode or when backend is unavailable
           let filteredEvents = [...mockEvents];
-          
+
           if (filters?.community_id) {
             filteredEvents = filteredEvents.filter(event => event.community_id === filters.community_id);
           }
-          
+
           if (filters?.search) {
             const searchTerm = filters.search.toLowerCase();
-            filteredEvents = filteredEvents.filter(event => 
-              event.title.toLowerCase().includes(searchTerm) || 
+            filteredEvents = filteredEvents.filter(event =>
+              event.title.toLowerCase().includes(searchTerm) ||
               event.description.toLowerCase().includes(searchTerm)
             );
           }
-          
+
           // Convert to the expected format
           return filteredEvents.map(event => ({
             ...event,
@@ -35,20 +35,20 @@ export const useEvents = (filters?: EventFilters) => {
             user_attendance: undefined
           })) as unknown as EventWithDetails[];
         }
-        
+
         let query = supabase
-          .from('Events')
+          .from('events')
           .select(`
             *,
-            Communities(name),
-            EventAttendees(id, user_id, status)
+            communities(name),
+            event_attendees(id, user_id, status)
           `)
           .order('event_date', { ascending: true });
 
         if (filters?.community_id) {
           query = query.eq('community_id', filters.community_id);
         }
-        
+
         if (filters?.search) {
           query = query.or(`title.ilike.%${filters.search}%,description.ilike.%${filters.search}%`);
         }
@@ -60,19 +60,19 @@ export const useEvents = (filters?: EventFilters) => {
         console.warn('Supabase query failed, falling back to mock data:', error);
         // If Supabase fails, fall back to mock data
         let filteredEvents = [...mockEvents];
-        
+
         if (filters?.community_id) {
           filteredEvents = filteredEvents.filter(event => event.community_id === filters.community_id);
         }
-        
+
         if (filters?.search) {
           const searchTerm = filters.search.toLowerCase();
-          filteredEvents = filteredEvents.filter(event => 
-            event.title.toLowerCase().includes(searchTerm) || 
+          filteredEvents = filteredEvents.filter(event =>
+            event.title.toLowerCase().includes(searchTerm) ||
             event.description.toLowerCase().includes(searchTerm)
           );
         }
-        
+
         // Convert to the expected format
         return filteredEvents.map(event => ({
           ...event,
@@ -89,7 +89,7 @@ export const useEvents = (filters?: EventFilters) => {
 
 export const useEvent = (eventId: number) => {
   const { user } = useAuth();
-  
+
   return useQuery({
     queryKey: ['event', eventId],
     queryFn: async () => {
@@ -100,7 +100,7 @@ export const useEvent = (eventId: number) => {
           if (!mockEvent) {
             throw new Error('Event not found');
           }
-          
+
           const event: EventWithDetails = {
             ...mockEvent,
             attendee_count: mockEvent.max_attendees ? Math.floor((mockEvent.max_attendees || 100) * 0.6) : 30, // Calculate approximate attendee count
@@ -109,16 +109,16 @@ export const useEvent = (eventId: number) => {
             is_organizer: user?.id === mockEvent.organizer_id,
             user_attendance: undefined
           };
-          
+
           return event;
         }
-        
+
         const { data, error } = await supabase
-          .from('Events')
+          .from('events')
           .select(`
             *,
-            Communities(name),
-            EventAttendees(id, user_id, status, registered_at)
+            communities(name),
+            event_attendees(id, user_id, status, registered_at)
           `)
           .eq('id', eventId)
           .single();
@@ -138,7 +138,7 @@ export const useEvent = (eventId: number) => {
         if (!mockEvent) {
           throw new Error('Event not found');
         }
-        
+
         const event: EventWithDetails = {
           ...mockEvent,
           attendee_count: mockEvent.max_attendees ? Math.floor((mockEvent.max_attendees || 100) * 0.6) : 30, // Calculate approximate attendee count
@@ -147,7 +147,7 @@ export const useEvent = (eventId: number) => {
           is_organizer: user?.id === mockEvent.organizer_id,
           user_attendance: undefined
         };
-        
+
         return event;
       }
     },
@@ -175,7 +175,7 @@ export const useCreateEvent = () => {
           Communities: { name: data.community_id ? `Community ${data.community_id}` : 'General' },
           EventAttendees: []
         };
-        
+
         // Update the query cache
         queryClient.setQueryData(['events'], (old: any) => {
           if (Array.isArray(old)) {
@@ -183,12 +183,12 @@ export const useCreateEvent = () => {
           }
           return [newEvent];
         });
-        
+
         return newEvent;
       }
-      
+
       const { data: event, error } = await supabase
-        .from('Events')
+        .from('events')
         .insert({
           ...data,
           organizer_id: user!.id
@@ -216,9 +216,9 @@ export const useEventAttendance = () => {
         // In a real app, this would update the local state
         return;
       }
-      
+
       const { error } = await supabase
-        .from('EventAttendees')
+        .from('event_attendees')
         .insert({
           event_id: eventId,
           user_id: user!.id,

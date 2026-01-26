@@ -1,30 +1,28 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEvent } from '../hooks/useEvents';
 import { useAuth } from '../hooks/useAuth';
 import { useEventAttendance } from '../hooks/useEvents';
 import { showSuccess, showError } from "../utils/toast";
-import { 
-  Calendar, 
-  MapPin, 
-  Users, 
-  User, 
-  Clock, 
-  Tag, 
-  Share2, 
-  Heart, 
-  CheckCircle, 
+import {
+  Calendar,
+  MapPin,
+  Users,
+  User,
+  Clock,
+  Share2,
+  CheckCircle,
   XCircle,
   Monitor,
-  Building,
-  Gauge
+  ArrowLeft
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useState } from 'react';
 
 export default function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const eventId = id ? parseInt(id) : 0;
-  
+
   const { data: event, isLoading, error } = useEvent(eventId);
   const { user } = useAuth();
   const { register, isRegistering } = useEventAttendance();
@@ -47,8 +45,8 @@ export default function EventDetailPage() {
         <div className="text-center max-w-md mx-auto px-4">
           <h1 className="text-2xl font-bold mb-4 text-red-400">Event Not Found</h1>
           <p className="text-slate-400 mb-6">The event you're looking for doesn't exist or has been removed.</p>
-          <a 
-            href="/events" 
+          <a
+            href="/events"
             className="inline-block px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium transition-colors"
           >
             Browse Events
@@ -63,7 +61,7 @@ export default function EventDetailPage() {
       showError('Please sign in to register for events');
       return;
     }
-    
+
     setAttendanceStatus(status);
     register({ eventId, status }, {
       onSuccess: () => {
@@ -95,7 +93,7 @@ export default function EventDetailPage() {
   const eventDate = new Date(event.event_date);
   const isPastEvent = eventDate < new Date();
   const isFull = event.max_attendees ? (event.attendee_count || 0) >= event.max_attendees : false;
-  
+
   const currentUserAttendance = event.user_attendance?.status || null;
 
   return (
@@ -117,7 +115,7 @@ export default function EventDetailPage() {
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
-        
+
         {/* Floating badge for past events */}
         {isPastEvent && (
           <div className="absolute top-6 right-6 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm">
@@ -144,26 +142,23 @@ export default function EventDetailPage() {
                     </span>
                   )}
                 </div>
-                
+
                 <div className="flex items-center gap-4 mb-4">
-                  <button 
-                    onClick={() => window.history.back()}
+                  <button
+                    onClick={() => navigate(-1)}
                     className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors"
                     aria-label="Go back"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="m12 19-7-7 7-7" />
-                      <path d="M19 12H5" />
-                    </svg>
+                    <ArrowLeft className="w-5 h-5" />
                   </button>
                   <h1 className="text-4xl lg:text-5xl font-bold text-white">
                     {event.title}
                   </h1>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2 mb-6">
                   {event.tags.map((tag, index) => (
-                    <span 
+                    <span
                       key={index}
                       className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm"
                     >
@@ -172,11 +167,11 @@ export default function EventDetailPage() {
                   ))}
                 </div>
               </div>
-              
+
               {/* Event Stats */}
               <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 min-w-[280px]">
                 <h3 className="font-bold text-slate-300 mb-4 font-mono">EVENT STATS</h3>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Attendees</span>
@@ -184,7 +179,7 @@ export default function EventDetailPage() {
                       {event.attendee_count || 0}{event.max_attendees ? `/${event.max_attendees}` : ''}
                     </span>
                   </div>
-                  
+
                   <div className="flex justify-between">
                     <span className="text-slate-400">Status</span>
                     <span className="font-mono">
@@ -195,7 +190,7 @@ export default function EventDetailPage() {
                       )}
                     </span>
                   </div>
-                  
+
                   {event.max_attendees && (
                     <div className="pt-2">
                       <div className="flex justify-between text-sm mb-1">
@@ -203,8 +198,8 @@ export default function EventDetailPage() {
                         <span className="text-slate-400">{Math.round(((event.attendee_count || 0) / event.max_attendees) * 100)}%</span>
                       </div>
                       <div className="w-full bg-slate-700 rounded-full h-2">
-                        <div 
-                          className="bg-cyan-500 h-2 rounded-full" 
+                        <div
+                          className="bg-cyan-500 h-2 rounded-full"
                           style={{ width: `${Math.min(100, ((event.attendee_count || 0) / event.max_attendees) * 100)}%` }}
                         ></div>
                       </div>
@@ -213,7 +208,7 @@ export default function EventDetailPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Main Content */}
               <div className="lg:col-span-2 space-y-8">
@@ -223,7 +218,7 @@ export default function EventDetailPage() {
                     <Calendar className="w-5 h-5" />
                     Event Details
                   </h2>
-                  
+
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="flex items-start gap-3">
                       <Calendar className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
@@ -233,7 +228,7 @@ export default function EventDetailPage() {
                         <p className="text-slate-400 text-sm">{formatTime(event.event_date)}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start gap-3">
                       <Clock className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
                       <div>
@@ -242,7 +237,7 @@ export default function EventDetailPage() {
                         <p className="text-slate-400 text-sm">Estimated</p>
                       </div>
                     </div>
-                    
+
                     {!event.is_virtual ? (
                       <div className="flex items-start gap-3">
                         <MapPin className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
@@ -257,9 +252,9 @@ export default function EventDetailPage() {
                         <Monitor className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
                         <div>
                           <h3 className="font-semibold text-slate-300 mb-1">Meeting Link</h3>
-                          <a 
-                            href={event.meeting_link} 
-                            target="_blank" 
+                          <a
+                            href={event.meeting_link}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-cyan-400 hover:text-cyan-300 underline"
                           >
@@ -269,7 +264,7 @@ export default function EventDetailPage() {
                         </div>
                       </div>
                     )}
-                    
+
                     <div className="flex items-start gap-3">
                       <User className="w-5 h-5 text-cyan-400 mt-1 flex-shrink-0" />
                       <div>
@@ -280,7 +275,7 @@ export default function EventDetailPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Description */}
                 <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6">
                   <h2 className="text-2xl font-bold mb-6 text-cyan-400">About This Event</h2>
@@ -290,14 +285,14 @@ export default function EventDetailPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Attendees */}
                 <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6">
                   <h2 className="text-2xl font-bold mb-6 text-cyan-400 flex items-center gap-2">
                     <Users className="w-5 h-5" />
                     Attendees ({event.attendee_count || 0})
                   </h2>
-                  
+
                   <div className="flex flex-wrap gap-3">
                     {event.EventAttendees.slice(0, 10).map((attendee, index) => (
                       <div key={attendee.id} className="flex items-center gap-2 bg-slate-700/50 rounded-lg px-3 py-2">
@@ -318,13 +313,13 @@ export default function EventDetailPage() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Sidebar */}
               <div className="space-y-6">
                 {/* Registration */}
                 <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
                   <h3 className="text-xl font-bold mb-4 text-cyan-400">Register</h3>
-                  
+
                   {!isPastEvent && (
                     <>
                       {currentUserAttendance ? (
@@ -341,11 +336,10 @@ export default function EventDetailPage() {
                             <button
                               onClick={() => handleAttendance('attending')}
                               disabled={isRegistering || isFull}
-                              className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-colors ${
-                                attendanceStatus === 'attending' 
-                                  ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400' 
-                                  : 'border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500'
-                              } ${isFull ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-colors ${attendanceStatus === 'attending'
+                                ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400'
+                                : 'border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500'
+                                } ${isFull ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                               <CheckCircle className="w-5 h-5 mb-1" />
                               <span className="text-xs">Going</span>
@@ -353,11 +347,10 @@ export default function EventDetailPage() {
                             <button
                               onClick={() => handleAttendance('maybe')}
                               disabled={isRegistering || isFull}
-                              className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-colors ${
-                                attendanceStatus === 'maybe' 
-                                  ? 'border-amber-500 bg-amber-500/10 text-amber-400' 
-                                  : 'border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500'
-                              } ${isFull ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-colors ${attendanceStatus === 'maybe'
+                                ? 'border-amber-500 bg-amber-500/10 text-amber-400'
+                                : 'border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500'
+                                } ${isFull ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                               <User className="w-5 h-5 mb-1" />
                               <span className="text-xs">Maybe</span>
@@ -365,11 +358,10 @@ export default function EventDetailPage() {
                             <button
                               onClick={() => handleAttendance('not_attending')}
                               disabled={isRegistering}
-                              className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-colors ${
-                                attendanceStatus === 'not_attending' 
-                                  ? 'border-red-500 bg-red-500/10 text-red-400' 
-                                  : 'border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500'
-                              }`}
+                              className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-colors ${attendanceStatus === 'not_attending'
+                                ? 'border-red-500 bg-red-500/10 text-red-400'
+                                : 'border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500'
+                                }`}
                             >
                               <XCircle className="w-5 h-5 mb-1" />
                               <span className="text-xs">Can't</span>
@@ -377,13 +369,13 @@ export default function EventDetailPage() {
                           </div>
                         </div>
                       )}
-                      
+
                       {isFull && (
                         <div className="mb-4 p-3 bg-red-900/20 border border-red-800 rounded-lg text-center">
                           <p className="text-red-400 font-medium">This event is full</p>
                         </div>
                       )}
-                      
+
                       <button
                         onClick={handleShareEvent}
                         disabled={isRegistering}
@@ -394,18 +386,18 @@ export default function EventDetailPage() {
                       </button>
                     </>
                   )}
-                  
+
                   {isPastEvent && (
                     <div className="p-4 bg-slate-700/50 rounded-lg text-center">
                       <p className="text-slate-400">This event has ended</p>
                     </div>
                   )}
                 </div>
-                
+
                 {/* Event Info Card */}
                 <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
                   <h3 className="text-xl font-bold mb-4 text-cyan-400">Event Info</h3>
-                  
+
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-slate-400">Created</span>
