@@ -11,6 +11,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import type { ConversationWithDetails } from "../types/messaging";
+import Button from "./Button";
 
 interface ConversationHeaderProps {
   conversation: ConversationWithDetails;
@@ -242,20 +243,3 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
 };
 
 export default ConversationHeader;
-
-const Button = ({
-  children,
-  title,
-  ...props
-}: {
-  children: React.ReactNode;
-  title: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-  <button
-    {...props}
-    className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
-    title={title}
-  >
-    {children}
-  </button>
-);
