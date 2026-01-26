@@ -15,6 +15,10 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     // Check if we have a valid session from the reset link
+    if (!supabase) {
+      showError("Service unavailable. Please try again later.");
+      return;
+    }
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         showError(
@@ -42,6 +46,11 @@ export default function ResetPasswordPage() {
     setLoading(true);
 
     try {
+      if (!supabase) {
+        setError("Service unavailable. Please try again later.");
+        return;
+      }
+
       const { error } = await supabase.auth.updateUser({
         password: password,
       });
