@@ -39,18 +39,8 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Light Mode Color Overrides */
-html.light .bg-slate-950 {
-  background-color: #ffffff;
-  border: 1px solid #cbd5e1;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
 
-html.light .bg-slate-900 {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
+
 
 /* Specific page backgrounds and titles */
 html.light .min-h-screen {
@@ -62,7 +52,7 @@ html.light .bg-slate-950 {
 }
 
 html.light .bg-slate-900 {
-  background-color: #ffffff !important;
+  background-color: var(--bg-secondary) !important;
   border: 1px solid #cbd5e1 !important;
 }
 
@@ -106,10 +96,6 @@ html.light .text-6xl {
   font-weight: 900 !important;
 }
 
-html.light .text-4xl {
-  color: #000000 !important;
-  font-weight: 800 !important;
-}
 
 /* Navbar and main titles */
 html.light nav {
@@ -117,20 +103,6 @@ html.light nav {
   border-bottom: 2px solid #cbd5e1 !important;
 }
 
-html.light .text-white {
-  color: #000000 !important;
-  font-weight: 700;
-}
-
-html.light .text-gray-300 {
-  color: #1f2937 !important;
-  font-weight: 600;
-}
-
-html.light .text-slate-300 {
-  color: #1f2937 !important;
-  font-weight: 600;
-}
 
 html.light .text-slate-400 {
   color: #475569 !important;
@@ -217,11 +189,6 @@ html.light .font-semibold {
   font-weight: 700 !important;
 }
 
-/* Logo specific styling */
-html.light .text-xl {
-  color: #000000 !important;
-  font-weight: 900 !important;
-}
 
 /* Large text elements */
 html.light .text-3xl,
@@ -238,6 +205,7 @@ html.light button {
 
 html.light .border-slate-700 {
   border-color: #cbd5e1 !important;
+  
 }
 
 html.light .border-slate-800 {
@@ -305,6 +273,370 @@ html.light .hover\:border-slate-500:hover {
   border-color: #64748b !important;
 }
 
+/* Event / Card text fix for light mode */
+html.light .bg-slate-900{
+  color:var(--text-primary)
+}
+
+html.light .bg-slate-900 .text-slate-400,
+html.light .bg-slate-900 .text-slate-300 {
+  color: var(--text-secondary) !important;
+}
+
+html.light .bg-slate-900 .text-white {
+  color: var(--text-primary) !important;
+}
+
+/* FIX: Cards & forms staying dark in light mode */
+html.light .bg-slate-800,
+html.light .bg-slate-700,
+html.light .bg-slate-900 {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+}
+/* FIX: Inputs & textareas in light mode */
+html.light input,
+html.light textarea,
+html.light select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1.5px solid #94a3b8 !important;
+  font-weight: 500 !important;
+}
+/* FIX: Placeholder visibility */
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #475569 !important;
+  font-weight: 400 !important;
+  opacity: 0.8 !important;
+}
+/* FIX: Card headings */
+html.light .bg-slate-800 h1,
+html.light .bg-slate-800 h2,
+html.light .bg-slate-800 h3,
+html.light .bg-slate-900 h1,
+html.light .bg-slate-900 h2,
+html.light .bg-slate-900 h3 {
+  color: #0f172a !important;
+}
+
+/* Auth buttons text fix */
+html.light button.text-white,
+html.light a.text-white {
+  color: #0f172a !important;
+}
+
+html.light .bg-blue-600,
+html.light .bg-cyan-600 {
+  color: #ffffff !important;
+}
+
+
+/* Form labels & helper text */
+html.light label,
+html.light .text-slate-500,
+html.light .text-slate-600 {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+/* =========================
+   LIGHT MODE – FINAL CARD SYSTEM
+   ========================= */
+
+/* Card surfaces (Create Post, Create Event, Community, Event cards) */
+html.light .bg-slate-900,
+html.light .bg-slate-800,
+html.light .bg-slate-700 {
+  background-color: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color: #0f172a;
+}
+
+/* Card backgrounds with opacity - CRITICAL for Create Post/Community */
+html.light .bg-slate-800\\/50,
+html.light .bg-slate-900\\/50 {
+  background-color: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+
+/* Additional slate background variations */
+html.light [class*="bg-slate-"] {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-slate-800\\/50 * {
+  color: inherit;
+}
+
+/* Card headings */
+html.light .bg-slate-900 h1,
+html.light .bg-slate-900 h2,
+html.light .bg-slate-900 h3,
+html.light .bg-slate-800 h1,
+html.light .bg-slate-800 h2,
+html.light .bg-slate-800 h3 {
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+/* Card secondary text */
+html.light .bg-slate-900 .text-slate-400,
+html.light .bg-slate-900 .text-slate-300,
+html.light .bg-slate-800 .text-slate-400 {
+  color: #334155 !important;
+  font-weight: 500 !important;
+}
+
+/* Additional secondary text classes */
+html.light .text-gray-400,
+html.light .text-gray-500 {
+  color: #334155 !important;
+  font-weight: 500 !important;
+}
+
+html.light .text-gray-600 {
+  color: #1e293b !important;
+  font-weight: 500 !important;
+}
+
+/* Gray text inside forms and cards */
+html.light .text-gray-300,
+html.light .text-gray-400,
+html.light .text-gray-500 {
+  color: #475569 !important;
+  font-weight: 500 !important;
+}
+
+/* Inputs, textareas, selects */
+html.light input,
+html.light textarea,
+html.light select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1.5px solid #94a3b8 !important;
+  font-weight: 500 !important;
+}
+
+/* Placeholders */
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #475569 !important;
+  font-weight: 400 !important;
+  opacity: 0.8 !important;
+}
+
+/* Specific placeholder overrides for all contexts */
+html.light .placeholder-gray-400::placeholder,
+html.light .placeholder-gray-500::placeholder {
+  color: #475569 !important;
+  opacity: 0.9 !important;
+}
+
+/* Labels & helper text */
+html.light label,
+html.light .text-slate-500,
+html.light .text-slate-600 {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+/* Small helper text */
+html.light .text-xs.text-gray-500,
+html.light .text-sm.text-gray-500,
+html.light .text-xs.text-slate-500,
+html.light .text-sm.text-slate-500 {
+  color: #475569 !important;
+  font-weight: 500 !important;
+}
+
+/* Primary buttons */
+html.light .bg-cyan-600,
+html.light .bg-blue-600 {
+  color: #ffffff !important;
+}
+
+/* Text buttons / links */
+html.light button.text-white,
+html.light a.text-white {
+  color: #0f172a !important;
+}
+
+/* Event card and similar text improvements */
+html.light .text-slate-300 {
+  color: #1e293b !important;
+  font-weight: 500 !important;
+}
+
+html.light .text-slate-400 {
+  color: #334155 !important;
+  font-weight: 500 !important;
+}
+
+/* Focus states for inputs */
+html.light input:focus,
+html.light textarea:focus,
+html.light select:focus {
+  border-color: #0891b2 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1) !important;
+}
+
+/* Login/Register page specific improvements */
+html.light .text-gray-600.dark\\:text-gray-500 {
+  color: #475569 !important;
+}
+/* Auth page inputs - override bg-gray-900 */
+html.light .bg-gray-900 {
+  background-color: #ffffff !important;
+  border: 1.5px solid #94a3b8 !important;
+}
+
+/* Auth page specific dark mode overrides */
+html.light .dark\:bg-gray-800 input,
+html.light input.dark\:bg-gray-800 {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+/* Link colors in light mode */
+html.light .text-blue-600,
+html.light .text-blue-500 {
+  color: #0369a1 !important;
+  font-weight: 600 !important;
+}
+
+html.light .hover\\:text-blue-500:hover {
+  color: #0284c7 !important;
+}
+
+/* Error messages */
+html.light .text-red-800 {
+  color: #991b1b !important;
+  font-weight: 600 !important;
+}
+
+html.light .dark\:text-red-400 {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+html.light .text-red-300,
+html.light .dark\:text-red-500 {
+  color: #b91c1c !important;
+}
+
+/* Success/error backgrounds */
+html.light .bg-red-50 {
+  background-color: #fef2f2 !important;
+  border: 1px solid #fca5a5 !important;
+}
+
+html.light .dark\\:bg-red-900\\/20 {
+  background-color: #fef2f2 !important;
+  border: 1px solid #fca5a5 !important;
+}
+/* Success message styling */
+html.light .bg-green-50,
+html.light .dark\:bg-green-900\/20 {
+  background-color: #f0fdf4 !important;
+  border: 1px solid #86efac !important;
+}
+
+html.light .text-green-800,
+html.light .dark\:text-green-400 {
+  color: #166534 !important;
+  font-weight: 600 !important;
+}
+
+html.light .text-green-700,
+html.light .dark\:text-green-500 {
+  color: #15803d !important;
+}
+/* Button text visibility */
+html.light .text-gray-800 {
+  color: #1f2937 !important;
+  font-weight: 600 !important;
+}
+
+html.light .dark\:text-gray-300 {
+  color: #1f2937 !important;
+  font-weight: 600 !important;
+}
+
+/* Auth form dividers */
+html.light .dark\:bg-gray-700 {
+  background-color: #d1d5db !important;
+}
+
+/* Hover states for auth buttons */
+html.light .dark\:hover\:bg-gray-700:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Profile page name field */
+html.light .name {
+  color: #0f172a !important;
+}
+/* Comprehensive gray background fixes */
+html.light .bg-gray-900,
+html.light .bg-gray-800,
+html.light .bg-gray-700 {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.light .bg-gray-100 {
+  background-color: #f3f4f6 !important;
+}
+
+/* Border colors in light mode */
+html.light .dark\:border-gray-700 {
+  border-color: #d1d5db !important;
+}
+/* Border improvements for light mode */
+html.light .border-gray-300 {
+  border-color: #9ca3af !important;
+}
+
+html.light .dark\\:border-gray-600 {
+  border-color: #9ca3af !important;
+}
+
+html.light .dark\\:bg-gray-800 {
+  background-color: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+/* Profile page specific backgrounds */
+html.light .bg-gray-50,
+html.light .dark\:bg-gray-700 {
+  background-color: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* White backgrounds in light mode */
+html.light .bg-white {
+  background-color: #ffffff !important;
+}
+
+/* Profile page text colors */
+html.light .text-gray-900,
+html.light .dark\:text-white {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+html.light .text-gray-600,
+html.light .dark\:text-gray-400 {
+  color: #475569 !important;
+  font-weight: 500 !important;
+}
+
+html.light .text-gray-500,
+html.light .dark\:text-gray-400 {
+  color: #64748b !important;
 /* ===== Toast Notifications ===== */
 
 /* Base Toast Container */
