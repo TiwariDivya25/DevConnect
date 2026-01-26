@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Users } from "lucide-react";
+import { Calendar, Container, MapPin, Users } from "lucide-react";
 import { useEvents } from "../hooks/useEvents";
 
 export default function EventsPage() {
@@ -112,13 +112,3 @@ export default function EventsPage() {
     </div>
   );
 }
-
-const Container = ({
-  children,
-}: {
-  children: React.ReactNode;
-}): React.JSX.Element => {
-  return (
-    <div className="flex items-center text-sm text-slate-400">{children}</div>
-  );
-};

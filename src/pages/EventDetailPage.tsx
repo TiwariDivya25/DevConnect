@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import DateComponent from '../components/FormatedDate';
 
 export default function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -427,4 +428,3 @@ export default function EventDetailPage() {
 }
 
 
-const DateComponent = ({ dateString }: { dateString: string }) => <span className="text-slate-300">{format(new Date(dateString), 'MMM d, yyyy')}</span>;
