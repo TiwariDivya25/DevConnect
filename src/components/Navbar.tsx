@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth';
 import { Code2, Menu, X, MessageSquare, Calendar, ChevronDown, User as UserIcon, LayoutDashboard, LogOut } from 'lucide-react';
 import MessageNotificationBadge from './MessageNotificationBadge';
@@ -8,8 +8,40 @@ const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { signOut, user } = useAuth();
+    const location = useLocation();
 
     const displayName = user?.user_metadata?.full_name || user?.user_metadata?.user_name || user?.email;
+
+    
+    const isActive = (path: string) => {
+        if (path === '/') {
+            return location.pathname === '/';
+        }
+        return location.pathname.startsWith(path);
+    };
+
+    
+    const getLinkClasses = (path: string, baseClasses: string) => {
+        const active = isActive(path);
+        const isMobile = baseClasses.includes('border-l-4');
+        
+        if (active) {
+            if (isMobile) {
+
+                {/*Mobile: left border styling*/}
+                return `${baseClasses} text-cyan-400 bg-cyan-900/20 border-cyan-400`;
+            } 
+            
+            else {
+
+                {/*Desktop: bottom border styling*/}
+                return `${baseClasses} text-cyan-400 bg-cyan-900/20 border-b-2 border-cyan-400`;
+            }
+        }
+        
+        
+        return `${baseClasses} ${isMobile ? 'border-transparent' : ''}`;
+    };
 
     return (
         <nav className="bg-slate-950 border-b border-cyan-900/30 text-white sticky top-0 z-50">
@@ -27,26 +59,26 @@ const Navbar = () => {
                     {/* Desktop nav links - Center aligned */}
                     <div className="hidden md:flex items-center justify-center gap-6 flex-1 px-8">
                         {/* Home 链接添加了左边间距 */}
-                        <Link to="/" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap ml-4">~/home</Link>
-                        <Link to="/create" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap">~/create</Link>
-                        <Link to="/communities" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap">~/communities</Link>
-                        <Link to="/events" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap flex items-center gap-1">
+                        <Link to="/" className={getLinkClasses('/', 'font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap ml-4 px-2 py-1 rounded-t-md')}>~/home</Link>
+                        <Link to="/create" className={getLinkClasses('/create', 'font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap px-2 py-1 rounded-t-md')}>~/create</Link>
+                        <Link to="/communities" className={getLinkClasses('/communities', 'font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap px-2 py-1 rounded-t-md')}>~/communities</Link>
+                        <Link to="/events" className={getLinkClasses('/events', 'font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap flex items-center gap-1 px-2 py-1 rounded-t-md')}>
                             ~/events
                         </Link>
-                        <Link to="/messages" className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap flex items-center gap-1">
+                        <Link to="/messages" className={getLinkClasses('/messages', 'font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap flex items-center gap-1 px-2 py-1 rounded-t-md')}>
                             ~/messages
                             <MessageNotificationBadge />
                         </Link>
                         <Link
                             to="/communities/create"
-                            className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap"
+                            className={getLinkClasses('/communities/create', 'font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap px-2 py-1 rounded-t-md')}
                         >
                             ~/new-community
                         </Link>
                         {/* Contributors 链接 - 添加了右边间距 */}
                         <Link
                             to="/contributors"
-                            className="font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap mr-4" // 添加了 mr-4
+                            className={getLinkClasses('/contributors', 'font-mono text-sm text-gray-300 hover:text-cyan-400 transition duration-200 whitespace-nowrap mr-4 px-2 py-1 rounded-t-md')}
                         >
                             ~/contributors
                         </Link>
@@ -164,21 +196,21 @@ const Navbar = () => {
                                 <Link
                                     to="/"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 ml-4" // 添加了 ml-4
+                                    className={getLinkClasses('/', 'block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 ml-4 border-l-4')}
                                 >
                                     ~/home
                                 </Link>
                                 <Link
                                     to="/create"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
+                                    className={getLinkClasses('/create', 'block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 border-l-4')}
                                 >
                                     ~/create
                                 </Link>
                                 <Link
                                     to="/communities"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
+                                    className={getLinkClasses('/communities', 'block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 border-l-4')}
                                 >
                                     ~/communities
                                 </Link>
@@ -186,14 +218,14 @@ const Navbar = () => {
                                 <Link
                                     to="/communities/create"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
+                                    className={getLinkClasses('/communities/create', 'block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 border-l-4')}
                                 >
                                     ~/new-community
                                 </Link>
                                 <Link
                                     to="/events"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3"
+                                    className={getLinkClasses('/events', 'block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 border-l-4')}
                                 >
                                     <Calendar className="w-4 h-4" />
                                     ~/events
@@ -201,7 +233,7 @@ const Navbar = () => {
                                 <Link
                                     to="/messages"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="flex px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition items-center gap-3"
+                                    className={getLinkClasses('/messages', 'flex px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition items-center gap-3 border-l-4')}
                                 >
                                     <MessageSquare className="w-4 h-4" />
                                     ~/messages
@@ -211,7 +243,7 @@ const Navbar = () => {
                                 <Link
                                     to="/contributors"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 mr-4" // 添加了 mr-4
+                                    className={getLinkClasses('/contributors', 'block px-4 py-3 font-mono text-sm text-gray-300 hover:text-cyan-400 hover:bg-cyan-900/20 rounded transition flex items-center gap-3 mr-4 border-l-4')}
                                 >
                                     ~/contributors
                                 </Link>
