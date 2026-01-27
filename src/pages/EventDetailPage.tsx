@@ -67,7 +67,7 @@ export default function EventDetailPage() {
       onSuccess: () => {
         showSuccess(`You are now ${status} this event`);
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError(error.message || 'Failed to register for event');
       }
     });

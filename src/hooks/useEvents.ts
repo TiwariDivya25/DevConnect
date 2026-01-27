@@ -177,7 +177,7 @@ export const useCreateEvent = () => {
         };
 
         // Update the query cache
-        queryClient.setQueryData(['events'], (old: any) => {
+        queryClient.setQueryData(['events'], (old: EventWithDetails[] | undefined) => {
           if (Array.isArray(old)) {
             return [newEvent, ...old];
           }

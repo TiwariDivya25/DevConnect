@@ -13,7 +13,6 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [particles, setParticles] = useState<Array<{x: number, y: number, size: number, speed: number}>>([]);
   const { signUpWithEmail, signInWithGithub } = useAuth();
@@ -54,19 +53,6 @@ export default function RegisterPage() {
       window.removeEventListener('themeChanged', handleThemeChange as EventListener);
     };
   }, []);
-
-  // Handle theme toggle
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(newTheme);
-    
-    const event = new CustomEvent('themeChanged', { detail: newTheme });
-    window.dispatchEvent(event);
-  };
 
   // Handle close/back button
   const handleClose = () => {

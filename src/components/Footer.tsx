@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { 
-  Code2, Github, Mail, Heart, Twitter, Linkedin, MessageCircle, 
-  Send, Zap, Cpu, Shield, Cloud, Database, Code, 
-  TrendingUp, Calendar, ShieldCheck, CpuIcon, RadioTower, MessageSquare,
-  Users, Users2, Server, Globe, CheckCircle, X, Sparkles, Rocket,
-  Activity, Clock, Wifi, Terminal, Layers, ChevronUp, Home,
-  Users as UsersIcon, Plus, User, LogIn, UserPlus, GitMerge,
+  Code2, Github, Mail, Heart, Linkedin, MessageCircle, 
+  Send, Zap, Shield, Cloud, Database, 
+  Calendar, CpuIcon, RadioTower, MessageSquare,
+  Users2, Server, CheckCircle, X, Sparkles, Rocket,
+  ChevronUp, Home,
+  Users as UsersIcon, Plus, User, GitMerge,
   Sun, Moon
 } from "lucide-react";
 import { useState, useEffect } from "react";
