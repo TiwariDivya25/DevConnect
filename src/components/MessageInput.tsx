@@ -203,7 +203,7 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type a message..."
-            className="input-slate resize-none min-h-12 max-h-32"
+            className="input-slate pr-12 resize-none min-h-12 max-h-32"
             rows={1}
           />
 
