@@ -79,7 +79,7 @@ const Home = () => {
                   Create Post
                   <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
                 </Link>
-                <Link 
+                <Link
                   to="/communities"
                   className="group flex items-center justify-center gap-3 px-10 py-5 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-cyan-500/30 rounded-xl text-gray-200 text-lg font-medium transition-all duration-300 backdrop-blur-sm"
                 >

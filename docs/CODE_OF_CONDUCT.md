@@ -62,7 +62,7 @@ It also applies when representing DevConnect in public spaces.
 
 If you experience or witness unacceptable behavior, report it to:
 
-**📧 devconnect-moderation@example.com**
+**📧 divyat.social@gmail.com**
 
 All reports will be reviewed promptly and fairly. Reporter privacy and security will always be respected.
 
@@ -108,13 +108,6 @@ https://github.com/mozilla/diversity
 
 FAQ:  
 https://www.contributor-covenant.org/faq
-
----
-
-## Questions?
-
-For questions regarding this Code of Conduct, contact:  
-**📧 devconnect-moderation@example.com**
 
 ---
 

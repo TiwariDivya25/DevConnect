@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.tsx'
 import CreatePostPage from './pages/CreatePostPage.tsx'
 import Navbar from './components/Navbar.tsx'
@@ -41,7 +41,7 @@ function App() {
           <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
           <Route path="/forgot-password" element={<PublicRoute><ForgetPasswordPage /></PublicRoute>} />
-
+        
           {/* Reset password route */}
           <Route path='reset-password' element={<ResetPasswordPage />} />
 
@@ -51,6 +51,7 @@ function App() {
           <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
           <Route path="/events/create" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
           <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
         </Routes>

@@ -1,7 +1,8 @@
 import { useState, useEffect, type FormEvent } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
 import { Lock } from "lucide-react";
+import { showSuccess, showError } from "../utils/toast";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -15,7 +16,7 @@ export default function ResetPasswordPage() {
     // Check if we have a valid session from the reset link
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        setError("Invalid or expired reset link. Please request a new password reset.");
+        showError("Invalid or expired reset link. Please request a new password reset.");
       }
     });
   }, []);
@@ -45,14 +46,15 @@ export default function ResetPasswordPage() {
       if (error) {
         setError(error.message);
       } else {
-        setSuccess("Password updated successfully! Redirecting to login...");
+        showSuccess("Password updated successfully! Redirecting.");
+
         setTimeout(() => {
           navigate("/login");
         }, 2000);
       }
     } catch (err) {
       console.error('Password update error:', err);
-      setError("An unexpected error occurred");
+      showError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -101,7 +103,8 @@ export default function ResetPasswordPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150
+                light:bg-white light:border-gray-300 light:placeholder-gray-400 light:text-gray-900 light:focus:border-blue-500 light:focus:ring-2 light:focus:ring-blue-200 light:shadow-sm"
                 placeholder="••••••••"
               />
             </div>
@@ -118,7 +121,8 @@ export default function ResetPasswordPage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150
+                light:bg-white light:border-gray-300 light:placeholder-gray-400 light:text-gray-900 light:focus:border-blue-500 light:focus:ring-2 light:focus:ring-blue-200 light:shadow-sm"
                 placeholder="••••••••"
               />
             </div>
@@ -126,7 +130,8 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed
+              light:bg-blue-600 light:text-white light:hover:bg-blue-700 light:focus:ring-blue-200 light:shadow-md"
             >
               {loading ? "Updating password..." : "Update password"}
             </button>

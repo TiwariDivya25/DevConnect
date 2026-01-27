@@ -144,7 +144,8 @@ const CommentSection = ({ postId }: CommentSectionProps) => {
               )}
               <div className="flex-1">
                 <textarea
-                  className="w-full bg-slate-800 border border-cyan-900/30 rounded p-3 text-sm text-gray-100 focus:outline-none focus:border-cyan-500/50 resize-none font-mono placeholder-gray-600"
+                  className="w-full bg-slate-800 border border-cyan-900/30 rounded p-3 text-sm text-white focus:outline-none focus:border-cyan-500/50 resize-none font-mono placeholder-gray-600"
+                  style={{color: '#fff'}}
                   placeholder="$ write your thoughts..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
