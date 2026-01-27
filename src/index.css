@@ -197,7 +197,7 @@
   }
 
   .form-label-icon {
-    @apply block text-sm font-medium mb-1 flex items-center gap-2;
+    @apply text-sm font-medium mb-1 flex items-center gap-2;
   }
 
   /* Auth Page Container */
