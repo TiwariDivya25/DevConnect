@@ -56,28 +56,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInWithGithub = async () => {
     if (!isBackendAvailable || !supabase) {
-      throw new Error("Authentication is disabled in demo mode");
+      throw new Error("GitHub authentication is disabled in demo mode");
     }
 
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-    if (error) throw error;
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          redirectTo: window.location.origin,
+        },
+      });
+      if (error) throw error;
+    } catch (networkError: any) {
+      throw new Error(`GitHub login failed: ${networkError.message || 'Connection failed'}`);
+    }
   };
 
   const signInWithEmail = async (email: string, password: string) => {
     if (!isBackendAvailable || !supabase) {
-      return { error: null };
+      return { 
+        error: { 
+          message: "Authentication is disabled in demo mode",
+          name: "DemoModeError"
+        } as AuthError 
+      };
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      return { error };
+    } catch (networkError: any) {
+      return { 
+        error: {
+          message: `Network error: ${networkError.message || 'Connection failed'}`,
+          name: "NetworkError"
+        } as AuthError
+      };
+    }
   };
 
   const signUpWithEmail = async (
@@ -86,18 +104,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     metadata?: { full_name?: string }
   ) => {
     if (!isBackendAvailable || !supabase) {
-      return { error: null };
+      return { 
+        error: { 
+          message: "Registration is disabled in demo mode",
+          name: "DemoModeError"
+        } as AuthError 
+      };
     }
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata,
-        emailRedirectTo: `${window.location.origin}/`,
-      },
-    });
-    return { error };
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata,
+          emailRedirectTo: `${window.location.origin}/`,
+        },
+      });
+      return { error };
+    } catch (networkError: any) {
+      return { 
+        error: {
+          message: `Registration failed: ${networkError.message || 'Connection failed'}`,
+          name: "NetworkError"
+        } as AuthError
+      };
+    }
   };
 
   const signOut = async () => {
@@ -109,24 +141,52 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const resetPassword = async (email: string) => {
     if (!isBackendAvailable || !supabase) {
-      return { error: null };
+      return { 
+        error: { 
+          message: "Password reset is disabled in demo mode",
+          name: "DemoModeError"
+        } as AuthError 
+      };
     }
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    return { error };
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      return { error };
+    } catch (networkError: any) {
+      return { 
+        error: {
+          message: `Password reset failed: ${networkError.message || 'Connection failed'}`,
+          name: "NetworkError"
+        } as AuthError
+      };
+    }
   };
 
   const updatePassword = async (password: string) => {
     if (!isBackendAvailable || !supabase) {
-      return { error: null };
+      return { 
+        error: { 
+          message: "Password update is disabled in demo mode",
+          name: "DemoModeError"
+        } as AuthError 
+      };
     }
 
-    const { error } = await supabase.auth.updateUser({
-      password,
-    });
-    return { error };
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password,
+      });
+      return { error };
+    } catch (networkError: any) {
+      return { 
+        error: {
+          message: `Password update failed: ${networkError.message || 'Connection failed'}`,
+          name: "NetworkError"
+        } as AuthError
+      };
+    }
   };
 
   const updateProfile = async (metadata: { full_name?: string; avatar_url?: string; bio?: string; location?: string; website?: string; github?: string; twitter?: string }) => {
