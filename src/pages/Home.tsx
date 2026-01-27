@@ -48,7 +48,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center m-2">
             <div>
-              <h1 className="text-6xl font-bold font-mono mb-4 text-white leading-tight">
+              <h1 className="text-6xl font-bold font-mono mb-6 text-white leading-tight text-center md:text-left">
                 <span className="text-cyan-400">Dev</span>Connect
               </h1>
               <p className="text-xl text-gray-400 font-mono mb-8">

@@ -232,7 +232,7 @@ const GlobalSearch = () => {
       </div>
 
       {open && (
-        <div className="absolute mt-2 w-[28rem] max-w-[80vw] bg-slate-900 border border-cyan-900/30 rounded-lg shadow-lg z-50">
+        <div className="absolute mt-2 w-112 max-w-screen-sm bg-slate-900 border border-cyan-900/30 rounded-lg shadow-lg z-50">
           {/* Communities section */}
           <div className="p-3">
             <div className="flex items-center gap-2 text-cyan-300 font-mono text-xs uppercase tracking-wider mb-2">
