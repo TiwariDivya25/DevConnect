@@ -265,7 +265,7 @@ export default function CreateEventPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="btn-primary-dark"
+              className="btn-primary-dark px-6 py-3"
             >
               {isPending ? 'Creating...' : 'Create Event'}
             </button>
