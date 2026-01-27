@@ -13,7 +13,7 @@ export const CommunityPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
             onClick={() => navigate(-1)}
-            className=\"back-btn-link\"
+            className="back-btn-link"
           >
             <ArrowLeft className="w-4 h-4" />
             back
