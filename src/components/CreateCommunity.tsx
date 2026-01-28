@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
-import { AlertCircle, CheckCircle } from "lucide-react";
-import {showSuccess, showError} from '../utils/toast';
+import { showSuccess } from '../utils/toast';
 
 interface CommunityInput {
   name: string;
@@ -26,7 +25,7 @@ export const CreateCommunity = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isError, error, isSuccess } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: createCommunity,
     onSuccess: () => {
       

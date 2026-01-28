@@ -9,7 +9,6 @@ import {
   Code2,
   Plus,
   Activity,
-  User,
   MessageCircle,
   ThumbsUp,
   Settings,
@@ -84,7 +83,7 @@ export default function DashboardPage() {
   });
 
   // Fetch User Posts
-  const { data: myPosts, isLoading: postsLoading } = useQuery({
+  const { data: myPosts } = useQuery({
     queryKey: ['my-posts', user?.id],
     queryFn: async () => {
       if (!user || !supabase) return [];
@@ -100,7 +99,7 @@ export default function DashboardPage() {
   });
 
   // Fetch Joined Communities
-  const { data: myCommunities, isLoading: communitiesLoading } = useQuery({
+  const { data: myCommunities } = useQuery({
     queryKey: ['my-communities', user?.id],
     queryFn: async () => {
       if (!user || !supabase) return [];
@@ -115,7 +114,7 @@ export default function DashboardPage() {
   });
 
   // Fetch Created Communities
-  const { data: createdCommunities, isLoading: createdCommLoading } = useQuery({
+  const { data: createdCommunities } = useQuery({
     queryKey: ['created-communities', user?.id],
     queryFn: async () => {
       if (!user || !supabase) return [];
@@ -131,7 +130,7 @@ export default function DashboardPage() {
   });
 
   // Fetch Joined Events
-  const { data: myEvents, isLoading: eventsLoading } = useQuery({
+  const { data: myEvents } = useQuery({
     queryKey: ['my-events', user?.id],
     queryFn: async () => {
       if (!user || !supabase) return [];
@@ -144,11 +143,6 @@ export default function DashboardPage() {
     },
     enabled: !!user && (activeTab === 'events' || activeTab === 'overview')
   });
-
-  const isLoading = statsLoading ||
-    (activeTab === 'posts' && postsLoading) ||
-    (activeTab === 'communities' && (communitiesLoading || createdCommLoading)) ||
-    (activeTab === 'events' && eventsLoading);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white font-mono">
@@ -205,7 +199,7 @@ export default function DashboardPage() {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as 'overview' | 'posts' | 'communities' | 'events')}
                 className={`flex items-center gap-2 pb-4 text-sm font-bold transition-all relative ${activeTab === tab.id
                   ? 'text-cyan-400'
                   : 'text-gray-500 hover:text-gray-300'

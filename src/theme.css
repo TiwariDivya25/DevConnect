@@ -79,20 +79,21 @@ html.light .bg-slate-900\/50 {
 
 
 html.light .from-slate-900 {
-  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+  background: linear-gradient(to bottom, #f0f9ff, #e0f2fe) !important;
 }
 
 html.light .via-slate-950 {
-  background: linear-gradient(to bottom, #ffffff, #f8fafc, #f1f5f9) !important;
+  background: linear-gradient(to bottom, #f0f9ff, #e0f2fe, #f8fafc) !important;
 }
 
 html.light .to-slate-950 {
-  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+  background: linear-gradient(to bottom, #e0f2fe, #f8fafc) !important;
 }
 
 html.light .bg-gradient-to-b {
-  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
-  border-bottom: 2px solid #cbd5e1 !important;
+  background: linear-gradient(to bottom, #f0f9ff, #e0f2fe, #f8fafc) !important;
+  border-bottom: 1px solid #0891b2 !important;
+  box-shadow: 0 4px 6px -1px rgba(8, 145, 178, 0.1), 0 2px 4px -1px rgba(8, 145, 178, 0.06) !important;
 }
 
 html.light .bg-linear-to-br {
@@ -123,17 +124,22 @@ html.light .text-white {
 }
 
 html.light .text-gray-300 {
-  color: #1f2937 !important;
-  font-weight: 600;
+  color: #334155 !important;
+  font-weight: 500;
 }
 
 html.light .text-slate-300 {
-  color: #1f2937 !important;
-  font-weight: 600;
+  color: #334155 !important;
+  font-weight: 500;
 }
 
 html.light .text-slate-400 {
   color: #475569 !important;
+  font-weight: 500;
+}
+
+html.light .text-gray-400 {
+  color: #64748b !important;
   font-weight: 500;
 }
 
@@ -258,7 +264,8 @@ html.light .border-cyan-400\/50 {
 }
 
 html.light .bg-cyan-900\/20 {
-  background-color: rgba(8, 145, 178, 0.1) !important;
+  background-color: #0891b2 !important;
+  box-shadow: 0 4px 6px -1px rgba(8, 145, 178, 0.3), 0 2px 4px -1px rgba(8, 145, 178, 0.2) !important;
 }
 
 html.light .bg-cyan-900\/30 {
@@ -290,7 +297,22 @@ html.light .hover\:text-white:hover {
 }
 
 html.light .hover\:bg-cyan-900\/50:hover {
-  background-color: rgba(8, 145, 178, 0.2) !important;
+  background-color: rgba(8, 145, 178, 0.25) !important;
+}
+
+html.light .hover\:bg-cyan-600\/50:hover {
+  background-color: #0e7490 !important;
+  box-shadow: 0 10px 15px -3px rgba(8, 145, 178, 0.4), 0 4px 6px -2px rgba(8, 145, 178, 0.3) !important;
+}
+
+html.light .bg-slate-800\/50 {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light .hover\:bg-slate-800:hover {
+  background-color: #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
 }
 
 html.light .hover\:bg-red-900\/40:hover {
@@ -305,6 +327,41 @@ html.light .hover\:border-slate-500:hover {
   border-color: #64748b !important;
 }
 
+/* Code block styling for light mode */
+html.light .bg-linear-to-br,
+html.light .from-cyan-500\/10,
+html.light .to-blue-500\/10 {
+  background: linear-gradient(to bottom right, #e0f2fe, #dbeafe) !important;
+  border-color: #0891b2 !important;
+  box-shadow: 0 4px 6px -1px rgba(8, 145, 178, 0.1), 0 2px 4px -1px rgba(8, 145, 178, 0.06) !important;
+}
+
+html.light .text-green-400 {
+  color: #059669 !important;
+  font-weight: 600;
+}
+
+html.light .text-emerald-400 {
+  color: #10b981 !important;
+  font-weight: 600;
+}
+
+html.light .text-yellow-400 {
+  color: #d97706 !important;
+  font-weight: 600;
+}
+
+/* Improve button text visibility */
+html.light .bg-cyan-600\/30 .text-cyan-300,
+html.light .border-cyan-400\/50 ~ * {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* Secondary button styling */
+html.light .border-gray-600\/30 {
+  border-color: #cbd5e1 !important;
+}
 /* ===== Toast Notifications ===== */
 
 /* Base Toast Container */

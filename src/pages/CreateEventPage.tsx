@@ -49,7 +49,7 @@ export default function CreateEventPage() {
         showSuccess('Event created successfully!');
         navigate(`/events/${data.id}`);
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError(error.message || 'Failed to create event');
       }
     });
@@ -62,14 +62,7 @@ export default function CreateEventPage() {
       [name]: value
     }));
   }
-
-  const handleVirtualToggle = () => {
-    setFormData(prev => ({
-      ...prev,
-      is_virtual: !prev.is_virtual
-    }));
-  }
-
+  
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     setFormData(prev => ({

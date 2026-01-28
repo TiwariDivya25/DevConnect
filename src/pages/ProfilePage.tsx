@@ -83,7 +83,7 @@ export default function ProfilePage() {
         showSuccess("Profile updated successfully");
         setIsEditing(false);
       }
-    } catch (err: any) {
+    } catch (err) {
       showError("Failed to update profile");
       console.log("Profile update error:", err);
     } finally {
