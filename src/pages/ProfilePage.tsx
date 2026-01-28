@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { User, Mail, Calendar, Shield, Camera, Edit3, Globe, Github, Twitter } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
-import {showSuccess, showError} from "../utils/toast";
+import { showSuccess, showError } from "../utils/toast";
 
 export default function ProfilePage() {
   const { user, signOut, updateProfile } = useAuth();
@@ -25,12 +25,12 @@ export default function ProfilePage() {
   }
 
   const handleSignOut = async () => {
-    try{
+    try {
       await signOut();
       showSuccess("Signed Out Successfully");
       navigate("/login");
     }
-    catch{
+    catch {
       showError("Failed to Sign Out");
     }
   };
@@ -53,10 +53,10 @@ export default function ProfilePage() {
 
   const handleSaveProfile = async () => {
     if (!user) return;
-    
+
     setIsUpdating(true);
     setUpdateError(null);
-    
+
     try {
       // Handle avatar upload if a new file is selected
       let avatarUrl = user.user_metadata?.avatar_url || "";
@@ -65,7 +65,7 @@ export default function ProfilePage() {
         // For demo mode, we'll use a data URL
         avatarUrl = URL.createObjectURL(avatarFile);
       }
-      
+
       const { error } = await updateProfile({
         full_name: fullName,
         bio: bio,
@@ -75,7 +75,7 @@ export default function ProfilePage() {
         twitter: twitter,
         avatar_url: avatarUrl
       });
-      
+
       if (error) {
         setUpdateError(error.message);
         showError("Failed to update profile");
@@ -100,7 +100,7 @@ export default function ProfilePage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 h-32"></div>
-          
+
           {/* Profile content */}
           <div className="px-8 pb-8">
             <div className="relative -mt-16 mb-6 flex justify-between items-start">
@@ -140,7 +140,7 @@ export default function ProfilePage() {
               </div>
               <button
                 onClick={handleEditToggle}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+                className="flex-gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
               >
                 <Edit3 className="w-4 h-4" />
                 {isEditing ? "Cancel" : "Edit Profile"}
@@ -161,26 +161,26 @@ export default function ProfilePage() {
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label className="form-label text-gray-700 dark:text-gray-300">
                         Full Name
                       </label>
                       <input
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        className="input-light dark:input-dark"
                         placeholder="Enter your full name"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label className="form-label text-gray-700 dark:text-gray-300">
                         Bio
                       </label>
                       <textarea
                         value={bio}
                         onChange={(e) => setBio(e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        className="input-light dark:input-dark"
                         placeholder="Tell us about yourself"
                         rows={3}
                       />
@@ -188,20 +188,20 @@ export default function ProfilePage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="form-label text-gray-700 dark:text-gray-300">
                           Location
                         </label>
                         <input
                           type="text"
                           value={location}
                           onChange={(e) => setLocation(e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="input-light dark:input-dark"
                           placeholder="City, Country"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
+                        <label className="form-label-icon text-gray-700 dark:text-gray-300">
                           <Globe className="w-4 h-4" />
                           Website
                         </label>
@@ -209,7 +209,7 @@ export default function ProfilePage() {
                           type="text"
                           value={website}
                           onChange={(e) => setWebsite(e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="input-light dark:input-dark"
                           placeholder="https://yourwebsite.com"
                         />
                       </div>
@@ -217,7 +217,7 @@ export default function ProfilePage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
+                        <label className="form-label-icon text-gray-700 dark:text-gray-300">
                           <Github className="w-4 h-4" />
                           GitHub
                         </label>
@@ -225,13 +225,13 @@ export default function ProfilePage() {
                           type="text"
                           value={github}
                           onChange={(e) => setGithub(e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="input-light dark:input-dark"
                           placeholder="GitHub username"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
+                        <label className="form-label-icon text-gray-700 dark:text-gray-300">
                           <Twitter className="w-4 h-4" />
                           Twitter/X
                         </label>
@@ -239,7 +239,7 @@ export default function ProfilePage() {
                           type="text"
                           value={twitter}
                           onChange={(e) => setTwitter(e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="input-light dark:input-dark"
                           placeholder="Twitter/X username"
                         />
                       </div>
@@ -247,8 +247,8 @@ export default function ProfilePage() {
                   </div>
 
                   {updateError && (
-                    <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
-                      <p className="text-sm text-red-800 dark:text-red-500">{updateError}</p>
+                    <div className="alert-error">
+                      <p>{updateError}</p>
                     </div>
                   )}
 
@@ -256,14 +256,14 @@ export default function ProfilePage() {
                     <button
                       onClick={handleSaveProfile}
                       disabled={isUpdating}
-                      className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition disabled:opacity-50"
+                      className="flex-1 btn-success"
                     >
                       {isUpdating ? "Saving..." : "Save Changes"}
                     </button>
                     <button
                       onClick={handleEditToggle}
                       disabled={isUpdating}
-                      className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition disabled:opacity-50"
+                      className="flex-1 btn-secondary-light dark:btn-secondary-dark"
                     >
                       Cancel
                     </button>
@@ -317,7 +317,7 @@ export default function ProfilePage() {
                         <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Social Links</p>
                         <div className="flex flex-wrap gap-2">
                           {user.user_metadata?.website && (
-                            <a 
+                            <a
                               href={user.user_metadata.website.startsWith('http') ? user.user_metadata.website : `https://${user.user_metadata.website}`}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -328,7 +328,7 @@ export default function ProfilePage() {
                             </a>
                           )}
                           {user.user_metadata?.github && (
-                            <a 
+                            <a
                               href={`https://github.com/${user.user_metadata.github}`}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -339,7 +339,7 @@ export default function ProfilePage() {
                             </a>
                           )}
                           {user.user_metadata?.twitter && (
-                            <a 
+                            <a
                               href={`https://twitter.com/${user.user_metadata.twitter}`}
                               target="_blank"
                               rel="noopener noreferrer"

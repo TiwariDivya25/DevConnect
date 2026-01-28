@@ -17,7 +17,7 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const sendMessage = useSendMessage();
   const { startTyping, stopTyping } = useTypingIndicator(conversationId);
 
@@ -32,17 +32,17 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
   // Typing indicator logic
   useEffect(() => {
     let typingTimeout: NodeJS.Timeout;
-    
+
     if (message.trim()) {
       startTyping();
-      
+
       typingTimeout = setTimeout(() => {
         stopTyping();
       }, 3000);
     } else {
       stopTyping();
     }
-    
+
     return () => {
       if (typingTimeout) clearTimeout(typingTimeout);
       stopTyping();
@@ -51,17 +51,17 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
 
   const handleSend = async () => {
     if (!message.trim() || sendMessage.isPending) return;
-    
+
     const messageContent = message.trim();
     setMessage('');
-    
+
     try {
       await sendMessage.mutateAsync({
         conversation_id: conversationId,
         content: messageContent,
         reply_to_id: replyTo?.id,
       });
-      
+
       if (onCancelReply) onCancelReply();
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -78,25 +78,25 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
 
   const handleFileUpload = async (file: File) => {
     if (!user) return;
-    
+
     setIsUploading(true);
-    
+
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/${Date.now()}.${fileExt}`;
-      
+
       const { error: uploadError } = await supabase.storage
         .from('message-files')
         .upload(fileName, file);
-      
+
       if (uploadError) throw uploadError;
-      
+
       const { data: { publicUrl } } = supabase.storage
         .from('message-files')
         .getPublicUrl(fileName);
-      
+
       const messageType = file.type.startsWith('image/') ? 'image' : 'file';
-      
+
       await sendMessage.mutateAsync({
         conversation_id: conversationId,
         content: messageType === 'image' ? '📷 Image' : `📎 ${file.name}`,
@@ -105,7 +105,7 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
         file_name: file.name,
         reply_to_id: replyTo?.id,
       });
-      
+
       if (onCancelReply) onCancelReply();
     } catch (error) {
       console.error('Failed to upload file:', error);
@@ -122,7 +122,7 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
   };
 
   const commonEmojis = [
-    '😀', '😂', '😍', '🤔', '😢', '😡', '👍', '👎', 
+    '😀', '😂', '😍', '🤔', '😢', '😡', '👍', '👎',
     '❤️', '🎉', '🔥', '💯', '👏', '🙏', '💪', '🎯'
   ];
 
@@ -179,7 +179,7 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
           >
             <Paperclip className="w-5 h-5" />
           </button>
-          
+
           <button
             onClick={() => {
               if (fileInputRef.current) {
@@ -203,10 +203,10 @@ const MessageInput = ({ conversationId, replyTo, onCancelReply }: MessageInputPr
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type a message..."
-            className="w-full px-4 py-3 pr-12 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 resize-none min-h-[48px] max-h-32"
+            className="input-slate pr-12 resize-none min-h-12 max-h-32"
             rows={1}
           />
-          
+
           {/* Emoji Button */}
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}

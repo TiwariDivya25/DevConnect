@@ -31,17 +31,17 @@ const MessagingInterface = () => {
   // Filter conversations based on search
   const filteredConversations = conversations.filter(conv => {
     if (!searchQuery) return true;
-    
+
     if (conv.name) {
       return conv.name.toLowerCase().includes(searchQuery.toLowerCase());
     }
-    
+
     // For direct messages, search by participant names
     const participantNames = conv.participants
       ?.filter(p => p.user_id !== user?.id)
       .map(p => p.user?.user_metadata?.full_name || p.user?.user_metadata?.user_name || p.user?.email)
       .join(' ') || '';
-    
+
     return participantNames.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
@@ -75,7 +75,7 @@ const MessagingInterface = () => {
               <Plus className="w-5 h-5" />
             </button>
           </div>
-          
+
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -84,7 +84,7 @@ const MessagingInterface = () => {
               placeholder="Search conversations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50"
+              className="input-slate pl-10"
             />
           </div>
         </div>
@@ -125,7 +125,7 @@ const MessagingInterface = () => {
               ) : (
                 <MessageList messages={messages} />
               )}
-              
+
               {/* Typing Indicators */}
               {typingUsers.length > 0 && (
                 <div className="flex items-center gap-2 text-gray-400 text-sm">
@@ -135,12 +135,12 @@ const MessagingInterface = () => {
                     <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                   <span>
-                    {typingUsers.map(t => t.user?.user_metadata?.full_name || t.user?.user_metadata?.user_name).join(', ')} 
+                    {typingUsers.map(t => t.user?.user_metadata?.full_name || t.user?.user_metadata?.user_name).join(', ')}
                     {typingUsers.length === 1 ? ' is' : ' are'} typing...
                   </span>
                 </div>
               )}
-              
+
               <div ref={messagesEndRef} />
             </div>
 

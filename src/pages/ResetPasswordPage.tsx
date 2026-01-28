@@ -1,6 +1,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase-client";
+import { supabase, isBackendAvailable } from "../supabase-client";
+import { useAuth } from "../hooks/useAuth";
 import { Lock } from "lucide-react";
 import { showSuccess, showError } from "../utils/toast";
 
@@ -11,20 +12,37 @@ export default function ResetPasswordPage() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { updatePassword } = useAuth();
 
   useEffect(() => {
+    // Skip session check in demo mode or when backend is unavailable
+    if (!isBackendAvailable || !supabase) {
+      showError("Password reset is not available in demo mode.");
+      setTimeout(() => navigate("/login"), 2000);
+      return;
+    }
+
     // Check if we have a valid session from the reset link
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         showError("Invalid or expired reset link. Please request a new password reset.");
       }
+    }).catch((err) => {
+      console.error("Session check error:", err);
+      showError("Failed to verify reset link. Please try again.");
     });
-  }, []);
+  }, [navigate]);
 
   const handlePasswordUpdate = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
+    // Check if backend is available
+    if (!isBackendAvailable) {
+      setError("Password reset is not available in demo mode.");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -39,14 +57,13 @@ export default function ResetPasswordPage() {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: password,
-      });
+      const { error } = await updatePassword(password);
 
       if (error) {
         setError(error.message);
       } else {
         showSuccess("Password updated successfully! Redirecting.");
+        setSuccess("Password updated successfully!");
 
         setTimeout(() => {
           navigate("/login");
@@ -54,6 +71,7 @@ export default function ResetPasswordPage() {
       }
     } catch (err) {
       console.error('Password update error:', err);
+      setError("Something went wrong. Please try again.");
       showError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -61,8 +79,8 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full space-y-8">
+    <div className="auth-container">
+      <div className="auth-card">
         <div>
           <div className="flex justify-center">
             <div className="rounded-full bg-blue-100 dark:bg-blue-900/30 p-3">
@@ -79,20 +97,20 @@ export default function ResetPasswordPage() {
 
         <div className="mt-8 space-y-6">
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
-              <p className="text-sm text-red-800 dark:text-red-400">{error}</p>
+            <div className="alert-error">
+              <p>{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="rounded-md bg-green-50 dark:bg-green-900/20 p-4">
-              <p className="text-sm text-green-800 dark:text-green-400">{success}</p>
+            <div className="alert-success">
+              <p>{success}</p>
             </div>
           )}
 
           <form onSubmit={handlePasswordUpdate} className="space-y-4">
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
+              <label htmlFor="password" className="form-label">
                 New Password
               </label>
               <input
@@ -103,14 +121,13 @@ export default function ResetPasswordPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150
-                light:bg-white light:border-gray-300 light:placeholder-gray-400 light:text-gray-900 light:focus:border-blue-500 light:focus:ring-2 light:focus:ring-blue-200 light:shadow-sm"
+                className="input-light dark:input-dark"
                 placeholder="••••••••"
               />
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
+              <label htmlFor="confirmPassword" className="form-label">
                 Confirm New Password
               </label>
               <input
@@ -121,8 +138,7 @@ export default function ResetPasswordPage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150
-                light:bg-white light:border-gray-300 light:placeholder-gray-400 light:text-gray-900 light:focus:border-blue-500 light:focus:ring-2 light:focus:ring-blue-200 light:shadow-sm"
+                className="input-light dark:input-dark"
                 placeholder="••••••••"
               />
             </div>
@@ -130,8 +146,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed
-              light:bg-blue-600 light:text-white light:hover:bg-blue-700 light:focus:ring-blue-200 light:shadow-md"
+              className="w-full btn-primary-light dark:btn-primary-dark"
             >
               {loading ? "Updating password..." : "Update password"}
             </button>

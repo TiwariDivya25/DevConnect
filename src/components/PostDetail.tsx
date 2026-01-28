@@ -25,7 +25,7 @@ const fetchPost = async (postId: number): Promise<Post> => {
         .select('*')
         .eq('id', postId)
         .single();
-    
+
     if (error) {
         throw new Error("Error fetching post: " + error.message);
     }
@@ -35,7 +35,7 @@ const fetchPost = async (postId: number): Promise<Post> => {
 const PostDetail = ({ postId }: PostDetailProps) => {
     const navigate = useNavigate();
     const [likeCount, setLikeCount] = useState(0);
-    
+
     const { data: post, error, isLoading } = useQuery<Post, Error>({
         queryKey: ["post", postId],
         queryFn: () => fetchPost(postId)
@@ -43,7 +43,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex-center min-h-screen">
                 <div className="text-lg text-gray-600">Loading post...</div>
             </div>
         );
@@ -51,7 +51,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
 
     if (error) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex-center min-h-screen">
                 <div className="text-lg text-red-600">Error loading post: {error.message}</div>
             </div>
         );
@@ -59,7 +59,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
 
     if (!post) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex-center min-h-screen">
                 <div className="text-lg text-gray-600">Post not found</div>
             </div>
         );
@@ -86,7 +86,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
             {/* Back Button */}
             <button
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-4 transition"
+                className="flex-gap-2 text-gray-700 hover:text-gray-900 mb-4 transition"
             >
                 <ArrowLeft className="w-5 h-5" />
                 <span className="font-medium">Back</span>
@@ -95,10 +95,10 @@ const PostDetail = ({ postId }: PostDetailProps) => {
             {/* Post Card */}
             <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                 {/* Header: Avatar and Title */}
-                <div className="flex items-center p-4 border-b border-gray-200">
+                <div className="flex-gap-2 p-4 border-b border-gray-200">
                     {post.avatar_url ? (
-                        <img 
-                            src={post.avatar_url} 
+                        <img
+                            src={post.avatar_url}
                             alt="User avatar"
                             className="w-10 h-10 rounded-full mr-3 shrink-0 object-cover"
                         />
@@ -114,9 +114,9 @@ const PostDetail = ({ postId }: PostDetailProps) => {
                 {/* Image */}
                 {post.image_url && (
                     <div className="w-full bg-gray-100">
-                        <img 
-                            src={post.image_url} 
-                            alt={post.title} 
+                        <img
+                            src={post.image_url}
+                            alt={post.title}
                             className="w-full h-auto object-contain max-h-[600px]"
                         />
                     </div>
