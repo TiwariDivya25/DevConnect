@@ -40,13 +40,14 @@ export default function ResetPasswordPage() {
       return;
     }
 
+    if (!isBackendAvailable || !supabase) {
+      setError("Password reset is unavailable in demo mode or without backend configuration.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      if (!isBackendAvailable || !supabase) {
-        setError("Password reset is unavailable in demo mode or without backend configuration.");
-        return;
-      }
       const { error } = await supabase.auth.updateUser({
         password: password,
       });
