@@ -48,7 +48,7 @@ const CreateConversationModal = ({ onClose, onConversationCreated }: CreateConve
       try {
         // ✅ SECURE: Query profiles table with RLS instead of admin API
         const { data, error } = await supabase
-          .from('Profiles')
+          .from('profiles')
           .select('id, full_name, avatar_url')
           .neq('id', currentUser?.id || '');
 
