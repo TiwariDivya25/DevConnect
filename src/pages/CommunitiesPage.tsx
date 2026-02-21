@@ -1,8 +1,44 @@
 import CommunityList from "../components/CommunityList";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export const CommunitiesPage = () => {
+  const text = "Explore, connect, and collaborate in themed development communities.";
+
+  const [displayText, setDisplayText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    let timeout = null;
+
+    if (!isDeleting && index < text.length) {
+      // Typing
+      timeout = setTimeout(() => {
+        setDisplayText(text.slice(0, index + 1));
+        setIndex((prev) => prev + 1);
+      }, 55);
+    } else if (!isDeleting && index === text.length) {
+      // Pause after typing
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1200);
+    } else if (isDeleting && index > 0) {
+      // Deleting
+      timeout = setTimeout(() => {
+        setDisplayText(text.slice(0, index - 1));
+        setIndex((prev) => prev - 1);
+      }, 35);
+    } else if (isDeleting && index === 0) {
+      setIsDeleting(false);
+      setDisplayText("");
+    }
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [index, isDeleting, text]);
+
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Hero Section (Max width remains 7xl for full-bleed background) */}
@@ -16,7 +52,8 @@ export const CommunitiesPage = () => {
                 <span className="text-gray-200">/Build</span>
               </h1>
               <p className="text-xl text-gray-400 font-mono mb-8">
-                Explore, connect, and collaborate in themed development communities.
+                {displayText}
+                <span className="animate-pulse text-cyan-400">|</span>
               </p>
               
               <Link 

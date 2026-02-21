@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.tsx'
 import CreatePostPage from './pages/CreatePostPage.tsx'
 import Navbar from './components/Navbar.tsx'
@@ -21,7 +21,8 @@ import ProtectedRoute from './components/ProtectedRoute.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import Contributors from './pages/Contributors.tsx'
 import DashboardPage from './pages/DashboardPage.tsx'
-
+import PrivacyPolicy from './pages/PrivacyPolicy.tsx'
+import TermsAndConditions from './pages/TermsAndConditions.tsx'
 function App() {
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors">
@@ -34,13 +35,14 @@ function App() {
           <Route path="/communities/:id" element={<CommunityPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/contributors" element={<Contributors />} />
-
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
 
           {/* Public Routes */}
           <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
           <Route path="/forgot-password" element={<PublicRoute><ForgetPasswordPage /></PublicRoute>} />
-
+        
           {/* Reset password route */}
           <Route path='reset-password' element={<ResetPasswordPage />} />
 

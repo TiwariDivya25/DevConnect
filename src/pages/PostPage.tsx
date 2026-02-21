@@ -1,11 +1,11 @@
-
 import PostDetail from '../components/PostDetail';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 const PostPage = () => {
   const { id } = useParams<{ id: string }>();
-  
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Header - visually lighter, transparent, shifted left */}
@@ -21,8 +21,8 @@ const PostPage = () => {
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
           style={{ marginLeft: '-32px', maxWidth: 'calc(100% - 32px)' }}
         >
-          <Link
-            to="/"
+          <button
+            onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-mono text-sm transition px-4 py-2 rounded-lg"
             style={{
               background: 'rgba(15,23,42,0.5)',
@@ -33,8 +33,8 @@ const PostPage = () => {
             }}
           >
             <ArrowLeft className="w-4 h-4" />
-            back to posts
-          </Link>
+            back
+          </button>
         </div>
       </div>
 

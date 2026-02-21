@@ -1,5 +1,5 @@
 import { useAuth } from '../hooks/useAuth';
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { User, Mail, Calendar, Shield, Camera, Edit3, Globe, Github, Twitter } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
@@ -83,7 +83,7 @@ export default function ProfilePage() {
         showSuccess("Profile updated successfully");
         setIsEditing(false);
       }
-    } catch (err: any) {
+    } catch (err) {
       showError("Failed to update profile");
       console.log("Profile update error:", err);
     } finally {

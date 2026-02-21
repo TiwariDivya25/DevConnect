@@ -1,4 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
+ 
 import { createContext, useEffect, useState } from "react";
 import { type User, AuthError } from "@supabase/supabase-js";
 import { supabase, isBackendAvailable } from "../supabase-client";

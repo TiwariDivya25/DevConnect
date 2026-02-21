@@ -94,7 +94,7 @@ const LikeButton = ({ postId, onLikeCountChange }: Props) => {
         return (
             <div>
                 <button className="flex items-center gap-1">
-                    <Heart className="w-6 h-6 text-gray-400" />
+                    <Heart className="w-6 h-6 text-gray-400 dark:text-gray-500" />
                 </button>
             </div>
         );
@@ -116,7 +116,7 @@ const LikeButton = ({ postId, onLikeCountChange }: Props) => {
                     className={`w-6 h-6 transition-colors ${
                         userVote === 1 
                             ? 'fill-red-500 text-red-500' 
-                            : 'text-gray-900 hover:text-red-500'
+                            : 'text-gray-900 hover:text-red-500 dark:text-red-500 dark:hover:text-red-600'
                     }`}
                 />
             </button>

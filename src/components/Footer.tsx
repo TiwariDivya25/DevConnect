@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { 
-  Code2, Github, Mail, Heart, Twitter, Linkedin, MessageCircle, 
-  Send, Zap, Cpu, Shield, Cloud, Database, Code, 
-  TrendingUp, Calendar, ShieldCheck, CpuIcon, RadioTower, MessageSquare,
-  Users, Users2, Server, Globe, CheckCircle, X, Sparkles, Rocket,
-  Activity, Clock, Wifi, Terminal, Layers, ChevronUp, Home,
-  Users as UsersIcon, Plus, User, LogIn, UserPlus, GitMerge,
+  Code2, Github, Mail, Heart, Linkedin, MessageCircle, 
+  Send, Zap, Shield, Cloud, Database, 
+  Calendar, CpuIcon, RadioTower, MessageSquare,
+  Users2, Server, CheckCircle, X, Sparkles, Rocket,
+  ChevronUp, Home,
+  Users as UsersIcon, Plus, User, GitMerge,
   Sun, Moon
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -267,9 +267,9 @@ export default function Footer() {
               {/* Social Icons */}
               <div className="flex gap-3 pt-2">
                 {[
-                  { icon: Github, color: "hover:bg-gray-800 hover:text-white", label: "GitHub", url: "https://github.com/TiwariDivya25/DevConnect" },
+                  { icon: Github, color: "hover:bg-green-800 hover:text-white", label: "GitHub", url: "https://github.com/TiwariDivya25/DevConnect" },
                   { icon: X, color: "hover:bg-black hover:text-white", label: "X", url: "https://twitter.com/devconnect" },
-                  { icon: Linkedin, color: "hover:bg-blue-600 hover:text-white", label: "LinkedIn", url: "https://linkedin.com/company/devconnect" },
+                  { icon: Linkedin, color: "hover:bg-blue-600 hover:text-white", label: "LinkedIn", url: "https://www.linkedin.com/in/tiwari-divya-in/" },
                   { icon: MessageCircle, color: "hover:bg-purple-500 hover:text-white", label: "Discord", url: "https://discord.gg/devconnect" },
                 ].map((social, i) => (
                   <a
@@ -466,26 +466,37 @@ export default function Footer() {
               </div>
               
               <div className="flex flex-wrap gap-4 text-sm group/links">
-                {["Privacy", "Terms", "Cookies", "Security", "Status", "Careers", "Docs"].map((item, i) => (
-                  <a
-                    key={i}
-                    href={item === "Docs" ? "/docs" : "#"}
-                    className={`transition-all duration-300 relative group/link overflow-hidden ${
-                      isDark 
-                        ? 'text-gray-400 hover:text-cyan-300' 
-                        : 'text-gray-600 hover:text-blue-600'
-                    }`}
-                    style={{ animationDelay: `${i * 0.1}s` }}
-                  >
-                    <span className="relative z-10 group-hover/link:translate-x-1 transition-transform duration-300">
-                      {item}
-                    </span>
-                    <span className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover/link:w-full transition-all duration-300 ${
-                      isDark ? 'bg-cyan-400' : 'bg-blue-500'
-                    }`}></span>
-                  </a>
-                ))}
-              </div>
+  {[
+    { label: "Privacy", path: "/privacy-policy" },
+    { label: "Terms", path: "/terms" },
+    { label: "Cookies", path: "#" },
+    { label: "Security", path: "#" },
+    { label: "Status", path: "#" },
+    { label: "Careers", path: "#" },
+    { label: "Docs", path: "/docs" },
+  ].map((item, i) => (
+    <Link
+      key={i}
+      to={item.path}
+      className={`transition-all duration-300 relative group/link overflow-hidden ${
+        isDark 
+          ? 'text-gray-400 hover:text-cyan-300' 
+          : 'text-gray-600 hover:text-blue-600'
+      }`}
+      style={{ animationDelay: `${i * 0.1}s` }}
+    >
+      <span className="relative z-10 group-hover/link:translate-x-1 transition-transform duration-300">
+        {item.label}
+      </span>
+      <span
+        className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover/link:w-full transition-all duration-300 ${
+          isDark ? 'bg-cyan-400' : 'bg-blue-500'
+        }`}
+      ></span>
+    </Link>
+  ))}
+</div>
+
             </div>
           </div>
         </div>
