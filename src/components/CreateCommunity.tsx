@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
-import { showSuccess } from '../utils/toast';
+import { showSuccess, showError } from '../utils/toast';
 
 interface CommunityInput {
   name: string;
@@ -10,6 +10,8 @@ interface CommunityInput {
 }
 
 const createCommunity = async (community: CommunityInput) => {
+  if (!supabase) throw new Error("Supabase client not available");
+
   const { error, data } = await supabase
     .from("Communities")
     .insert([community])
@@ -28,9 +30,7 @@ export const CreateCommunity = () => {
   const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: createCommunity,
     onSuccess: () => {
-      
       showSuccess("Community created successfully");
-
       queryClient.invalidateQueries({ queryKey: ["communities"] });
       setName("");
       setDescription("");
@@ -72,7 +72,6 @@ export const CreateCommunity = () => {
             required
             disabled={isPending}
           />
-          <p className="text-xs text-gray-500 mt-1">Give your community a clear, descriptive name</p>
         </div>
 
         <div className="mb-8">
@@ -84,12 +83,11 @@ export const CreateCommunity = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full bg-slate-800/50 border border-slate-700 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 transition resize-none"
-            placeholder="Describe what your community is about, who should join, and what topics you'll discuss..."
+            placeholder="Describe what your community is about..."
             rows={4}
             required
             disabled={isPending}
           />
-          <p className="text-xs text-gray-500 mt-1">Be specific about the community's purpose</p>
         </div>
 
         <button
