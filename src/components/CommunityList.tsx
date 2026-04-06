@@ -11,14 +11,13 @@ export interface Community {
 }
 
 const fetchCommunities = async (): Promise<Community[]> => {
-    // Check if supabase client is available
     if (!supabase) {
         console.warn('Supabase client not available');
         return [];
     }
 
     const { data, error } = await supabase
-        .from('communities')
+        .from('Communities')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -69,7 +68,6 @@ const CommunityList = () => {
                     className="group"
                 >
                     <div className="bg-linear-to-br from-slate-900 to-slate-800 border border-cyan-900/30 rounded-lg p-6 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-300 h-full flex flex-col">
-                        {/* Header */}
                         <div className="flex items-start justify-between mb-4">
                             <div className="flex-1">
                                 <h3 className="text-xl font-mono font-bold text-cyan-300 group-hover:text-cyan-200 transition mb-2">
@@ -90,12 +88,10 @@ const CommunityList = () => {
                             </div>
                         </div>
 
-                        {/* Description */}
                         <p className="text-gray-300 text-sm mb-6 grow font-mono line-clamp-3">
                             {community.description}
                         </p>
 
-                        {/* Footer */}
                         <div className="flex items-center justify-between pt-4 border-t border-cyan-900/20">
                             <span className="text-xs text-gray-500 font-mono">view community</span>
                             <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
