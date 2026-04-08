@@ -2,8 +2,11 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
 import { User, Mail, Calendar, Shield, Camera, Edit3, Globe, Github, Twitter } from "lucide-react";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {showSuccess, showError} from "../utils/toast";
+import { fetchUserRepositories } from "../services/github";
+import GitHubRepositories from "../components/github/GitHubRepositories";
+import type { Repository } from "../types/repository";
 
 export default function ProfilePage() {
   const { user, signOut, updateProfile } = useAuth();
@@ -19,6 +22,35 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError] = useState<string | null>(null);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [isLoadingRepos, setIsLoadingRepos] = useState(false);
+  const [reposError, setReposError] = useState<string | null>(null);
+
+  // Fetch GitHub repositories when GitHub username is available
+  useEffect(() => {
+    const fetchRepositories = async () => {
+      if (!user?.user_metadata?.github) {
+        setRepositories([]);
+        setReposError(null);
+        return;
+      }
+
+      setIsLoadingRepos(true);
+      setReposError(null);
+
+      try {
+        const repos = await fetchUserRepositories(user.user_metadata.github);
+        setRepositories(repos);
+      } catch (error) {
+        setReposError(error instanceof Error ? error.message : 'Failed to load repositories');
+        setRepositories([]);
+      } finally {
+        setIsLoadingRepos(false);
+      }
+    };
+
+    fetchRepositories();
+  }, [user?.user_metadata?.github]);
 
   if (!user) {
     return null;
@@ -350,6 +382,30 @@ export default function ProfilePage() {
                             </a>
                           )}
                         </div>
+                      </div>
+                    )}
+
+                    {user.user_metadata?.github && (
+                      <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                            <Github className="w-5 h-5" />
+                            GitHub Repositories
+                          </h3>
+                          <a 
+                            href={`https://github.com/${user.user_metadata.github}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition"
+                          >
+                            View Profile →
+                          </a>
+                        </div>
+                        <GitHubRepositories 
+                          repositories={repositories} 
+                          isLoading={isLoadingRepos} 
+                          error={reposError} 
+                        />
                       </div>
                     )}
 

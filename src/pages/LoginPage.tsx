@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [particles, setParticles] = useState<Array<{ x: number, y: number, size: number, speed: number }>>([]);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const { signInWithEmail, signInWithGithub } = useAuth();
   const navigate = useNavigate();
 

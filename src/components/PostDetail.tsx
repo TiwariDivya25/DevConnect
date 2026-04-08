@@ -21,11 +21,11 @@ interface PostDetailProps {
 
 const fetchPost = async (postId: number): Promise<Post> => {
     const { data, error } = await supabase
-        .from('Posts')
+        .from('posts')
         .select('*')
         .eq('id', postId)
         .single();
-    
+
     if (error) {
         throw new Error("Error fetching post: " + error.message);
     }
@@ -35,7 +35,7 @@ const fetchPost = async (postId: number): Promise<Post> => {
 const PostDetail = ({ postId }: PostDetailProps) => {
     const navigate = useNavigate();
     const [likeCount, setLikeCount] = useState(0);
-    
+
     const { data: post, error, isLoading } = useQuery<Post, Error>({
         queryKey: ["post", postId],
         queryFn: () => fetchPost(postId)
@@ -97,8 +97,8 @@ const PostDetail = ({ postId }: PostDetailProps) => {
                 {/* Header: Avatar and Title */}
                 <div className="flex items-center p-4 border-b border-gray-200">
                     {post.avatar_url ? (
-                        <img 
-                            src={post.avatar_url} 
+                        <img
+                            src={post.avatar_url}
                             alt="User avatar"
                             className="w-10 h-10 rounded-full mr-3 shrink-0 object-cover"
                         />
@@ -114,9 +114,9 @@ const PostDetail = ({ postId }: PostDetailProps) => {
                 {/* Image */}
                 {post.image_url && (
                     <div className="w-full bg-gray-100">
-                        <img 
-                            src={post.image_url} 
-                            alt={post.title} 
+                        <img
+                            src={post.image_url}
+                            alt={post.title}
                             className="w-full h-auto object-contain max-h-[600px]"
                         />
                     </div>

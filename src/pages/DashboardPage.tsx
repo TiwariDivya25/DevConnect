@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../supabase-client';
+import { updatePost, deletePost } from '../services/posts';
+import EditPostModal from '../components/EditPostModal';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import { showSuccess, showError } from '../utils/toast';
 import {
   Users,
   Calendar,
@@ -15,7 +19,9 @@ import {
   ArrowRight,
   TrendingUp,
   LogOut,
-  LayoutDashboard
+  LayoutDashboard,
+  Edit,
+  Trash2
 } from 'lucide-react';
 
 // Interfaces based on the observed project structure
@@ -25,6 +31,7 @@ interface Post {
   content: string;
   created_at: string;
   likes?: number;
+  user_id?: string;
 }
 
 interface Community {
@@ -45,13 +52,59 @@ interface Event {
 
 export default function DashboardPage() {
   const { user, signOut } = useAuth();
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<'overview' | 'posts' | 'communities' | 'events'>('overview');
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   const handleSignOut = async () => {
     try {
       await signOut();
     } catch (error) {
       console.error('Failed to sign out:', error);
+    }
+  };
+
+  const handleEditPost = (post: Post) => {
+    setSelectedPost(post);
+    setEditModalOpen(true);
+  };
+
+  const handleDeletePost = (post: Post) => {
+    setSelectedPost(post);
+    setDeleteModalOpen(true);
+  };
+
+  const handleUpdatePost = async (title: string, content: string) => {
+    if (!selectedPost || !user) return;
+    
+    try {
+      await updatePost(selectedPost.id, title, content, user.id);
+      showSuccess('Post updated successfully');
+      // Refresh the posts query
+      queryClient.invalidateQueries({ queryKey: ['my-posts', user.id] });
+      setEditModalOpen(false);
+      setSelectedPost(null);
+    } catch (error) {
+      showError(error instanceof Error ? error.message : 'Failed to update post');
+      throw error;
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedPost || !user) return;
+    
+    try {
+      await deletePost(selectedPost.id, user.id);
+      showSuccess('Post deleted successfully');
+      // Refresh the posts query
+      queryClient.invalidateQueries({ queryKey: ['my-posts', user.id] });
+      setDeleteModalOpen(false);
+      setSelectedPost(null);
+    } catch (error) {
+      showError(error instanceof Error ? error.message : 'Failed to delete post');
+      throw error;
     }
   };
 
@@ -83,16 +136,21 @@ export default function DashboardPage() {
   });
 
   // Fetch User Posts
-  const { data: myPosts } = useQuery({
+  const { data: myPosts, error: postsError } = useQuery({
     queryKey: ['my-posts', user?.id],
     queryFn: async () => {
       if (!user || !supabase) return [];
+      console.log('Fetching posts for user:', user.id);
       const { data, error } = await supabase
         .from('posts')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching posts:', error);
+        throw error;
+      }
+      console.log('Fetched posts:', data);
       return data as Post[];
     },
     enabled: !!user && (activeTab === 'posts' || activeTab === 'overview')
@@ -265,13 +323,37 @@ export default function DashboardPage() {
                   <div className="p-4 space-y-3">
                     {/* Activity items simplified for brevity */}
                     {myPosts?.slice(0, 3).map(post => (
-                      <div key={post.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-slate-800/40 border border-transparent hover:border-slate-700 transition-all">
+                      <div key={post.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-slate-800/40 border border-transparent hover:border-slate-700 transition-all group">
                         <div className="p-2 bg-blue-500/10 rounded-md text-blue-400">
                           <Code2 className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-gray-200 truncate font-bold">{post.title}</p>
                           <p className="text-[10px] text-gray-500">CREATED::{new Date(post.created_at).toLocaleDateString()}</p>
+                        </div>
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleEditPost(post);
+                            }}
+                            className="p-1 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition-colors"
+                            title="Edit post"
+                          >
+                            <Edit className="w-3 h-3" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDeletePost(post);
+                            }}
+                            className="p-1 text-gray-400 hover:text-red-400 hover:bg-slate-800 rounded transition-colors"
+                            title="Delete post"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
                         </div>
                         <ArrowRight className="w-4 h-4 text-gray-600" />
                       </div>
@@ -349,14 +431,52 @@ export default function DashboardPage() {
         {/* Tab Content Components */}
         <div className="animate-in slide-in-from-bottom-4 duration-500">
           {activeTab === 'posts' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {myPosts?.length ? myPosts.map(post => (
-                <Link key={post.id} to={`/post/${post.id}`} className="block">
-                  <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-xl hover:border-cyan-500/40 transition-all group h-full">
-                    <div className="flex justify-between items-start mb-4">
+            <div>
+              {postsError && (
+                <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <p className="text-red-400 text-sm">Error loading posts: {postsError.message}</p>
+                </div>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {console.log('Rendering posts tab, myPosts:', myPosts, 'length:', myPosts?.length, 'user:', user?.id)}
+              {!user ? (
+                <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-800 rounded-2xl">
+                  <Code2 className="w-12 h-12 text-slate-800 mx-auto mb-4" />
+                  <p className="text-gray-500 font-bold uppercase tracking-widest">Please log in to view your posts</p>
+                  <Link to="/login" className="text-cyan-400 text-xs hover:underline mt-2 inline-block italic">Sign in?</Link>
+                </div>
+              ) : myPosts?.length ? myPosts.map(post => (
+                <div key={post.id} className="bg-slate-900/60 border border-slate-800 p-6 rounded-xl hover:border-cyan-500/40 transition-all group h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <Link to={`/post/${post.id}`} className="flex-1">
                       <h3 className="text-lg font-bold group-hover:text-cyan-400 transition-colors uppercase">{post.title}</h3>
-                      <Code2 className="w-5 h-5 text-gray-600" />
+                    </Link>
+                    <div className="flex items-center gap-2 ml-4">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleEditPost(post);
+                        }}
+                        className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition-colors"
+                        title="Edit post"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDeletePost(post);
+                        }}
+                        className="p-2 text-gray-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition-colors"
+                        title="Delete post"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
+                  </div>
+                  <Link to={`/post/${post.id}`} className="block">
                     <p className="text-sm text-gray-400 line-clamp-2 mb-6 font-mono leading-relaxed">
                       {post.content}
                     </p>
@@ -371,15 +491,16 @@ export default function DashboardPage() {
                         TS.{new Date(post.created_at).getTime()}
                       </span>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               )) : (
                 <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-800 rounded-2xl">
                   <Code2 className="w-12 h-12 text-slate-800 mx-auto mb-4" />
-                  <p className="text-gray-500 font-bold uppercase tracking-widest">No code repositories found</p>
-                  <Link to="/create" className="text-cyan-400 text-xs hover:underline mt-2 inline-block italic">Initialize first post?</Link>
+                  <p className="text-gray-500 font-bold uppercase tracking-widest">No posts found</p>
+                  <Link to="/create" className="text-cyan-400 text-xs hover:underline mt-2 inline-block italic">Create your first post?</Link>
                 </div>
               )}
+              </div>
             </div>
           )}
 
@@ -474,6 +595,32 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
+
+      {/* Edit Post Modal */}
+      {selectedPost && (
+        <EditPostModal
+          isOpen={editModalOpen}
+          onClose={() => {
+            setEditModalOpen(false);
+            setSelectedPost(null);
+          }}
+          post={selectedPost}
+          onSave={handleUpdatePost}
+        />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {selectedPost && (
+        <DeleteConfirmModal
+          isOpen={deleteModalOpen}
+          onClose={() => {
+            setDeleteModalOpen(false);
+            setSelectedPost(null);
+          }}
+          onConfirm={handleConfirmDelete}
+          postTitle={selectedPost.title}
+        />
+      )}
     </div>
   );
 }
