@@ -137,12 +137,11 @@ src/
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- Node.js 16+ and npm/yarn
-- Git
-- A Supabase account
-- A GitHub OAuth application
+### 📌 Prerequisites
+- Node.js (v16+)
+- npm or yarn
+- Supabase account
+- GitHub OAuth App
 
 ### Installation
 
